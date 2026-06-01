@@ -1,0 +1,43 @@
+---
+Item_Prototype: OVE_User_Profile
+ove_user_profile_version: 1.0
+Date_Modified:
+---
+
+# User Profile
+
+> **Optional.** Copy this file to `_USER.md` (drop the `.template` suffix) and fill it in if you want consistent personalization across every OV design session.
+
+## Identity
+
+- **Name:** *(how the AI should address you — spell it exactly as you want it written into shipped artifacts. The AI will NOT guess your name from your username, file path, or git config.)*
+- **Background:** *(one or two sentences — your professional or intellectual context.)*
+
+## Communication preferences
+
+- **Register:** peer / formal / casual *(default: peer)*
+- **Critique style:** substantive / encouraging-then-substantive / encouraging-only *(default: substantive)*
+- **Hedging:** minimal / moderate / cushioned *(default: minimal)*
+- **Filler tolerance:** none / some / fine *(default: none — no "great question," "interesting," etc.)*
+
+## OV-design preferences
+
+- **Default depth for new OVs:** rigorous / pragmatic / lightweight *(default: rigorous)*
+- **Default cartridge analog:** *(do you tend to think in cases? subjects? projects? engagements?)*
+- **Substrate priorities:** *(which AI tools you expect to use OVs with — Claude Code, Claude Desktop, ChatGPT Projects, Gemini, Cursor, Obsidian + Copilot, etc.)*
+
+## Active design engagements
+
+*Updated as you open cartridges.*
+
+- *(none yet)*
+
+## Existing operating volumes you maintain
+
+*(Lets the AI cross-reference design decisions against your existing OVs.)*
+
+- *(none yet)*
+
+## Notes for any AI session
+
+*Anything else a fresh AI session should know.*

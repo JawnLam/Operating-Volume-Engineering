@@ -1,0 +1,47 @@
+# Mac filesystem metadata
+.DS_Store
+**/.DS_Store
+
+# Editor / IDE artifacts
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Obsidian workspace state
+.obsidian/workspace*
+.obsidian/cache
+.obsidian/graph.json
+
+# OS / network artifacts
+Thumbs.db
+.directory
+
+# ----------------------------------------------------------------------
+# Personal design work — excluded by default so this folder can be shared
+# without leaking active design conversations. If you want your own
+# design work in version control, edit this section.
+# ----------------------------------------------------------------------
+
+# Design-state files: live record of where each design engagement stands
+**/_design-state.md
+
+# Optional user profile
+_USER.md
+
+# Personal cartridges — exclude session content and decision logs by default.
+# To track your own cartridge, use `git add -f` on the specific paths.
+**/Sessions/*.md
+!**/Sessions/.gitkeep
+
+# ----------------------------------------------------------------------
+# Always tracked (overrides above for the shipped worked examples):
+# The five shipped cartridges demonstrate the system and their contents
+# are part of the release.
+# ----------------------------------------------------------------------
+!SOLVE-eX-Retrospective/**
+!LifeLong-Learning-Retrospective/**
+!Negotiation-Preparation/**
+!Long-Form-Writing/**
+!Relationship-Cultivation/**
