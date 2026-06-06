@@ -1,4 +1,10 @@
 ---
+Item_Prototype: Fleeting
+Item_ID: ove-engine-02-design-principles
+Title: "OVE Engine — 02 Design Principles"
+Date_Added: 2026-06-01
+Date_Modified: 2026-06-06
+Needs_Processing: false
 type: design-engine
 role: principles
 scope: subject-agnostic
@@ -97,7 +103,7 @@ The AI's role is to **propose** designs with rationale and surface tradeoffs. Th
 - Name the main alternative
 - Wait for the user's call before proceeding
 
-This applies to schema choices, cartridge shapes, atom types, file structures — every load-bearing design decision.
+This applies to schema choices, cartridge shapes, Prototypes, file structures — every load-bearing design decision.
 
 ## P12 — Write before you end
 

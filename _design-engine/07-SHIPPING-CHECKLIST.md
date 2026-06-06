@@ -1,4 +1,10 @@
 ---
+Item_Prototype: Fleeting
+Item_ID: ove-engine-07-shipping-checklist
+Title: "OVE Engine — 07 Shipping Checklist"
+Date_Added: 2026-06-01
+Date_Modified: 2026-06-06
+Needs_Processing: false
 type: design-engine
 role: shipping-checklist
 scope: subject-agnostic
@@ -64,7 +70,11 @@ Create the empty folder. Copy artifacts from the cartridge's `Artifacts/` to the
 └── <Example-Cartridge>/  (the worked example that demonstrates the OV)
 ```
 
-## Phase 3 — Personal-data scrub
+## Phase 3 — Personal-data scrub (HARD STOP)
+
+**This phase is a hard ship gate. No proceeding to Phase 7 (git init) until Phase 3 returns clean.** The scrub guards the highest-embarrassment failure class — a wrong real name, a personal path, an internal client term in a shipped file. F3 (identity-from-indirect-signals) is documented as recurring; this gate exists because "remember to check" is not enough.
+
+### Walk the file list
 
 Walk through the new folder file by file. Check for:
 
@@ -79,14 +89,87 @@ Walk through the new folder file by file. Check for:
 For anything found, replace with placeholders (`<USER_NAME>`, `<COMPANY>`, etc.) or remove.
 
 **Specifically check for**:
+
 - The "name parsed from username" failure mode — anywhere a name appears, confirm it's the author's actual name as they provided it (e.g., "Jawn Lam," not "John Lam" inferred from `jawnlam`)
 - Internal references to the design cartridge (paths that include the OVE folder)
 
-Run a grep:
+### Run the gate
+
+Preferred — automated:
 
 ```bash
-grep -rEn "\bERA\b|Wingspire|Exit Ready|<specific-personal-terms>" "<NewOV>"
+python3 _design-engine/_meta/validate.py --root "<NewOV>"
 ```
+
+The script runs C3 (placeholder leakage) and C4 (identity-from-indirect-signals) plus structural checks (C1, C2, C5, C6). Exit codes: **0 = clean (proceed); 1 = warnings only (each warning must be explicitly waived in writing — see below); 2 = failures (HARD STOP, return to scrub work).**
+
+Markdown-only fallback when `python3` isn't available — walk the checks in `_design-engine/_meta/VALIDATION-CHECKLIST.md` and run the combined grep:
+
+```bash
+grep -rEn '<USER[_ ]NAME>|\[USER[_ ]NAME\]|<USER[_ ]EMAIL>|<COMPANY>|<CLIENT>|<author>|\[author\]|<TBD>|<TODO>|<your-name-here>|<your[_ ]domain>|<placeholder>|\bERA\b|Wingspire|Exit Ready|<specific-personal-terms>' "<NewOV>" --include="*.md" --exclude-dir=_templates
+```
+
+The grep must return **zero hits**, or every hit must be explicitly waived (see below).
+
+### Waiving a hit (warnings only)
+
+A `warn` finding (C4 attribution mismatch, C5 dangling wikilink) may be a legitimate edge case — but it does not pass silently. To waive, append a one-line entry to the cartridge's `_design-decisions.md` naming:
+
+- the file and line,
+- the apparent issue,
+- the reason the apparent placeholder/mismatch is intentional.
+
+Only `info`-class findings (e.g., C4 skipped because no `_USER.md`) and explicitly-waived `warn` findings count as "clean." A `fail` finding cannot be waived — it must be fixed before Phase 7.
+
+### Acceptance — all must be true
+
+- [ ] Validator returns exit code 0, **or** exit code 1 with every warning waived in `_design-decisions.md`
+- [ ] (Markdown-only fallback) The combined grep returns zero hits, or every hit is waived in writing
+- [ ] No real name, email, phone, path, client, or employer remains in shipping content (operator-confirmed)
+
+**If any of these is no, return to scrub work. Phase 7 is locked until this gate is clean.**
+
+## Phase 3.5 — `_Prototypes/` coverage gate (HARD STOP)
+
+Convention 6 (`_meta/CONVENTIONS.md`) requires every OV to ship its own `_Prototypes/` folder containing one `.md` file per Prototype declared in the OV's namespace. Without this, every cartridge note's `Item_Prototype:` reference is a dangling pointer for anyone without a vault-wide central registry.
+
+### Walk the Prototype list
+
+- [ ] `<New-OV>/_Prototypes/` folder exists at the OV root
+- [ ] Every Prototype declared in `_<purpose>-engine/_meta/SCHEMA-OF-SCHEMAS.md` (under `prototypes:` or equivalent) has a corresponding `<NAMESPACE>_<TypeName>.md` file in `_Prototypes/`
+- [ ] Every `Item_Prototype: <NAMESPACE>_<TypeName>` value used anywhere in the OV's cartridges has a corresponding `<NAMESPACE>_<TypeName>.md` file in `_Prototypes/`
+- [ ] Each Prototype file conforms to `_design-engine/_templates/TEMPLATE-Prototype.md` (Purpose, Required frontmatter, Body structure, Naming, Example, Relationships sections present)
+- [ ] Each Prototype file's required frontmatter matches the property declarations in `_meta/SCHEMA-OF-SCHEMAS.md`
+- [ ] The Fleeting Prototype is *not* duplicated in `_Prototypes/` — it's a vault-universal Prototype, not OV-specific
+
+### Run the gate
+
+If `validate.py` is in use:
+
+```bash
+python3 _design-engine/_meta/validate.py
+```
+
+Check 7 (C7 — Prototype coverage) walks every cartridge and confirms every distinct `Item_Prototype:` value resolves to a file in `_Prototypes/`. Missing files fail with `<file>:<line>` and the missing Prototype name.
+
+If running markdown-only:
+
+```bash
+# List every Item_Prototype value used in any cartridge
+grep -rh '^Item_Prototype:' <Cartridge>/*.md <Cartridge>/**/*.md 2>/dev/null | \
+  sort -u | \
+  grep -v 'Fleeting'
+```
+
+For each value listed, confirm a matching file exists in `_Prototypes/`.
+
+### Acceptance — all must be true
+
+- [ ] Every cartridge `Item_Prototype:` value (excluding `Fleeting`) has a definition file in `_Prototypes/`
+- [ ] Every definition file conforms to `TEMPLATE-Prototype.md`
+- [ ] No leftover stub Prototypes (placeholder text not replaced with domain-specific content)
+
+**If any of these is no, return to ARTIFACT-DRAFT to materialize the missing Prototype definitions per `04-SCHEMA-DESIGN.md` § "Materializing the `_Prototypes/` folder". Phase 7 is locked until this gate is clean.**
 
 ## Phase 4 — License + attribution
 
@@ -119,7 +202,19 @@ The README is the front door. Specifically check:
 - [ ] No emojis (unless the user explicitly requested them)
 - [ ] Reads aloud without flattery or filler
 
+### Optional: run the validator's drift check
+
+If `_design-engine/_meta/validate.py` is available, its C6 check catches divergence between `AI-BOOTSTRAP.md` and the engine's `00-START-HERE.md` — a quiet drift that degrades the AI's first-response quality:
+
+```bash
+python3 _design-engine/_meta/validate.py --root "<NewOV>" --skip C3,C4
+```
+
+`--skip C3,C4` focuses on the structural drift check at this phase. Markdown-only fallback: `_design-engine/_meta/VALIDATION-CHECKLIST.md` § C6.
+
 ## Phase 7 — Git init (optional but recommended)
+
+**Precondition: Phase 3 (personal-data scrub) returned clean.** If you cannot show a clean validator run (exit code 0) or a fully-waived equivalent, do not proceed — a leaked name or path in the very first commit is permanent in the git history.
 
 ```bash
 cd <NewOV>

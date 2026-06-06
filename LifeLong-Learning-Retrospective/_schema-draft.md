@@ -5,8 +5,8 @@ Title: "LifeLong-Learning — Reverse-Engineered Schema"
 Date_Added: 2026-06-01
 Date_Modified: 2026-06-01
 Needs_Processing: false
-ove_ov_name: "LifeLong-Learning"
-ove_schema_status: shipped
+ove_OV_Name: "LifeLong-Learning"
+ove_Schema_Status: shipped
 ---
 
 # LifeLong-Learning — Reverse-Engineered Schema

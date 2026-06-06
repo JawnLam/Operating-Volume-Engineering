@@ -1,4 +1,10 @@
 ---
+Item_Prototype: Fleeting
+Item_ID: ove-engine-04-schema-design
+Title: "OVE Engine — 04 Schema Design"
+Date_Added: 2026-06-01
+Date_Modified: 2026-06-06
+Needs_Processing: false
 type: design-engine
 role: schema-design-protocol
 scope: subject-agnostic
@@ -13,14 +19,36 @@ updated: 2026-06-01
 
 A schema is the structural contract every artifact in the OV conforms to. It defines:
 
-1. **The atom types** — the unit(s) of knowledge or work the OV produces (a "concept" in LLL, a "case file" in SOLVE-eX, a "design decision" in OVE)
-2. **The relationships** — how atoms link to each other
+1. **The Prototypes** — the unit(s) of knowledge or work the OV produces (a "concept" in LLL, a "case file" in SOLVE-eX, a "design decision" in OVE)
+2. **The relationships** — how Items link to each other
 3. **The state model** — what state files exist, what they own
 4. **The cartridge backbone** — what every cartridge has at minimum
 5. **The session log structure** — how work is recorded
 6. **The custom activities** — anything beyond the universal session-protocol activities
 
 A well-designed schema makes the work feel natural; a poorly-designed schema forces the user to bend the work to fit.
+
+## Convention compliance — the cascade from one early decision
+
+Before Q1, the OV's namespace prefix is chosen. Everything else cascades from it. The full convention set lives in `_meta/CONVENTIONS.md`; the cascade is summarized here.
+
+### Q0 — Namespace prefix
+
+Ask the user:
+
+> *"What namespace prefix will this OV use? Three to six lowercase letters, ending with an underscore. Example: `cook_` for a cooking OV; `negotiation_` for a negotiation-prep OV; `family_` for a family-operations OV."*
+
+Once chosen, everything propagates automatically per `_meta/CONVENTIONS.md`:
+
+- **Prototype names:** `<NAMESPACE_UPPER>_<TypeName>` (e.g., `COOK_Recipe`, `COOK_Technique`)
+- **Property names:** `<namespace>_<Title_Snake_Case_Body>` (e.g., `cook_Recipe_Status`, `cook_Difficulty_Tier`). Acronyms in the body stay fully capitalized (`URL`, `ISBN`, `POV`).
+- **Enum identifiers** (under `enums:` in schema): `<namespace>_<lowercase_plural>` (e.g., `cook_recipe_statuses`, `cook_difficulty_tiers`)
+- **`Item_Prototype` value** on each Item: the prototype name from above
+- **`Item_Prototype: Fleeting`** on non-Item files (front-door docs, engine prose, meta)
+
+The operator's answer to Q0 determines all of these — there is no additional decision-making required for the case convention or the prototype-naming convention. They are locked.
+
+If the operator wants different conventions than the defaults in `_meta/CONVENTIONS.md`, they tell you during this session. Log the override in `_design-decisions.md` so future sessions know which conventions apply.
 
 ## The Q1–Q8 protocol
 
@@ -46,18 +74,18 @@ The mix shapes everything downstream.
 
 Some domains have named experts (cybernetics has thinkers; philosophy has philosophers). Some have traditions (cuisine has regional traditions). Some have institutions (law has courts and codes). Some have none.
 
-This question determines whether you need a "thinker" or "authority" atom type.
+This question determines whether you need a "thinker" or "authority" Prototype.
 
 ### Q3 — What is the smallest quizzable / actionable / discussable unit?
 
-That's the atomic unit of this OV. Anything smaller is a fragment; anything larger should decompose.
+That unit is what each Item in this OV represents. Anything smaller is a fragment; anything larger should decompose.
 
 Examples:
 - LLL: a concept (or a piece, a kanji, a technique, etc. — varies by subject cartridge)
 - SOLVE-eX: a tool application within a case file
 - OVE: a design decision
 
-### Q4 — What relationships exist between atoms?
+### Q4 — What relationships exist between Items?
 
 Pick a vocabulary of named relations. Common patterns:
 
@@ -68,7 +96,7 @@ Pick a vocabulary of named relations. Common patterns:
 - Logical: `prerequisite-of` / `instantiates` / `contrasts-with`
 - Lateral: `related-to`
 
-The relationships become wiki-links in atom bodies and structured fields in frontmatter.
+The relationships become wiki-links in Item bodies and structured fields in frontmatter.
 
 ### Q5 — Does the domain have a natural progression?
 
@@ -131,11 +159,32 @@ For each backbone file: is it overwritten, append-only, or hybrid? What gets wri
 
 ### Q12 — What templates ship with the OV?
 
-Templates scaffold the work. Every atom type needs one. Every artifact-kind (session log, quiz, journal, draft) needs one.
+Templates scaffold the work. Every Prototype needs one. Every artifact-kind (session log, quiz, journal, draft) needs one.
 
 ### Q13 — What's the bootstrap-new-cartridge protocol?
 
 This is the OV's analog to `BOOTSTRAP-NEW-OV.md`. It's the prompt the AI follows to open a new cartridge from a user request.
+
+## Materializing the `_Prototypes/` folder
+
+Once Q9 (cartridge analog) and Q12 (Prototype list) are answered, the Prototypes are *named*. Convention 6 (see `_meta/CONVENTIONS.md`) requires that they are also *defined* — one canonical `_Prototypes/<NAMESPACE>_<TypeName>.md` file per Prototype, structured per `_templates/TEMPLATE-Prototype.md`.
+
+This is a hard step, not optional. An OV that ships without `_Prototypes/` populated is one where every cartridge reference (`Item_Prototype: <NAMESPACE>_<TypeName>`) is a name pointer with no definition behind it — fine for the operator with a central vault-wide registry, broken for everyone else.
+
+**During ARTIFACT-DRAFT**, walk one Prototype at a time:
+
+1. Open `_templates/TEMPLATE-Prototype.md` (or copy it into `_Prototypes/<NAMESPACE>_<TypeName>.md` and edit).
+2. Fill in:
+   - Purpose (what this Prototype models in the domain)
+   - Required frontmatter (Universal Core + Prototype-specific fields from Q12)
+   - Body structure (the required sections an Item must contain)
+   - Naming pattern + cartridge folder location
+   - A concrete example Item
+   - Relationships (which other Prototypes this one links to, per Q4)
+3. Cross-check against `_meta/SCHEMA-OF-SCHEMAS.md` — every property declared there should appear in at least one Prototype's required-frontmatter block, and every Prototype declared in `_meta/SCHEMA-OF-SCHEMAS.md` must have a corresponding `_Prototypes/<NAMESPACE>_<TypeName>.md`.
+4. Repeat until every Prototype in the OV's namespace has a definition file.
+
+The shipping checklist verifies this at Phase 3.5 (see `07-SHIPPING-CHECKLIST.md`); the optional validator's C7 check enforces it programmatically.
 
 ## Required sections of the new OV's `_schema.md`
 
@@ -143,7 +192,7 @@ The new OV's schema document must contain:
 
 1. **Domain identity** — name, shape (Q1 categories), summary
 2. **Answers to Q1–Q13** — the analytical answers that justify the design
-3. **Atom type definitions** — frontmatter, required body sections, naming, location
+3. **Prototype definitions** — frontmatter, required body sections, naming, location
 4. **Relationship vocabulary** — the named relations
 5. **Mastery / progress scale** — default or custom
 6. **Custom session activities** — with trigger conditions
@@ -156,8 +205,8 @@ The new OV's schema document must contain:
 
 Run these checks before locking the schema:
 
-- [ ] Could you describe an example atom in this domain that fits naturally? (If not, the atom types are off.)
-- [ ] Are the relationships sufficient to express how atoms actually link in your head?
+- [ ] Could you describe an example Item in this domain that fits naturally? (If not, the Prototypes are off.)
+- [ ] Are the relationships sufficient to express how Items actually link in your head?
 - [ ] Does the cartridge analog match how the user *thinks* about the work, not just how it's structured on disk?
 - [ ] Would a user-domain-expert recognize this schema as "yes, that's how this domain works"?
 - [ ] Does it pass the **self-similarity test**? Could OVE itself be designed using this schema? (For OVE: trivially yes. For other OVs: not always relevant, but a useful sanity check.)

@@ -1,4 +1,10 @@
 ---
+Item_Prototype: Fleeting
+Item_ID: ove-meta-failure-modes
+Title: "OVE Meta — Failure Modes"
+Date_Added: 2026-06-01
+Date_Modified: 2026-06-06
+Needs_Processing: false
 type: design-engine
 role: failure-catalog
 scope: subject-agnostic
@@ -51,7 +57,7 @@ updated: 2026-06-01
 
 ## F5 — Schema implicit in prose
 
-**Trigger pattern:** A section of engine prose *implies* a schema constraint without making it explicit. (E.g., "the session log should include atoms-engaged" without that being listed as a required field in the schema.)
+**Trigger pattern:** A section of engine prose *implies* a schema constraint without making it explicit. (E.g., "the session log should include Items-engaged" without that being listed as a required field in the schema.)
 
 **Why it matters:** Implicit schema produces drift. Different sessions implement the constraint differently. The schema validator can't catch the violation.
 

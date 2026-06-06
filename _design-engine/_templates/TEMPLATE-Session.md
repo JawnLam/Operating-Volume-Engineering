@@ -5,13 +5,13 @@ Title: "<OV Name> — Session <NNN> — <Activity>"
 Date_Added:
 Date_Modified:
 Needs_Processing: false
-ove_ov_name: "<OV Name>"
-ove_session_number:
-ove_activity: ""      # INTERVIEW | SCHEMA-DESIGN | CARTRIDGE-SHAPE | ARTIFACT-DRAFT | REVIEW | SHIP-PREP
-ove_duration_minutes:
-ove_decisions_locked: []
-ove_artifacts_touched: []
-ove_quality_gates_passed: false
+ove_OV_Name: "<OV Name>"
+ove_Session_Number:
+ove_Activity: ""      # INTERVIEW | SCHEMA-DESIGN | CARTRIDGE-SHAPE | ARTIFACT-DRAFT | REVIEW | SHIP-PREP
+ove_Duration_Minutes:
+ove_Decisions_Locked: []
+ove_Artifacts_Touched: []
+ove_Quality_Gates_Passed: false
 ---
 
 # Session <NNN> — <Date> — <Activity>

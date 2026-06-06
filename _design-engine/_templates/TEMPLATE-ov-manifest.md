@@ -5,11 +5,11 @@ Title: "<OV Name> — Design Cartridge Manifest"
 Date_Added:
 Date_Modified:
 Needs_Processing: false
-ove_ov_name: "<OV Name>"
-ove_ov_slug: "<ov-slug>"
-ove_design_phase: interview   # interview | schema-design | cartridge-shape | artifact-draft | review | ship-prep | shipped
-ove_user_name: ""              # operator-confirmed; never inferred from indirect signals
-ove_bootstrapped: <YYYY-MM-DD>
+ove_OV_Name: "<OV Name>"
+ove_OV_Slug: "<ov-slug>"
+ove_Design_Phase: interview   # interview | schema-design | cartridge-shape | artifact-draft | review | ship-prep | shipped
+ove_User_Name: ""              # operator-confirmed; never inferred from indirect signals
+ove_Bootstrapped: <YYYY-MM-DD>
 ---
 
 # <OV Name> — Design Cartridge Manifest

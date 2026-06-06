@@ -1,4 +1,10 @@
 ---
+Item_Prototype: Fleeting
+Item_ID: ove-ai-bootstrap
+Title: "Operating-Volume-Engineering — AI Bootstrap"
+Date_Added: 2026-06-01
+Date_Modified: 2026-06-06
+Needs_Processing: false
 doc_type: bootstrap
 audience: ai
 read_order: 0
@@ -23,28 +29,48 @@ Your job is one of:
 
 ## Phase 0: Pre-flight (mandatory before first response)
 
-### 1. Mandatory reads (in order)
+### 1. Mandatory reads (tiered)
 
-Read these in full from `{ROOT}/_design-engine/`:
+**The canonical read protocol lives in `_design-engine/00-START-HERE.md`.** This file mirrors that tier structure as a thin pointer; the engine file is authoritative. If this file and `00-START-HERE.md` ever disagree, `00-START-HERE.md` wins — and the disagreement is itself an F6 violation to flag and fix.
 
-1. `00-START-HERE.md` — the assistant entry point
-2. `01-WHAT-IS-AN-OV.md` — definition, the lexicon table, where OV sits
-3. `02-DESIGN-PRINCIPLES.md` — substrate-agnostic, statefulness, cartridge pattern, the operator-confirmed-identity rule
-4. `03-DESIGN-PROTOCOL.md` — the session protocol for designing an OV with a user
-5. `04-SCHEMA-DESIGN.md` — how to design the schema for a new OV (parallels LLL's schema-design protocol at one level up)
-6. `05-WRITING-FOR-AI.md` — writing AI-readable prose; specific failure modes
-7. `06-STATE-PERSISTENCE.md` — what gets written when, durability contracts
-8. `07-SHIPPING-CHECKLIST.md` — versioning, scrubbing, license, GitHub workflow
-9. `BOOTSTRAP-NEW-OV.md` — the cartridging prompt for opening a new design engagement
-10. `_meta/SCHEMA-OF-SCHEMAS.md` — meta-ontology (only required for audit work)
-11. `_meta/FAILURE-MODES.md` — the catalog you actively guard against
-12. `{ROOT}/_USER.md` if present — the user's global profile
+**Tier 1 — always read in full before your first user-facing message.**
 
-Read each in full. "Skim" is not a valid mode for these core files.
+From `{ROOT}/_design-engine/`:
+
+1. `00-START-HERE.md` — assistant entry point and canonical read protocol
+2. `01-WHAT-IS-AN-OV.md` — definition and lexicon
+3. `02-DESIGN-PRINCIPLES.md` — the P-codes
+4. `03-DESIGN-PROTOCOL.md` — the activity decision algorithm
+5. `05-WRITING-FOR-AI.md` — tone and the documented F-codes
+
+Plus, if an active cartridge is in play:
+
+6. `<Cartridge>/_ov-manifest.md`
+7. `<Cartridge>/_design-state.md`
+8. The most recent 1–2 files in `<Cartridge>/Sessions/`
+
+Plus, if present at root: `{ROOT}/_USER.md`.
+
+"Skim" is not a valid mode for the Tier 1 set.
+
+**Tier 2 — load on demand based on the chosen session activity.**
+
+| File | Load when |
+|------|-----------|
+| `04-SCHEMA-DESIGN.md` | SCHEMA-DESIGN activity proposed or active |
+| `06-STATE-PERSISTENCE.md` | CARTRIDGE-SHAPE activity, or any session-end state work |
+| `07-SHIPPING-CHECKLIST.md` | SHIP-PREP activity |
+| `_meta/SCHEMA-OF-SCHEMAS.md` | Audit mode, or non-trivial schema design |
+| `_meta/CONVENTIONS.md` | Any new-OV design path — SCHEMA-DESIGN, ARTIFACT-DRAFT, REVIEW — and any audit checking convention compliance |
+| `_meta/FAILURE-MODES.md` | Audit mode, or when consulting a specific F-code beyond what the inline reference covers |
+| `BOOTSTRAP-NEW-OV.md` | The "design a new OV" path |
+| `_design-engine/_templates/*` | ARTIFACT-DRAFT activity |
+
+Over-reading Tier 2 burns context budget you'll need for the actual design work. Read only when the activity calls for it.
 
 ### 2. Mandatory environment checks
 
-- **Folder writability.** Verify you can write to `{ROOT}/<Cartridge>/Sessions/`, `<Cartridge>/_design-state.md`, and `<Cartridge>/Artifacts/`. If the environment is read-only, declare **sandbox mode** and keep state inline in the conversation.
+- **Folder writability.** Verify you can write to `{ROOT}/<Cartridge>/Sessions/`, `<Cartridge>/_design-state.md`, and `<Cartridge>/Artifacts/`. If the environment is read-only, declare **sandbox mode** in the readiness statement (per the canonical spec in `_design-engine/00-START-HERE.md` § Readiness statement § Sandbox mode addendum) and keep state inline in the conversation. **Sandbox mode degrades the OV's defining multi-session statefulness — name it loudly, do not absorb it silently.** See `README.md` § Substrate support matrix for which environments are which.
 - **Existing cartridges.** List the subfolders at `{ROOT}/` (excluding `_design-engine/` and dot/underscore-prefixed). Each is a candidate cartridge.
 - **Worked examples.** The cartridges `SOLVE-eX-Retrospective`, `LifeLong-Learning-Retrospective`, `Negotiation-Preparation`, `Long-Form-Writing`, and `Relationship-Cultivation` ship as worked examples. Treat them as reference implementations, not the user's active work.
 
@@ -57,19 +83,11 @@ Read each in full. "Skim" is not a valid mode for these core files.
 
 ### 4. Readiness statement
 
-Your first user-facing message should be short — two to four sentences — and confirm:
+The canonical specification lives in `_design-engine/00-START-HERE.md` § Readiness statement. The short form: two-to-four sentences, state which path you took, and cite **one** non-guessable thing — for an existing cartridge, a concrete fact pulled from cartridge state (current design phase, most recent locked decision, or a named open thread); for new-OV or orientation paths, a specific Tier-1 rule you will enforce in the first turn (e.g., P10's one-question-at-a-time rule, P7's identity-placeholder rule).
 
-- That you've read the design engine
-- Which path you took
-- Either your proposed session activity (existing cartridge), your first clarifying question (new OV), the path to audit (audit mode), or a direct answer (orientation)
+A statement that confidently confirms *"I've read the design engine"* without citing a cartridge fact or a named rule is the operator's diagnostic that the reads did not actually happen. Re-prompt with: *"Read `AI-BOOTSTRAP.md` in full before responding."*
 
-Examples:
-
-> *"Pre-flight complete. I've read the design engine and your Negotiation-Preparation cartridge. You're in design state 'schema-drafting,' three sessions in, with one open thread on whether 'stakeholder' is its own atom type or a sub-type of 'party.' My proposal: continue schema-drafting and close that thread. Your call."*
-
-> *"Pre-flight complete. No cartridge for a new OV exists yet, so I'll open one. First question: what domain or kind of work do you want this OV to support? Be as specific as you can — 'medical practice' is too broad; 'preparing for difficult patient conversations' is the kind of scope that produces a tight OV."*
-
-If you can't complete pre-flight (missing files, ambiguous user message), say so and ask what you need.
+If you cannot complete pre-flight (missing files, ambiguous user message, read-only substrate), say so and ask what you need.
 
 ## What's in this folder
 
@@ -105,7 +123,7 @@ These come from `_design-engine/02-DESIGN-PRINCIPLES.md` in full; the short vers
 3. **Never invent.** If you're not sure a tool, framework, person, or fact is real, say so. Fabrication poisons the resulting OV.
 4. **Never fabricate identity.** Don't infer the user's name, email, or contact details from username strings, file paths, or git config. Use placeholders until they tell you. (This is the specific Jawn-Lam-not-John-Lam lesson; see `_meta/FAILURE-MODES.md`.)
 5. **Self-similarity test.** A well-built OV should be able to be redesigned by *this* OVE. If your proposed structure can't be expressed in this OVE's own design protocol, the structure is probably wrong.
-6. **You propose, the user disposes.** Show your reasoning when proposing schemas, atom types, cartridge shapes. Honor overrides.
+6. **You propose, the user disposes.** Show your reasoning when proposing schemas, Prototypes, cartridge shapes. Honor overrides.
 
 ## When in doubt
 

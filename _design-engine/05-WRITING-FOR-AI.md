@@ -1,4 +1,10 @@
 ---
+Item_Prototype: Fleeting
+Item_ID: ove-engine-05-writing-for-ai
+Title: "OVE Engine — 05 Writing for AI"
+Date_Added: 2026-06-01
+Date_Modified: 2026-06-06
+Needs_Processing: false
 type: design-engine
 role: writing-discipline
 scope: subject-agnostic
@@ -24,7 +30,7 @@ Don't blur the lines. README prose belongs in README, not in the engine. Engine 
 
 ### Be operational, not theoretical
 
-Don't write *"Consider the relationship between the user's goals and the schema."* Write *"Before locking the schema, ask the user to point to one example atom in this domain. If they can't, the atom type is probably wrong — return to Q3."*
+Don't write *"Consider the relationship between the user's goals and the schema."* Write *"Before locking the schema, ask the user to point to one example Item in this domain. If they can't, the Prototype is probably wrong — return to Q3."*
 
 The AI is going to execute the prose. Make it executable.
 
@@ -52,6 +58,16 @@ When a section depends on another file, link it: *"See `03-DESIGN-PROTOCOL.md` �
 ### Use YAML frontmatter for machine-readable metadata
 
 Every file the AI parses has YAML frontmatter at the top. Schemas and prototypes live in YAML. Prose lives in the body.
+
+### Apply the universal conventions in frontmatter
+
+When drafting any file with YAML frontmatter — whether it's a cartridge Item, an engine page, or a front-door doc for the new OV — apply the conventions in `_meta/CONVENTIONS.md`:
+
+- Six Universal Core fields: `Item_Prototype`, `Item_ID`, `Title`, `Date_Added`, `Date_Modified`, `Needs_Processing`
+- Property naming: prefix `lowercase_snake_case_`, body `Title_Snake_Case`, acronyms fully capitalized
+- Enum identifiers in schema: lowercase plural
+
+These are not subject-specific stylistic choices. They are vault-compatibility defaults that let the OV's output live alongside the operator's other notes without post-processing. If the operator has overridden the defaults during SCHEMA-DESIGN (logged in `_design-decisions.md`), apply the override instead.
 
 ### Don't write trivia
 

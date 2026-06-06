@@ -5,11 +5,11 @@ Title: "SOLVE-eX — Retrospective State"
 Date_Added: 2026-06-01
 Date_Modified: 2026-06-01
 Needs_Processing: false
-ove_ov_name: "SOLVE-eX"
-ove_design_phase: shipped
-ove_sessions_completed: 1
-ove_last_session_date: 2026-06-01
-ove_next_session_default_activity: none
+ove_OV_Name: "SOLVE-eX"
+ove_Design_Phase: shipped
+ove_Sessions_Completed: 1
+ove_Last_Session_Date: 2026-06-01
+ove_Next_Session_Default_Activity: none
 ---
 
 # SOLVE-eX — Retrospective State

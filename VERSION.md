@@ -1,25 +1,32 @@
 ---
-ove_version: "1.0.0"
+Item_Prototype: Fleeting
+Item_ID: ove-version
+Title: "Operating-Volume-Engineering — Version"
+Date_Added: 2026-06-01
+Date_Modified: 2026-06-06
+Needs_Processing: false
+ove_Version: "1.1.0"
 schema_version: "1.0"
 schema_status: "STABLE"
-release_date: 2026-06-01
-release_phase: "Initial public release"
+release_date: 2026-06-06
+release_phase: "Minor release — design conversation quality and ship-output quality improvements"
 ---
 
 # Operating-Volume-Engineering — Version
 
-This is Operating-Volume-Engineering **v1.0.0** — initial public release.
+This is Operating-Volume-Engineering **v1.1.0** — first minor release. Additive only; v1.0 cartridges remain readable.
 
 ## Version identifiers
 
 | Identifier              | Value         | Notes                                                                  |
 |-------------------------|---------------|------------------------------------------------------------------------|
-| **Software**            | v1.0.0        | Initial public release                                                 |
-| **Design schema**       | v1.0          | STABLE — the OV-cartridge prototypes are locked at this version        |
-| **Design engine**       | v1.0          | Subject-agnostic OV-design operating manual                            |
-| **Templates**           | v1.0          | Shipped in `_design-engine/_templates/`                                |
-| **Worked examples**     | v1.0          | Two retrospectives + three fresh examples                              |
-| **Release date**        | 2026-06-01    |                                                                        |
+| **Software**            | v1.1.0        | Minor release — quality improvements (read protocol, readiness statement, validator, scrub gate, substrate matrix) |
+| **Design schema**       | v1.0          | STABLE — cartridge backbone unchanged at this version                  |
+| **Design engine**       | v1.1          | Tiered read protocol (canonical in `00-START-HERE.md`); mandatory readiness-statement specification; sandbox-mode loudness addendum |
+| **Templates**           | v1.0          | Unchanged                                                              |
+| **Validator**           | v1.0          | New — `_design-engine/_meta/validate.py` plus prose fallback at `_design-engine/_meta/VALIDATION-CHECKLIST.md` |
+| **Worked examples**     | v1.0          | Unchanged                                                              |
+| **Release date**        | 2026-06-06    |                                                                        |
 
 ## Schema policy
 

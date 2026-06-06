@@ -5,7 +5,7 @@ Title: "LifeLong-Learning — Retrospective Decisions Log"
 Date_Added: 2026-06-01
 Date_Modified: 2026-06-01
 Needs_Processing: false
-ove_ov_name: "LifeLong-Learning"
+ove_OV_Name: "LifeLong-Learning"
 ---
 
 # LifeLong-Learning — Retrospective Decisions Log

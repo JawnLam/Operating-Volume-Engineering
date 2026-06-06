@@ -1,3 +1,12 @@
+---
+Item_Prototype: Fleeting
+Item_ID: ove-readme
+Title: "Operating-Volume-Engineering — README"
+Date_Added: 2026-06-01
+Date_Modified: 2026-06-06
+Needs_Processing: false
+---
+
 # Operating-Volume-Engineering
 
 [![License: CC BY 4.0](https://img.shields.io/badge/License-CC%20BY%204.0-lightgrey.svg)](https://creativecommons.org/licenses/by/4.0/)
@@ -75,7 +84,25 @@ For environment setup, see [`INSTALL.md`](INSTALL.md). For day-to-day operation 
 - **AI assistant** — any model capable of reading markdown and parsing YAML frontmatter (Claude Sonnet/Opus class, GPT-4 class and above, Gemini 2.x and above)
 - **OS** — Mac, Windows, or Linux
 - **Editor** — any text editor with AI integration; Obsidian works well; Claude Code / Cursor / Windsurf are excellent
-- **Python / network / runtime dependencies** — none
+- **Python / network / runtime dependencies** — none for the core flow. The optional validator at `_design-engine/_meta/validate.py` requires Python 3.7+ standard library only.
+
+## Substrate support matrix
+
+OVs depend on two capabilities from the AI environment: file **read** and file **write**. Most modern environments support both. Some support only read — and that distinction matters because the OV's defining property is multi-session statefulness, which lives in files on disk.
+
+| Substrate | Read | Write | Statefulness | Note |
+|-----------|------|-------|--------------|------|
+| Claude Code, Cursor, Windsurf, VS Code with AI side-panel | ✓ | ✓ | Full | Native fit |
+| Claude Desktop with local file access | ✓ | ✓ | Full | Native fit |
+| JetBrains AI Assistant, Zed AI | ✓ | ✓ | Full | Native fit |
+| Obsidian + Copilot-class plugins | ✓ | varies | Full when the plugin can write | Verify plugin capability |
+| Claude.ai with Projects (file attachments) | ✓ | ✗ | **Degraded — sandbox mode** | Read-only; state must be pasted back across sessions |
+| ChatGPT Projects, Custom GPTs (file attachments) | ✓ | ✗ | **Degraded — sandbox mode** | Same as above |
+| Gemini, generic chat with pasted files | ✓ | ✗ | **Degraded — sandbox mode** | Same as above |
+
+**Sandbox mode.** When the AI cannot persist `_design-state.md` or write to `<Cartridge>/Sessions/`, the OV's core contract is broken — state must be re-asserted by the user each session. The AI's first response must announce sandbox mode explicitly so the user can decide to (a) keep the engagement to a single session, or (b) paste the latest state back at the next session start. Silent absorption of sandbox mode is the failure to catch — see `_design-engine/02-DESIGN-PRINCIPLES.md` P2/P6 and the canonical readiness-statement specification in `_design-engine/00-START-HERE.md`.
+
+Sandbox mode is a real and supported way to use this folder; it just isn't the default and it isn't free.
 
 ## Folder structure
 

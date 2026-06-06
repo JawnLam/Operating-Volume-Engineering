@@ -1,4 +1,10 @@
 ---
+Item_Prototype: Fleeting
+Item_ID: ove-engine-06-state-persistence
+Title: "OVE Engine — 06 State Persistence"
+Date_Added: 2026-06-01
+Date_Modified: 2026-06-06
+Needs_Processing: false
 type: design-engine
 role: state-persistence
 scope: subject-agnostic
@@ -41,7 +47,7 @@ Rewritten in full each session. No history within the file.
 
 Mostly stable; specific named sections are appended within the session.
 
-**Examples:** atom notes that grow as mastery increases (the body sections accumulate notes; the frontmatter overwrites).
+**Examples:** Item notes that grow as mastery increases (the body sections accumulate notes; the frontmatter overwrites).
 
 **Why:** mixed mode for documents that have both stable structure and accumulating content.
 
@@ -72,7 +78,7 @@ Written once; never touched.
 
 For any data the OV needs to remember, decide three things:
 
-1. **Granularity** — per session? per atom? per cartridge? per OV?
+1. **Granularity** — per session? per Item? per cartridge? per OV?
 2. **Lifecycle** — does it accumulate? get overwritten? get archived?
 3. **Owner** — who writes it (AI, user, both, maintainer)?
 

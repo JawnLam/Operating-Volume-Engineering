@@ -5,13 +5,13 @@ Title: "Negotiation-Preparation — Session 002 — SCHEMA-DESIGN"
 Date_Added: 2026-06-01
 Date_Modified: 2026-06-01
 Needs_Processing: false
-ove_ov_name: "Negotiation-Preparation"
-ove_session_number: 2
-ove_activity: SCHEMA-DESIGN
-ove_duration_minutes: 0
-ove_decisions_locked: ["five-atom-types", "six-custom-activities", "per-pattern-mastery"]
-ove_artifacts_touched: ["_schema-draft.md", "_design-decisions.md"]
-ove_quality_gates_passed: true
+ove_OV_Name: "Negotiation-Preparation"
+ove_Session_Number: 2
+ove_Activity: SCHEMA-DESIGN
+ove_Duration_Minutes: 0
+ove_Decisions_Locked: ["five-atom-types", "six-custom-activities", "per-pattern-mastery"]
+ove_Artifacts_Touched: ["_schema-draft.md", "_design-decisions.md"]
+ove_Quality_Gates_Passed: true
 ---
 
 # Session 002 — 2026-06-01 — SCHEMA-DESIGN

@@ -5,12 +5,12 @@ Title: "Long-Form-Writing — Fresh Worked Example (Lighter)"
 Date_Added: 2026-06-01
 Date_Modified: 2026-06-01
 Needs_Processing: false
-ove_ov_name: "Long-Form-Writing"
-ove_ov_slug: "long-form-writing"
-ove_design_phase: schema-design
-ove_user_name: "<USER_NAME placeholder>"
-ove_bootstrapped: 2026-06-01
-ove_engagement_kind: fresh-worked-example
+ove_OV_Name: "Long-Form-Writing"
+ove_OV_Slug: "long-form-writing"
+ove_Design_Phase: schema-design
+ove_User_Name: "<USER_NAME placeholder>"
+ove_Bootstrapped: 2026-06-01
+ove_Engagement_Kind: fresh-worked-example
 ---
 
 # Long-Form-Writing — Fresh Worked Example (Lighter Depth)

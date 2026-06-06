@@ -1,4 +1,10 @@
 ---
+Item_Prototype: Fleeting
+Item_ID: ove-engine-01-what-is-an-ov
+Title: "OVE Engine — 01 What Is an OV"
+Date_Added: 2026-06-01
+Date_Modified: 2026-06-06
+Needs_Processing: false
 type: design-engine
 role: concept-definition
 scope: subject-agnostic
@@ -86,7 +92,7 @@ Use the OV form when **all** of the following hold:
 
 - The work is **multi-session** — a single conversation isn't enough
 - The work is **stateful** — what happened last time matters
-- The work has **structure** worth encoding (atoms, relationships, phases, activities)
+- The work has **structure** worth encoding (Items, relationships, phases, activities)
 - You want **substrate flexibility** — not locked to one AI vendor
 - You want **the artifact to be portable** — clone, fork, share, license
 

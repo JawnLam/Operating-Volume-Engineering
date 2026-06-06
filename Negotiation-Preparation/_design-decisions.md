@@ -5,7 +5,7 @@ Title: "Negotiation-Preparation — Design Decisions Log"
 Date_Added: 2026-06-01
 Date_Modified: 2026-06-01
 Needs_Processing: false
-ove_ov_name: "Negotiation-Preparation"
+ove_OV_Name: "Negotiation-Preparation"
 ---
 
 # Negotiation-Preparation — Design Decisions Log
@@ -23,7 +23,7 @@ ove_ov_name: "Negotiation-Preparation"
 
 **Rationale:** Negotiations are episodic and case-shaped, like SOLVE-eX cases. The cartridge needs to hold prep + live + post-mortem state for one specific engagement.
 
-**Implications:** Cartridges close (move to `_closed/` or get an `ove_lifecycle_stage: closed` flag) after the post-mortem. Active cartridges live in the root; closed ones get archived.
+**Implications:** Cartridges close (move to `_closed/` or get an `ove_Lifecycle_Stage: closed` flag) after the post-mortem. Active cartridges live in the root; closed ones get archived.
 
 ---
 
@@ -71,7 +71,7 @@ ove_ov_name: "Negotiation-Preparation"
 
 ### 2026-06-01 — Decision 4: Cartridge lifecycle stages
 
-**Decided:** Each cartridge moves through four stages via `ove_lifecycle_stage` in `_state.md` frontmatter:
+**Decided:** Each cartridge moves through four stages via `ove_Lifecycle_Stage` in `_state.md` frontmatter:
 
 - **prep** — before the negotiation; default for new cartridges
 - **live** — during; the conversation is happening (may span multiple sessions)

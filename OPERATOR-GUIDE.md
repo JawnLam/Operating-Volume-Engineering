@@ -1,3 +1,12 @@
+---
+Item_Prototype: Fleeting
+Item_ID: ove-operator-guide
+Title: "Operating-Volume-Engineering — Operator Guide"
+Date_Added: 2026-06-01
+Date_Modified: 2026-06-06
+Needs_Processing: false
+---
+
 # Operating-Volume-Engineering — Operator Guide
 
 This guide is for the human running OVE day-to-day: how design sessions actually work, common failure modes, how to recover, and how to keep your design cartridges healthy through a multi-session design engagement.
@@ -54,7 +63,7 @@ If a session ends without phases 6–9, tell the AI to finish.
 
 ### AI proposes a schema that doesn't fit the domain
 
-**Symptom:** The schema feels generic — atoms that don't naturally exist in your domain, relationships that don't map to how you actually think about the work.
+**Symptom:** The schema feels generic — Items that don't naturally exist in your domain, relationships that don't map to how you actually think about the work.
 
 **Fix:** Stop and walk through `_design-engine/04-SCHEMA-DESIGN.md` Q1–Q8 again, this time more carefully. The schema should *come out of* the domain, not be retrofitted to it.
 
