@@ -1,3 +1,12 @@
+---
+Item_Prototype: Fleeting
+Item_ID: ove-template-artifact-draft
+Title: "OVE Template — Artifact Draft"
+Date_Added: 2026-06-01
+Date_Modified: 2026-06-06
+Needs_Processing: false
+---
+
 # Artifact Draft: <filename>
 
 > **Working draft of `<filename>` for the OV being designed in this cartridge. When the artifact is finalized, copy to the new OV's actual folder and remove this scaffold.**

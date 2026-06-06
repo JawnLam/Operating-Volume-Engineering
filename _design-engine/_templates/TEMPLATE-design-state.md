@@ -5,11 +5,11 @@ Title: "<OV Name> — Design State"
 Date_Added:
 Date_Modified:
 Needs_Processing: false
-ove_ov_name: "<OV Name>"
-ove_design_phase: interview   # interview | schema-design | cartridge-shape | artifact-draft | review | ship-prep | shipped
-ove_sessions_completed: 0
-ove_last_session_date: null
-ove_next_session_default_activity: INTERVIEW
+ove_OV_Name: "<OV Name>"
+ove_Design_Phase: interview   # interview | schema-design | cartridge-shape | artifact-draft | review | ship-prep | shipped
+ove_Sessions_Completed: 0
+ove_Last_Session_Date: null
+ove_Next_Session_Default_Activity: INTERVIEW
 ---
 
 # <OV Name> — Design State

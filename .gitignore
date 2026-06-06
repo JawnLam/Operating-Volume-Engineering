@@ -20,8 +20,14 @@ Thumbs.db
 
 # ----------------------------------------------------------------------
 # Personal design work — excluded by default so this folder can be shared
-# without leaking active design conversations. If you want your own
-# design work in version control, edit this section.
+# without leaking active design conversations.
+#
+# TRADE-OFF: the OV's core thesis is "state lives in files." Excluding
+# _design-state.md and Sessions/*.md by default means YOUR own design
+# history is NOT version-controlled unless you opt in. To track your own
+# cartridge, see INSTALL.md § "Tracking your own design history" — there
+# is a copy-paste `git add -f` recipe there. Edit this section to flip
+# the default if you'd rather track-by-default.
 # ----------------------------------------------------------------------
 
 # Design-state files: live record of where each design engagement stands

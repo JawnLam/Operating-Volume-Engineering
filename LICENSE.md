@@ -1,3 +1,12 @@
+---
+Item_Prototype: Fleeting
+Item_ID: ove-license
+Title: "Operating-Volume-Engineering — License (CC-BY 4.0)"
+Date_Added: 2026-06-01
+Date_Modified: 2026-06-06
+Needs_Processing: false
+---
+
 # Operating-Volume-Engineering — Creative Commons Attribution 4.0 International License
 
 > **TL;DR (not a substitute for the legal text below):**

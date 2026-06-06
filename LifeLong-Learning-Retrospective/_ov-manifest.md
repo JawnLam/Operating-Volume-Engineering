@@ -5,12 +5,12 @@ Title: "LifeLong-Learning — Retrospective Design Analysis"
 Date_Added: 2026-06-01
 Date_Modified: 2026-06-01
 Needs_Processing: false
-ove_ov_name: "LifeLong-Learning"
-ove_ov_slug: "lifelong-learning"
-ove_design_phase: shipped
-ove_user_name: "Jawn Lam"
-ove_bootstrapped: 2026-06-01
-ove_engagement_kind: retrospective
+ove_OV_Name: "LifeLong-Learning"
+ove_OV_Slug: "lifelong-learning"
+ove_Design_Phase: shipped
+ove_User_Name: "Jawn Lam"
+ove_Bootstrapped: 2026-06-01
+ove_Engagement_Kind: retrospective
 ---
 
 # LifeLong-Learning — Retrospective Design Analysis

@@ -5,7 +5,7 @@ Title: "Long-Form-Writing — Design Decisions Log"
 Date_Added: 2026-06-01
 Date_Modified: 2026-06-01
 Needs_Processing: false
-ove_ov_name: "Long-Form-Writing"
+ove_OV_Name: "Long-Form-Writing"
 ---
 
 # Long-Form-Writing — Design Decisions Log

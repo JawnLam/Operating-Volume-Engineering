@@ -1,4 +1,10 @@
 ---
+Item_Prototype: Fleeting
+Item_ID: ove-engine-03-design-protocol
+Title: "OVE Engine — 03 Design Protocol"
+Date_Added: 2026-06-01
+Date_Modified: 2026-06-06
+Needs_Processing: false
 type: design-engine
 role: session-protocol
 scope: subject-agnostic

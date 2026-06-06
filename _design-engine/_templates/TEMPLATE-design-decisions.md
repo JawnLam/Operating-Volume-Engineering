@@ -5,7 +5,7 @@ Title: "<OV Name> — Design Decisions Log"
 Date_Added:
 Date_Modified:
 Needs_Processing: false
-ove_ov_name: "<OV Name>"
+ove_OV_Name: "<OV Name>"
 ---
 
 # <OV Name> — Design Decisions Log

@@ -1,3 +1,12 @@
+---
+Item_Prototype: Fleeting
+Item_ID: ove-install
+Title: "Operating-Volume-Engineering — Install Guide"
+Date_Added: 2026-06-01
+Date_Modified: 2026-06-06
+Needs_Processing: false
+---
+
 # Operating-Volume-Engineering — Install Guide
 
 Once you have this folder on disk, the only things you need to use it are an AI assistant and the willingness to have a real design conversation. There is no code to run.
@@ -34,7 +43,28 @@ git add .
 git commit -m "Initial install"
 ```
 
-The shipped `.gitignore` excludes cartridge session content (`Sessions/*.md`, `_design-state.md`) by default so the folder can be shared without leaking your active design work. Adjust if you want your own work tracked privately.
+The shipped `.gitignore` excludes cartridge session content (`Sessions/*.md`, `_design-state.md`) by default so the folder can be shared without leaking your active design work. The trade-off is that **your own design history is not tracked unless you opt in** — the next section is the opt-in recipe.
+
+## 3a. Tracking your own design history
+
+The shipped `.gitignore` is privacy-safe by default — it excludes `_design-state.md` and `Sessions/*.md` so you can share the folder without leaking your in-progress conversations. The trade-off: the OV's core thesis is *"state lives in files,"* and that state isn't version-controlled unless you opt in.
+
+To track your own cartridge in git despite the default ignore:
+
+```
+cd "Operating-Volume-Engineering"
+
+# Replace <YourCartridge> with your actual cartridge folder name
+git add -f <YourCartridge>/_design-state.md
+git add -f <YourCartridge>/Sessions/
+git commit -m "Track <YourCartridge> design history"
+```
+
+The `-f` flag forces git to add paths that match `.gitignore`. Once added, they'll be tracked normally on subsequent commits.
+
+**Why the default excludes your own work.** The OV is designed to be portable — clone, fork, share. If your `_design-state.md` were tracked by default, anyone you shared the folder with would see your active design conversations. The opt-in pattern keeps the sharing case clean while letting you preserve your own history when you want it.
+
+**If you prefer the inverse default** (track your own work; remove the ignore), edit `.gitignore` and remove the lines under the *"Personal design work"* comment block.
 
 ## 4. First session walkthrough
 

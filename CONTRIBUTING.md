@@ -1,3 +1,12 @@
+---
+Item_Prototype: Fleeting
+Item_ID: ove-contributing
+Title: "Operating-Volume-Engineering — Contributing"
+Date_Added: 2026-06-01
+Date_Modified: 2026-06-06
+Needs_Processing: false
+---
+
 # Contributing to Operating-Volume-Engineering
 
 OVE ships at v1.0.0 with a stable cartridge schema and engine file structure. This document describes when a contribution is in-scope at v1.x, when it requires a major version bump, and how to propose either.

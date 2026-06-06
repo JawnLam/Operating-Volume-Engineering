@@ -5,11 +5,11 @@ Title: "Negotiation-Preparation — Design State"
 Date_Added: 2026-06-01
 Date_Modified: 2026-06-01
 Needs_Processing: false
-ove_ov_name: "Negotiation-Preparation"
-ove_design_phase: artifact-draft
-ove_sessions_completed: 4
-ove_last_session_date: 2026-06-01
-ove_next_session_default_activity: ARTIFACT-DRAFT
+ove_OV_Name: "Negotiation-Preparation"
+ove_Design_Phase: artifact-draft
+ove_Sessions_Completed: 4
+ove_Last_Session_Date: 2026-06-01
+ove_Next_Session_Default_Activity: ARTIFACT-DRAFT
 ---
 
 # Negotiation-Preparation — Design State

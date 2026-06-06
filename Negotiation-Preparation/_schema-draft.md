@@ -5,8 +5,8 @@ Title: "Negotiation-Preparation — Schema Draft"
 Date_Added: 2026-06-01
 Date_Modified: 2026-06-01
 Needs_Processing: false
-ove_ov_name: "Negotiation-Preparation"
-ove_schema_status: locked
+ove_OV_Name: "Negotiation-Preparation"
+ove_Schema_Status: locked
 ---
 
 # Negotiation-Preparation — Schema Draft
@@ -85,7 +85,7 @@ Each has trigger conditions in `_negotiation-engine/01-NEGOTIATION-FOUNDATIONS.m
 - **applied** — the user has successfully navigated the pattern
 - **mastered** — the user recognizes the pattern early and adjusts without conscious effort
 
-Tracked in the Pattern atom's `ove_mastery_level` field.
+Tracked in the Pattern atom's `ove_Mastery_Level` field.
 
 ## Q9 — What does a cartridge represent?
 

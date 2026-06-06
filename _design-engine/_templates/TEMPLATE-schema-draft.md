@@ -5,8 +5,8 @@ Title: "<OV Name> — Schema Draft"
 Date_Added:
 Date_Modified:
 Needs_Processing: false
-ove_ov_name: "<OV Name>"
-ove_schema_status: drafting    # drafting | locked | shipped
+ove_OV_Name: "<OV Name>"
+ove_Schema_Status: drafting    # drafting | locked | shipped
 ---
 
 # <OV Name> — Schema Draft
@@ -25,7 +25,7 @@ ove_schema_status: drafting    # drafting | locked | shipped
 
 *To be answered.*
 
-## Q4 — Relationships between atoms
+## Q4 — Relationships between Items
 
 *To be answered.*
 
@@ -71,7 +71,7 @@ ove_schema_status: drafting    # drafting | locked | shipped
 
 When Q1–Q13 are answered, derive:
 
-### Atom type definitions
+### Prototype definitions
 
 *One per Q3-defined unit type. Frontmatter, required body sections, naming, location.*
 
@@ -81,4 +81,4 @@ When Q1–Q13 are answered, derive:
 
 ### Folder structure
 
-*Where atoms live within a cartridge.*
+*Where Items live within a cartridge.*

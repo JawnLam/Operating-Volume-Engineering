@@ -5,12 +5,12 @@ Title: "SOLVE-eX — Retrospective Design Analysis"
 Date_Added: 2026-06-01
 Date_Modified: 2026-06-01
 Needs_Processing: false
-ove_ov_name: "SOLVE-eX"
-ove_ov_slug: "solve-ex"
-ove_design_phase: shipped
-ove_user_name: "Jawn Lam"
-ove_bootstrapped: 2026-06-01
-ove_engagement_kind: retrospective
+ove_OV_Name: "SOLVE-eX"
+ove_OV_Slug: "solve-ex"
+ove_Design_Phase: shipped
+ove_User_Name: "Jawn Lam"
+ove_Bootstrapped: 2026-06-01
+ove_Engagement_Kind: retrospective
 ---
 
 # SOLVE-eX — Retrospective Design Analysis

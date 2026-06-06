@@ -5,12 +5,12 @@ Title: "Negotiation-Preparation — Fresh Worked Example"
 Date_Added: 2026-06-01
 Date_Modified: 2026-06-01
 Needs_Processing: false
-ove_ov_name: "Negotiation-Preparation"
-ove_ov_slug: "negotiation-prep"
-ove_design_phase: artifact-draft
-ove_user_name: "<USER_NAME placeholder — never inferred from indirect signals>"
-ove_bootstrapped: 2026-06-01
-ove_engagement_kind: fresh-worked-example
+ove_OV_Name: "Negotiation-Preparation"
+ove_OV_Slug: "negotiation-prep"
+ove_Design_Phase: artifact-draft
+ove_User_Name: "<USER_NAME placeholder — never inferred from indirect signals>"
+ove_Bootstrapped: 2026-06-01
+ove_Engagement_Kind: fresh-worked-example
 ---
 
 # Negotiation-Preparation — Fresh Worked Example (Anchor Demonstration)

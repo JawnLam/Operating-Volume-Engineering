@@ -5,8 +5,8 @@ Title: "Long-Form-Writing — Schema Draft (in progress)"
 Date_Added: 2026-06-01
 Date_Modified: 2026-06-01
 Needs_Processing: false
-ove_ov_name: "Long-Form-Writing"
-ove_schema_status: drafting
+ove_OV_Name: "Long-Form-Writing"
+ove_Schema_Status: drafting
 ---
 
 # Long-Form-Writing — Schema Draft (in progress)
