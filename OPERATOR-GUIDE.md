@@ -111,6 +111,122 @@ No limit. You can have several OVs in design at once. When starting a session, n
 - Open `CONTRIBUTING.md` and see if your case is a bug worth reporting upstream.
 - Worst case: archive the cartridge as `99-Archive-<Name>/`, open a fresh cartridge with the AI, and import the decisions and schema by hand.
 
+## 8. Engine vs your work — the four content zones (Convention 8)
+
+Your installed OVE folder has four content zones. Knowing which is which prevents the operator-pulls-and-loses-work failure mode.
+
+### Engine Zone — release-owned; updated by `git pull`
+
+| Path | Notes |
+|------|-------|
+| `README.md`, `INSTALL.md`, `OPERATOR-GUIDE.md`, `CONTRIBUTING.md`, `LICENSE.md`, `VERSION.md`, `CHANGELOG.md` | Front-door docs |
+| `_design-engine/` | The full design protocol — engine chapters, templates, meta |
+| `_Prototypes/` | OVE's own Prototype definitions (Convention 6) |
+| `_USER.md.template` | The template, not your filled-in `_USER.md` |
+| `.gitignore` | Engine-zone file; its patterns define your Operator-Private Zone |
+
+**Do not edit Engine Zone files directly.** Updates from `git pull` overwrite them. Customizations belong in the Operator-Extension Zone or in `_USER.md` overrides where supported.
+
+### Operator-Private Zone — gitignored; never tracked
+
+The `.gitignore` excludes these so they never get pushed and never get touched by `git pull`:
+
+- `_USER.md` (your operator profile)
+- `<Cartridge>/_design-state.md` (cartridge state)
+- `<Cartridge>/Sessions/*.md` (session logs)
+- Anything else you `git add -f` then later `git rm --cached` — those go in `.gitignore` too
+
+If you want to track your own design history, see `INSTALL.md § 3a — Tracking your own design history` for the opt-in recipe.
+
+### Operator-Extension Zone — your design cartridges; survives `git pull`
+
+This is where your work lives. Every design cartridge you open through OVE (a new OV being designed, an audit-in-progress, your own evolution of a worked example) becomes a folder at the OVE root.
+
+`<Cartridge>/` folders are not in OVE's release, so `git pull` never touches them. They're yours.
+
+### Shipped Examples Zone — release-owned; updated by `git pull`
+
+The five worked-example cartridges that demonstrate OVE:
+
+- `Long-Form-Writing/`
+- `LifeLong-Learning-Retrospective/`
+- `Negotiation-Preparation/`
+- `Relationship-Cultivation/`
+- `SOLVE-eX-Retrospective/`
+
+**Do not edit Shipped Examples directly.** If you want to riff on an example, copy it into an Extension Zone cartridge (`mv Long-Form-Writing My-LFW-Variant`) and customize there.
+
+## 9. Updates and troubleshooting
+
+The canonical update workflow lives in `INSTALL.md § 7`. Common scenarios:
+
+### Clean fast-forward (no local engine modifications)
+
+```bash
+cd ~/Operating-Volumes/Operating-Volume-Engineering-v<your-major>.<minor>
+git fetch origin
+git log --oneline HEAD..origin/main          # what's incoming
+git pull --ff-only origin main
+```
+
+### Fast-forward fails because you have local engine modifications
+
+```bash
+git status                                    # see what's modified
+git stash push --include-untracked -m "pre-update state"
+git pull --ff-only origin main
+git stash pop                                 # may produce conflicts on engine files you edited
+```
+
+If `git stash pop` reports conflicts, the conflict is between *your local edit* of an engine file and *the upstream release's version*. You almost always want the upstream version (engine evolution generally improves what's there):
+
+```bash
+git checkout --theirs <conflicting-file>
+git add <conflicting-file>
+# OR — abandon your local edits entirely:
+git checkout origin/main -- <conflicting-file>
+```
+
+If your local edit was load-bearing, copy it to a side file before checkout, then reconcile.
+
+### Update lost a file you cared about
+
+`git pull` only updates tracked paths. If a file disappeared, either: (a) the release explicitly removed it (the `CHANGELOG.md` will say so), or (b) it was a gitignored file you forgot was ignored. For (a), the file is recoverable via `git log --all --oneline -- <path>`. For (b), check whether the file matched a `.gitignore` pattern.
+
+### Major.minor folder transition
+
+When the release notes say to rename your folder:
+
+```bash
+cd ~/Operating-Volumes/
+mv Operating-Volume-Engineering-v<old> Operating-Volume-Engineering-v<new>
+cd Operating-Volume-Engineering-v<new>
+git status   # should show clean
+```
+
+The folder rename doesn't affect git; the rename is for your filesystem clarity.
+
+### Contributing back upstream
+
+To contribute back (open a PR against the upstream OVE), re-enable push to *your own fork* (never to upstream):
+
+```bash
+# Replace with your fork's URL
+git remote set-url --push origin https://github.com/<your-username>/Operating-Volume-Engineering.git
+
+# Make a branch, commit, push to your fork, open a PR on GitHub
+git checkout -b my-contribution
+# ... your changes ...
+git commit -m "..."
+git push origin my-contribution
+```
+
+When you're done contributing, re-disable push to protect your private work going forward:
+
+```bash
+git remote set-url --push origin DISABLED_TO_PREVENT_ACCIDENTAL_PUSH_OF_PERSONAL_WORK
+```
+
 ## Version
 
 This operator guide ships with Operating-Volume-Engineering v1.0.0.

@@ -152,13 +152,17 @@ Order:
 4. BOOTSTRAP-NEW-CARTRIDGE prompt for the new OV
 5. **`_Prototypes/` folder** — one `<NAMESPACE>_<TypeName>.md` file per Prototype declared in the OV's namespace, each conforming to `_templates/TEMPLATE-Prototype.md`. This is Convention 6 (`_meta/CONVENTIONS.md`); without it the new OV's `Item_Prototype:` references are dangling pointers for anyone without a vault-wide central registry. See `04-SCHEMA-DESIGN.md` § "Materializing the `_Prototypes/` folder" for the step-by-step.
 6. Templates
-7. `README.md`
-8. `INSTALL.md`, `OPERATOR-GUIDE.md`, `CONTRIBUTING.md`
-9. `LICENSE.md`, `VERSION.md`, `CHANGELOG.md`
-10. `.gitignore`
-11. At least one worked-example cartridge for the new OV
+7. `README.md` — § "What is in this folder" must identify the four content zones or link to CONTRIBUTING § "Content zones" (Convention 8)
+8. **`INSTALL.md`** — must contain the Convention 7 install snippet with the OV's actual GitHub URL filled in; must explain the major.minor folder-naming convention
+9. **`OPERATOR-GUIDE.md`** — must contain § "Engine vs your work" (Convention 8 four-zone explanation) and § "Updates and troubleshooting" (Convention 7 update workflow with stash-pop conflict guidance)
+10. **`CONTRIBUTING.md`** — must contain § "Content zones" enumerating all four zones with concrete path patterns and at least one example per zone (Convention 8)
+11. `LICENSE.md`, `VERSION.md`, `CHANGELOG.md`
+12. **`.gitignore`** — must contain the Operator-Private Zone patterns documented in CONTRIBUTING § "Content zones"; each pattern has an inline comment explaining what it excludes and why (Convention 8)
+13. At least one worked-example cartridge for the new OV
 
 Each draft lives in `Artifacts/` inside the design cartridge.
+
+**Convention 7/8 artifact-readiness gate.** Before SHIP-PREP, verify each of items 7–12 above is complete and concrete (no placeholder URLs in INSTALL.md; no empty zone tables in CONTRIBUTING.md; no zero-pattern .gitignore). The validator's C8 and C9 checks enforce this programmatically; the operator should also walk the per-OV `_design-engine/_templates/TEMPLATE-INSTALL.md` and `TEMPLATE-CONTRIBUTING.md` if those exist in the OVE templates folder.
 
 ### Step 6 — Review (REVIEW sessions)
 

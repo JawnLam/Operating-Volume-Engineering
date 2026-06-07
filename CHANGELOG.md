@@ -11,6 +11,69 @@ Needs_Processing: false
 
 All notable changes to Operating-Volume-Engineering are documented in this file. Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); versioning follows [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.2.0] — 2026-06-06
+
+Codifies the install-and-update contract that v1.0 and v1.1 left implicit. Every OV designed via OVE will now ship a documented install pattern (Convention 7) and a documented engine-vs-operator boundary (Convention 8). The retrofit across the OV ecosystem (LFW v1.7.1, LLL v1.3.0, SOLVE-eX v2.1.2) ships in parallel.
+
+### Added — Convention 7: install-and-update pattern
+
+Every OV ships a copy-pasteable install snippet that produces a git-trackable working copy on the operator's machine. The pattern enables `git pull` updates while protecting against accidental publishing of operator-private work.
+
+- **Default install** = `git clone <upstream>` + immediate `git remote set-url --push origin DISABLED_TO_PREVENT_ACCIDENTAL_PUSH_OF_PERSONAL_WORK`. Fetch stays enabled (so updates work); push is locked (so personal design work can't leak upstream).
+- **Update workflow** = `git fetch && git log --oneline HEAD..origin/main && git pull --ff-only`; stash → pull → pop fallback for when local engine edits would conflict.
+- **Folder naming** = `<OV-Name>-v<major>.<minor>`. New major.minor releases prompt a folder rename so old and new can briefly coexist during transitions.
+- **Contributing back** = re-enable push to your own fork (never upstream), then re-disable when done.
+- **Required artifacts per OV:** `INSTALL.md` with the install snippet wired to the concrete GitHub URL; `OPERATOR-GUIDE.md § "Updates and troubleshooting"` with the update workflow plus stash-pop conflict guidance; `README.md § "Install"` linking to `INSTALL.md`.
+
+Documented in `_design-engine/_meta/CONVENTIONS.md § Convention 7`. OVE itself dogfoods: see this release's `INSTALL.md § 1`, `OPERATOR-GUIDE.md § 9 — Updates and troubleshooting`.
+
+### Added — Convention 8: engine vs operator-content boundary
+
+Every OV explicitly declares **four content zones**. The boundary lets `git pull` update the engine without disturbing operator work and lets the operator extend the OV without fearing the next pull.
+
+- **Engine Zone** — release-owned; updated by `git pull` (front-door docs, `_<purpose>-engine/`, `_Prototypes/`, `_USER.md.template`, `.gitignore`)
+- **Operator-Private Zone** — gitignored; never tracked (`_USER.md`, per-cartridge state files, session logs, IDE caches)
+- **Operator-Extension Zone** — operator-created; survives `git pull` (operator's own cartridges parallel to shipped examples)
+- **Shipped Examples Zone** — release-owned; updated by `git pull` (the worked-example cartridges)
+
+Required artifacts per OV: `CONTRIBUTING.md § "Content zones"` enumerating all four zones with concrete path patterns; `.gitignore` containing the Operator-Private patterns with inline comments; `OPERATOR-GUIDE.md § "Engine vs your work"` explaining the boundary; `README.md § "What is in this folder"` linking to the zone declaration.
+
+Documented in `_design-engine/_meta/CONVENTIONS.md § Convention 8`. OVE itself dogfoods: see this release's `CONTRIBUTING.md § 6`, `OPERATOR-GUIDE.md § 8`.
+
+### Added — validator checks C8 (zone-boundary docs) + C9 (`.gitignore` sanity)
+
+- **C8** scans `CONTRIBUTING.md` (with `OPERATOR-GUIDE.md` as fallback) for the four canonical zone-name strings. All four present → pass; some → warn with the missing names; none → fail. Operator-chosen synonyms can be accommodated by documenting the synonym choice in `_design-decisions.md` and running `validate.py --skip=C8`.
+- **C9** verifies `.gitignore` exists at the OV root and contains at least one substantive (non-comment, non-blank) pattern. Missing → fail; empty/comment-only → warn; non-empty → pass.
+
+Wired into `validate.py`'s dispatcher and `main()` defaults (`range(1, 10)`). `VALIDATION-CHECKLIST.md` extended with prose fallbacks for C7, C8, C9.
+
+### Added — Phase 3.6 ship gate
+
+`07-SHIPPING-CHECKLIST.md` gains a new hard-stop **Phase 3.6 — Convention 7/8 readiness**. Verifies that `INSTALL.md` has a concrete GitHub URL (no placeholders), `OPERATOR-GUIDE.md` has the four-zone explanation and the update workflow with stash-pop fallback, `CONTRIBUTING.md` has all four zone names with concrete patterns, and `.gitignore` has substantive patterns. Phase 7 (git init / push) is locked until this gate is clean.
+
+### Added — INSTALL/OPERATOR-GUIDE/CONTRIBUTING/BOOTSTRAP-NEW-OV updates
+
+OVE itself adopts every Convention 7 and Convention 8 artifact:
+
+- `INSTALL.md` rewritten with § 1 (canonical git-clone-with-push-disabled install), § 1a (alternative no-git install), and § 7 (update workflow with stash-pop fallback).
+- `OPERATOR-GUIDE.md` gains § 8 (Engine vs your work — four zones, Convention 8) and § 9 (Updates and troubleshooting — clean fast-forward, conflict resolution, major.minor folder transition, contributing back).
+- `CONTRIBUTING.md` gains § 6 (Content zones — all four zones with concrete path patterns per zone for OVE).
+- `BOOTSTRAP-NEW-OV.md` Step 5 lists `INSTALL.md`, `OPERATOR-GUIDE.md`, `CONTRIBUTING.md`, `.gitignore` as load-bearing artifacts and names Convention 7/8 as the gate; a new Convention 7/8 artifact-readiness check precedes SHIP-PREP.
+
+### Coordinated multi-OV release
+
+This release ships in parallel with retrofits in the three sibling OVs to bring them into Convention 7/8 conformance:
+
+- **LFW v1.7.1** — fixes the stale `.gitignore` `Atoms/`→`Items/` patterns missed in v1.7.0, adds Convention 7 install snippet to `INSTALL.md`, adds Convention 8 § "Content zones" to `CONTRIBUTING.md`.
+- **LLL v1.3.0** — adds `INSTALL.md` (Convention 7 install snippet), `CONTRIBUTING.md § "Content zones"` (Convention 8 four zones), `.gitignore`. The minor bump reflects that v1.2 shipped without these artifacts and v1.3 makes Convention 7/8 conformance a first-class feature.
+- **SOLVE-eX v2.1.2** — adds Convention 7 install snippet to `INSTALL.md`, Convention 8 § "Content zones" to `CONTRIBUTING.md`. Working OV push remote also flipped to `DISABLED_TO_PREVENT_ACCIDENTAL_PUSH_OF_PERSONAL_WORK` to match the OVE/LFW pattern.
+
+### Notes
+
+This release is fully additive — no engine prose removed, no schema changes, no breaking architectural changes. The two new conventions formalize patterns that LFW and OVE were already informally following; LLL and SOLVE-eX needed the retrofit to come into compliance.
+
+The Phase 3.6 ship gate is intentionally a hard-stop: shipping an OV without an install-and-update story or a documented zone boundary is shipping an OV that operators can't safely use. The gate is non-negotiable.
+
 ## [1.1.0] — 2026-06-06
 
 Additive minor release focused on four goals: (a) the quality of the design conversation the AI runs, (b) the quality of the OV folders an engagement ships, (c) OVE itself + the OVs it designs conforming to universal vault conventions out of the box, and (d) every OV designed via OVE being **portable** — readable and operable by someone without the OV author's surrounding vault infrastructure. No v1.0 cartridges are broken; no required cartridge backbone fields added; no engine files renamed or removed; no folder conventions changed.
