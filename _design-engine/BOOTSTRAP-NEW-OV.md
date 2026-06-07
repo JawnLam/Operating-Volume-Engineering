@@ -156,9 +156,10 @@ Order:
 8. **`INSTALL.md`** — must contain the Convention 7 install snippet with the OV's actual GitHub URL filled in; must explain the major.minor folder-naming convention
 9. **`OPERATOR-GUIDE.md`** — must contain § "Engine vs your work" (Convention 8 four-zone explanation) and § "Updates and troubleshooting" (Convention 7 update workflow with stash-pop conflict guidance)
 10. **`CONTRIBUTING.md`** — must contain § "Content zones" enumerating all four zones with concrete path patterns and at least one example per zone (Convention 8)
-11. `LICENSE.md`, `VERSION.md`, `CHANGELOG.md`
-12. **`.gitignore`** — must contain the Operator-Private Zone patterns documented in CONTRIBUTING § "Content zones"; each pattern has an inline comment explaining what it excludes and why (Convention 8)
-13. At least one worked-example cartridge for the new OV
+11. **`UPDATE-PROMPT.md`** — copy `_templates/TEMPLATE-UPDATE-PROMPT.md` into the new OV's root and fill in the OV's name throughout (Convention 7). The prompt must (a) reference the OV by its concrete name, (b) reference the four-zone boundary, (c) instruct the AI to stop and confirm before destructive commands.
+12. `LICENSE.md`, `VERSION.md`, `CHANGELOG.md`
+13. **`.gitignore`** — must contain the Operator-Private Zone patterns documented in CONTRIBUTING § "Content zones"; each pattern has an inline comment explaining what it excludes and why (Convention 8)
+14. At least one worked-example cartridge for the new OV
 
 Each draft lives in `Artifacts/` inside the design cartridge.
 

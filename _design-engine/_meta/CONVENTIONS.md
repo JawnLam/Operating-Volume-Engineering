@@ -153,9 +153,17 @@ git remote set-url --push origin https://github.com/<your-username>/<OV-Name>.gi
 - `INSTALL.md` contains the install snippet (copy-pasteable; concrete URL filled in).
 - `OPERATOR-GUIDE.md` contains the update-workflow snippet plus troubleshooting for common scenarios (stash-pop conflicts, fast-forward failures, major.minor folder transitions).
 - `README.md` § "Install" links to `INSTALL.md`.
+- `UPDATE-PROMPT.md` at the OV root — a copy-pasteable AI prompt that asks an AI assistant to walk the operator through the update by reading `INSTALL.md § Updating` and `OPERATOR-GUIDE.md § Updates and troubleshooting`. Drawn from `_design-engine/_templates/TEMPLATE-UPDATE-PROMPT.md`. Must reference the OV's name concretely (no `<OV-Name>` placeholders), reference the four-zone boundary, and instruct the AI to stop and confirm before any destructive command. *Added v1.2.1.*
 - Folder naming convention (`<OV-Name>-v<major>.<minor>`) is stated in `INSTALL.md` and `OPERATOR-GUIDE.md`.
 
 **Why this pattern.** Operators of OVs almost always do private work inside the OV folder (manuscripts in LFW, subjects in LLL, design cartridges in OVE, case files in SOLVE-eX). The push-disabled default prevents the worst-case operator-error (`git push` upstreaming personal work) while still allowing `git pull` to deliver engine updates. The major.minor folder suffix lets operators run multiple parallel versions of the same OV side-by-side during a transition.
+
+**Two update paths.** Convention 7 supports two equivalent paths for updates:
+
+- **Manual path** — operator reads `INSTALL.md § Updating` and `OPERATOR-GUIDE.md § Updates and troubleshooting`, runs the git commands themselves. Recommended for major-version transitions and any release with a non-trivial migration recipe.
+- **AI-assisted path** — operator opens `UPDATE-PROMPT.md`, copies the prompt block, pastes to an AI session, and approves each step. Recommended for routine releases (patches and small minors).
+
+Both paths consult the same canonical docs; `UPDATE-PROMPT.md` is the operator's hands-off delegation to an AI, not a second update protocol.
 
 ## Convention 8 — Engine vs operator-content boundary
 
@@ -258,6 +266,7 @@ From that single answer, everything else follows:
 - `_Prototypes/` folder at the OV root with one `COOK_<TypeName>.md` per Prototype, each following `_design-engine/_templates/TEMPLATE-Prototype.md`
 - `INSTALL.md` with the canonical install snippet (Convention 7) wired to the OV's actual GitHub URL
 - `OPERATOR-GUIDE.md` § "Updates" with the canonical update-workflow snippet (Convention 7)
+- `UPDATE-PROMPT.md` at the OV root drawn from `_design-engine/_templates/TEMPLATE-UPDATE-PROMPT.md` with the OV's name filled in (Convention 7)
 - `CONTRIBUTING.md` § "Content zones" enumerating the four zones with concrete path patterns (Convention 8)
 - `.gitignore` containing the Operator-Private Zone patterns documented in CONTRIBUTING (Convention 8)
 - `README.md` § "What is in this folder" linking to the zone declaration
@@ -285,12 +294,13 @@ After ARTIFACT-DRAFT and during REVIEW, the AI checks every drafted file for:
 - [ ] Each `_Prototypes/<NAMESPACE>_<TypeName>.md` conforms to `TEMPLATE-Prototype.md` and matches the Prototype's `_meta/SCHEMA-OF-SCHEMAS.md` declaration (Convention 6)
 - [ ] `INSTALL.md` contains the install snippet with the OV's actual GitHub URL filled in (Convention 7)
 - [ ] `OPERATOR-GUIDE.md` § "Updates" contains the update-workflow snippet (Convention 7)
+- [ ] `UPDATE-PROMPT.md` exists at the OV root with the OV's name filled in (no `<OV-Name>` placeholders), references the four-zone boundary, and instructs the AI to confirm before destructive commands (Convention 7)
 - [ ] Folder-naming convention (`<OV-Name>-v<major>.<minor>`) is documented in INSTALL.md (Convention 7)
 - [ ] `CONTRIBUTING.md` § "Content zones" declares all four zones with at least one concrete example per zone (Convention 8)
 - [ ] `.gitignore` exists and contains the Operator-Private Zone patterns documented in CONTRIBUTING (Convention 8)
 - [ ] `README.md` § "What is in this folder" identifies the zones or links to the CONTRIBUTING declaration (Convention 8)
 
-These checks are also covered by the optional `validate.py` (`C1` backbone presence, `C2` frontmatter presence, `C3` placeholder leakage — the wider scrub, `C7` Prototype coverage, `C8` zone-boundary documentation, `C9` gitignore sanity) and by walking `VALIDATION-CHECKLIST.md` for markdown-only environments.
+These checks are also covered by the optional `validate.py` (`C1` backbone presence, `C2` frontmatter presence, `C3` placeholder leakage — the wider scrub, `C7` Prototype coverage, `C8` zone-boundary documentation, `C9` gitignore sanity, `C10` UPDATE-PROMPT sanity) and by walking `VALIDATION-CHECKLIST.md` for markdown-only environments.
 
 ## Related references
 

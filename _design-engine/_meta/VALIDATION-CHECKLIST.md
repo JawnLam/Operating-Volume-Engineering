@@ -129,11 +129,37 @@ grep -v '^\s*$\|^#' .gitignore | wc -l
 
 Expected: file exists; count > 0.
 
+## C10 — `UPDATE-PROMPT.md` sanity (Convention 7)
+
+- [ ] `UPDATE-PROMPT.md` exists at the OV root
+- [ ] The OV's name is filled in concretely (no `<OV-Name>`, `<ov-slug>`, or `<author>` template placeholders remain)
+- [ ] The prompt block references `INSTALL.md` and `OPERATOR-GUIDE.md` so the AI consults canonical docs
+- [ ] The prompt block references the four-zone boundary (any of: "zone", "four-zone", "Operator-Extension")
+- [ ] The prompt block instructs the AI to stop and confirm before destructive commands (any of: "destructive", "confirm", "approve", "stop and ask")
+
+Shell recipe:
+
+```bash
+# present?
+ls -la UPDATE-PROMPT.md
+
+# placeholders?
+grep -E '<OV-Name>|<ov-slug>|<author>' UPDATE-PROMPT.md && echo "FAIL: placeholders remain"
+
+# content sanity
+grep -q 'INSTALL.md' UPDATE-PROMPT.md && echo "OK: references INSTALL.md"
+grep -q 'OPERATOR-GUIDE.md' UPDATE-PROMPT.md && echo "OK: references OPERATOR-GUIDE.md"
+grep -qE 'zone|four-zone|Operator-Extension' UPDATE-PROMPT.md && echo "OK: references zone boundary"
+grep -qiE 'destructive|confirm|approve|stop and ask' UPDATE-PROMPT.md && echo "OK: confirms before destructive commands"
+```
+
+Missing file is a `fail`. Content sanity gaps are `warn`-level (operators may legitimately customize the prompt to a different shape).
+
 ---
 
 ## Overall outcome
 
-- [ ] All C1–C9 checks pass, or every warning is explicitly waived by the operator with a written rationale
+- [ ] All C1–C10 checks pass, or every warning is explicitly waived by the operator with a written rationale
 - [ ] No `fail`-class finding remains unresolved
 
 If `validate.py` is available, run it as well; this prose walkthrough is the fallback, not the canonical check.
