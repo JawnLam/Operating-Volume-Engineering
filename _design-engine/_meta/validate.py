@@ -324,6 +324,100 @@ def _extract_tier1_engine_files(text):
     return set(re.findall(r'\b(\d{2}-[A-Z][A-Z0-9\-]*\.md)', section))
 
 
+ZONE_NAMES = [
+    "Engine Zone",
+    "Operator-Private Zone",
+    "Operator-Extension Zone",
+    "Shipped Examples Zone",
+]
+
+
+def check_C8_zone_documentation(root):
+    """Convention 8: CONTRIBUTING.md (or OPERATOR-GUIDE.md fallback) must declare the
+    four content zones by name. Operator-chosen synonyms are not detected; if the OV
+    uses different names, the operator can skip C8 via --skip=C8 once that decision
+    is documented in _design-decisions.md.
+    """
+    findings = []
+    candidates = [
+        root / "CONTRIBUTING.md",
+        root / "OPERATOR-GUIDE.md",
+    ]
+    text = ""
+    found_file = None
+    for c in candidates:
+        if c.exists():
+            try:
+                text += "\n" + c.read_text(encoding="utf-8")
+                if found_file is None:
+                    found_file = c
+            except Exception:
+                pass
+    if not text:
+        findings.append(Finding(
+            "C8-zones", "fail", root,
+            message="neither CONTRIBUTING.md nor OPERATOR-GUIDE.md exists — cannot verify "
+                    "Convention 8 zone-boundary documentation"
+        ))
+        return findings
+
+    missing = [z for z in ZONE_NAMES if z not in text]
+    if not missing:
+        return findings  # all four present — pass
+    if len(missing) == len(ZONE_NAMES):
+        findings.append(Finding(
+            "C8-zones", "fail", found_file,
+            message=("Convention 8 violation: none of the four canonical zone names "
+                     "(" + ", ".join(ZONE_NAMES) + ") found in CONTRIBUTING.md or "
+                     "OPERATOR-GUIDE.md. Use operator-chosen synonyms if documented in "
+                     "_design-decisions.md, then --skip=C8.")
+        ))
+    else:
+        findings.append(Finding(
+            "C8-zones", "warn", found_file,
+            message=("Convention 8 partial: missing zone names " + ", ".join(missing) +
+                     ". Either declare them or document operator-chosen synonyms in "
+                     "_design-decisions.md.")
+        ))
+    return findings
+
+
+def check_C9_gitignore_sanity(root):
+    """Convention 8 (via C9): .gitignore exists at the OV root and contains at least
+    one non-comment, non-blank pattern (presumed to be an Operator-Private Zone
+    pattern). Empty or comment-only .gitignore is a warning.
+    """
+    findings = []
+    gi = root / ".gitignore"
+    if not gi.exists():
+        findings.append(Finding(
+            "C9-gitignore", "fail", root,
+            message=".gitignore missing at OV root (Convention 8: Operator-Private Zone "
+                    "patterns must be declared in .gitignore)"
+        ))
+        return findings
+    try:
+        text = gi.read_text(encoding="utf-8")
+    except Exception as e:
+        findings.append(Finding(
+            "C9-gitignore", "fail", gi,
+            message=f".gitignore present but unreadable: {e}"
+        ))
+        return findings
+    substantive = [
+        line for line in text.splitlines()
+        if line.strip() and not line.lstrip().startswith("#")
+    ]
+    if not substantive:
+        findings.append(Finding(
+            "C9-gitignore", "warn", gi,
+            message=".gitignore exists but contains no substantive patterns "
+                    "(all blank or comment lines) — Convention 8 expects at least one "
+                    "Operator-Private Zone pattern"
+        ))
+    return findings
+
+
 def _find_prototype_definition(root, cartridge, prototype_name):
     """Return the Path of the Prototype definition file, or None if missing.
 
@@ -486,6 +580,10 @@ def run(root, checks):
         findings.extend(check_C6_bootstrap_engine_drift(root))
     if "C7" in checks:
         findings.extend(check_C7_prototype_coverage(root, cartridges))
+    if "C8" in checks:
+        findings.extend(check_C8_zone_documentation(root))
+    if "C9" in checks:
+        findings.extend(check_C9_gitignore_sanity(root))
     return findings, cartridges
 
 
@@ -515,7 +613,7 @@ def main(argv=None):
         print(f"Validating OVE at: {root}")
 
     skip = {c.strip() for c in args.skip.split(",") if c.strip()}
-    checks = {f"C{i}" for i in range(1, 8)} - skip
+    checks = {f"C{i}" for i in range(1, 10)} - skip
 
     findings, cartridges = run(root, sorted(checks))
 

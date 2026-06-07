@@ -82,11 +82,58 @@ This is the highest-risk drift to catch — the root-mirror / engine-canonical d
 
 If any of these fails, the F6 violation must be fixed before ship — silent drift between root and engine is the failure mode the engine itself catalogues.
 
+## C7 — Prototype coverage (Convention 6)
+
+- [ ] Every cartridge `.md` file's `Item_Prototype:` value (excluding `Fleeting`) has a corresponding definition file in `_Prototypes/<NAMESPACE>_<TypeName>.md` at the OV root, or in `<Cartridge>/_Prototypes/<NAMESPACE>_<TypeName>.md` (cartridge-local override)
+
+Shell recipe:
+
+```bash
+# List every distinct Item_Prototype value used in any cartridge
+grep -rh '^Item_Prototype:' <Cartridge>/*.md <Cartridge>/**/*.md 2>/dev/null \
+  | sort -u | grep -v 'Fleeting'
+
+# For each value, confirm a matching file exists in _Prototypes/
+```
+
+If any value lacks a definition file, ship is locked. Materialize the missing Prototype per `04-SCHEMA-DESIGN.md § "Materializing the _Prototypes/ folder"`.
+
+## C8 — Zone-boundary documentation (Convention 8)
+
+- [ ] `CONTRIBUTING.md` (or `OPERATOR-GUIDE.md` as fallback) contains all four canonical zone-name strings: **`Engine Zone`**, **`Operator-Private Zone`**, **`Operator-Extension Zone`**, **`Shipped Examples Zone`**
+- [ ] If using operator-chosen synonyms, the synonym choice is documented in `_design-decisions.md`
+
+Shell recipe:
+
+```bash
+grep -E 'Engine Zone|Operator-Private Zone|Operator-Extension Zone|Shipped Examples Zone' \
+  CONTRIBUTING.md OPERATOR-GUIDE.md
+```
+
+Expected: all four phrases appear at least once. Missing any of them is a Convention 8 partial; missing all four is a Convention 8 violation.
+
+## C9 — `.gitignore` sanity (Convention 8)
+
+- [ ] `.gitignore` exists at the OV root
+- [ ] `.gitignore` contains at least one substantive (non-blank, non-comment) pattern matching the Operator-Private Zone declared in `CONTRIBUTING.md`
+
+Shell recipe:
+
+```bash
+# .gitignore present?
+ls -la .gitignore
+
+# substantive patterns count
+grep -v '^\s*$\|^#' .gitignore | wc -l
+```
+
+Expected: file exists; count > 0.
+
 ---
 
 ## Overall outcome
 
-- [ ] All C1–C6 checks pass, or every warning is explicitly waived by the operator with a written rationale
+- [ ] All C1–C9 checks pass, or every warning is explicitly waived by the operator with a written rationale
 - [ ] No `fail`-class finding remains unresolved
 
 If `validate.py` is available, run it as well; this prose walkthrough is the fallback, not the canonical check.

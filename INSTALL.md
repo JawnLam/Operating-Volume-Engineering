@@ -11,16 +11,43 @@ Needs_Processing: false
 
 Once you have this folder on disk, the only things you need to use it are an AI assistant and the willingness to have a real design conversation. There is no code to run.
 
-## 1. Get the folder
+## 1. Install (recommended: git clone with push disabled)
 
-Copy the entire `Operating-Volume-Engineering/` folder to local disk in a location your AI assistant can read. Common choices:
+This is the **canonical install pattern per OVE Convention 7** — git-tracked so you can `git pull` future releases; push disabled so you can't accidentally upload your design-cartridge work.
 
-- **Cloud-synced folder** (Dropbox, iCloud, OneDrive, Google Drive) — convenient if you want the same vault available across devices
-- **Project folder inside a code editor** (VS Code, Cursor, Windsurf, JetBrains) — convenient for in-editor AI agents
-- **Obsidian vault** — open the folder as a vault if you want graph view across your designs-in-progress
-- **Plain local folder** — works for any AI environment that supports file attachments
+```bash
+# Choose a parent folder. Anything works — Dropbox-synced, iCloud-synced, vault, etc.
+# Example uses ~/Operating-Volumes/ as the parent.
+mkdir -p ~/Operating-Volumes
+cd ~/Operating-Volumes
 
-The folder is fully self-contained. No `git clone` is required at runtime; no network fetch happens; no paths are hard-coded.
+# Clone into a folder named with the current major.minor.
+# (Check VERSION.md or the GitHub releases page for the current version.)
+git clone https://github.com/JawnLam/Operating-Volume-Engineering.git \
+  Operating-Volume-Engineering-v1.2
+
+# Disable push remote — protects your design-cartridge work against accidental upload.
+cd Operating-Volume-Engineering-v1.2
+git remote set-url --push origin DISABLED_TO_PREVENT_ACCIDENTAL_PUSH_OF_PERSONAL_WORK
+
+# Verify
+git remote -v
+# Expect: origin fetch URL real; origin push URL = DISABLED_TO_PREVENT_ACCIDENTAL_PUSH_OF_PERSONAL_WORK
+```
+
+**Why the folder name has a version suffix.** The convention is `Operating-Volume-Engineering-v<major>.<minor>`. When a new major.minor ships (e.g., v1.3), `OPERATOR-GUIDE.md § Updates` walks you through renaming the folder so old and new can briefly coexist during the transition.
+
+**Why push is disabled.** Almost everything you do in this folder beyond reading the engine is private design work — manifests, decision logs, session histories, schema drafts. The push-disabled default prevents the worst-case operator-error: `git push` accidentally uploading your in-progress design to the public OVE repo. You can re-enable push to your own fork if you want to contribute back upstream (see `OPERATOR-GUIDE.md § Contributing back`).
+
+## 1a. Alternative install (no git tracking)
+
+If you don't want git tracking — you'd rather treat this as a snapshot reference, no updates — you can also just download the folder:
+
+- **Plain copy:** Download a release ZIP from the GitHub releases page; unzip anywhere your AI assistant can read.
+- **Cloud-synced folder** (Dropbox, iCloud, OneDrive, Google Drive) — convenient if you want the same content available across devices.
+- **Obsidian vault** — open as a vault if you want graph view across your designs-in-progress.
+
+The folder is fully self-contained. No network fetch happens at runtime; no paths are hard-coded. The trade-off versus the git-tracked install: you don't get `git pull` updates — you have to re-download each release.
 
 ## 2. (Optional) Configure your user profile
 
@@ -118,6 +145,36 @@ See `_design-engine/07-SHIPPING-CHECKLIST.md` for the full shipping flow.
 
 For deeper guidance, see `OPERATOR-GUIDE.md`. To extend the engine itself, see `CONTRIBUTING.md`.
 
+## 7. Updating (when a new release ships)
+
+When OVE ships a new release on GitHub (announced in `CHANGELOG.md`):
+
+```bash
+cd ~/Operating-Volumes/Operating-Volume-Engineering-v<your-current-major>.<minor>
+
+git fetch origin
+git log --oneline HEAD..origin/main           # preview what's incoming
+
+# If you have no local engine modifications: clean fast-forward
+git pull --ff-only origin main
+
+# If you have local engine modifications: stash → pull → pop
+git stash push --include-untracked -m "pre-update state"
+git pull --ff-only origin main
+git stash pop                                  # resolve any conflicts
+```
+
+**When major.minor changes (e.g., v1.2 → v1.3 ships):**
+
+```bash
+cd ~/Operating-Volumes/
+mv Operating-Volume-Engineering-v1.2 Operating-Volume-Engineering-v1.3
+```
+
+The CHANGELOG entry for the new major.minor will tell you whether folder rename is recommended or required. For pure-patch releases (e.g., v1.2.0 → v1.2.1), no folder rename is needed.
+
+For troubleshooting common update issues (fast-forward conflicts, stash-pop merge conflicts, dirty working tree blocking pull), see `OPERATOR-GUIDE.md § Updates and troubleshooting`.
+
 ## Version
 
-This install guide ships with Operating-Volume-Engineering v1.0.0. See `VERSION.md`.
+This install guide ships with Operating-Volume-Engineering v1.2.0. See `VERSION.md`.

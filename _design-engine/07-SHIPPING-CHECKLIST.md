@@ -171,6 +171,50 @@ For each value listed, confirm a matching file exists in `_Prototypes/`.
 
 **If any of these is no, return to ARTIFACT-DRAFT to materialize the missing Prototype definitions per `04-SCHEMA-DESIGN.md` § "Materializing the `_Prototypes/` folder". Phase 7 is locked until this gate is clean.**
 
+## Phase 3.6 — Convention 7 / 8 readiness (HARD STOP)
+
+Conventions 7 (install-and-update pattern) and 8 (engine vs operator-content boundary) require concrete artifacts to be in place before shipping. Without them, operators have no documented path for installing or updating the OV, and no contract for what they can or cannot edit.
+
+### Walk the artifact list
+
+- [ ] **`INSTALL.md`** contains the Convention 7 install snippet (clone + push-disable) with the OV's actual GitHub URL filled in — not `<author>` or `<OV-Name>` placeholders
+- [ ] **`INSTALL.md`** documents the `<OV-Name>-v<major>.<minor>` folder-naming convention with at least one concrete example
+- [ ] **`INSTALL.md` § "Updating"** (or `OPERATOR-GUIDE.md § "Updates and troubleshooting"`) contains the canonical update workflow (fetch + ff-only pull + stash-pop fallback)
+- [ ] **`OPERATOR-GUIDE.md` § "Engine vs your work"** explains the four content zones in plain operator-facing English (Convention 8)
+- [ ] **`CONTRIBUTING.md` § "Content zones"** enumerates all four zones with at least one concrete path pattern per zone (Convention 8)
+- [ ] **`.gitignore`** exists at the OV root with at least one Operator-Private Zone pattern; each pattern has an inline comment explaining what it excludes and why
+- [ ] **`README.md` § "What is in this folder"** identifies the zones or links to `CONTRIBUTING.md § "Content zones"`
+
+### Run the gate
+
+If `validate.py` is in use:
+
+```bash
+python3 _design-engine/_meta/validate.py
+```
+
+Checks 8 (C8 — zone-boundary documentation) and 9 (C9 — gitignore sanity) verify the artifacts.
+
+If running markdown-only:
+
+```bash
+# Verify all four zone-name strings appear in CONTRIBUTING.md (or OPERATOR-GUIDE.md fallback)
+grep -E 'Engine Zone|Operator-Private Zone|Operator-Extension Zone|Shipped Examples Zone' \
+  CONTRIBUTING.md OPERATOR-GUIDE.md
+
+# Verify .gitignore has substantive patterns
+grep -v '^\s*$\|^#' .gitignore | wc -l   # expect > 0
+```
+
+### Acceptance — all must be true
+
+- [ ] All four zone-name strings (`Engine Zone`, `Operator-Private Zone`, `Operator-Extension Zone`, `Shipped Examples Zone`) appear in either `CONTRIBUTING.md` or `OPERATOR-GUIDE.md` (operator-chosen synonyms are acceptable if documented in `_design-decisions.md`)
+- [ ] `.gitignore` contains at least one non-comment, non-blank pattern matching the Operator-Private Zone
+- [ ] `INSTALL.md`'s clone URL is concrete (no `<author>` / `<OV-Name>` placeholders)
+- [ ] `OPERATOR-GUIDE.md`'s update workflow includes the stash-pop fallback for when fast-forward fails
+
+**If any of these is no, return to ARTIFACT-DRAFT to populate the install / operator / contributing docs. Phase 7 is locked until this gate is clean.**
+
 ## Phase 4 — License + attribution
 
 The default for the OV ecosystem is CC-BY 4.0 (matching SOLVE-eX and LifeLong-Learning). Other reasonable options: MIT, Apache-2.0. Confirm with the user.

@@ -74,7 +74,56 @@ When authoring engine content (`_design-engine/` and its subfolders):
 
 When authoring docs at the root (README, INSTALL, OPERATOR-GUIDE, this file): explanatory prose is fine. Still no emojis, still no flattery.
 
-## 6. Sharing cartridges
+## 6. Content zones (Convention 8)
+
+Every file in this repo belongs to one of four zones. Knowing which zone a file is in tells you whether the release owns it (the engine) or the operator owns it.
+
+### Engine Zone — release-owned; updated by `git pull`
+
+| Path pattern | Notes |
+|--------------|-------|
+| `README.md`, `AI-BOOTSTRAP.md`, `INSTALL.md`, `OPERATOR-GUIDE.md`, `CONTRIBUTING.md`, `LICENSE.md`, `VERSION.md`, `CHANGELOG.md` | Front-door docs |
+| `_design-engine/**` | Engine prose, templates, meta, validator |
+| `_Prototypes/**` | Convention 6 — OVE's own Prototype definitions |
+| `_USER.md.template` | Template only; the populated `_USER.md` is operator-private |
+| `.gitignore` | This file defines the Operator-Private patterns below |
+
+**Engine Zone files do not get hand-edited by operators.** Customizations belong in the Operator-Extension Zone.
+
+### Operator-Private Zone — gitignored; never tracked
+
+| Pattern | Why |
+|---------|-----|
+| `_USER.md` | Operator profile; identity, communication preferences, private context (per `_meta/FAILURE-MODES.md` F3) |
+| `<Cartridge>/_design-state.md` | Per-cartridge state; operator's active design work |
+| `<Cartridge>/Sessions/*.md` | Per-cartridge session logs; verbatim AI/operator conversation |
+| `.DS_Store`, `.obsidian/`, IDE cache files | Filesystem-noise |
+
+These patterns are in `.gitignore`. If you want to track your own design history despite the default ignore, see `INSTALL.md § 3a`.
+
+### Operator-Extension Zone — operator-created; survives `git pull`
+
+The OV is designed to be extended at the OV root by adding new design cartridge folders parallel to the shipped examples.
+
+| Pattern | Notes |
+|---------|-------|
+| `<Cartridge>/` at the OVE root | Your own design cartridges; not in the release; untracked unless you `git add -f` |
+
+`git pull` never touches Operator-Extension folders because they aren't in the release tree.
+
+### Shipped Examples Zone — release-owned; updated by `git pull`
+
+| Path | Notes |
+|------|-------|
+| `Long-Form-Writing/` | OVE worked example |
+| `LifeLong-Learning-Retrospective/` | OVE worked example |
+| `Negotiation-Preparation/` | OVE worked example |
+| `Relationship-Cultivation/` | OVE worked example |
+| `SOLVE-eX-Retrospective/` | OVE worked example |
+
+**Shipped Examples are reference implementations.** If you want to riff on one, copy it into an Operator-Extension Zone cartridge.
+
+## 7. Sharing cartridges
 
 A worked-example cartridge is a complete `<Domain>/` folder. To share as a contribution:
 
@@ -84,4 +133,4 @@ A worked-example cartridge is a complete `<Domain>/` folder. To share as a contr
 
 ## Version
 
-This contribution guide ships with Operating-Volume-Engineering v1.0.0.
+This contribution guide ships with Operating-Volume-Engineering v1.2.0.

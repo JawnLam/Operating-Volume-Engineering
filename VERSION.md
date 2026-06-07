@@ -5,11 +5,11 @@ Title: "Operating-Volume-Engineering — Version"
 Date_Added: 2026-06-01
 Date_Modified: 2026-06-06
 Needs_Processing: false
-ove_Version: "1.1.0"
+ove_Version: "1.2.0"
 schema_version: "1.0"
 schema_status: "STABLE"
 release_date: 2026-06-06
-release_phase: "Minor release — design conversation quality and ship-output quality improvements"
+release_phase: "Minor release — Conventions 7 (install-and-update pattern) + 8 (engine vs operator-content boundary); validator C8/C9 checks; full dogfooding across INSTALL/OPERATOR-GUIDE/CONTRIBUTING"
 ---
 
 # Operating-Volume-Engineering — Version
