@@ -11,6 +11,75 @@ Needs_Processing: false
 
 All notable changes to Operating-Volume-Engineering are documented in this file. Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); versioning follows [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.2.1] — 2026-06-07
+
+Adds `UPDATE-PROMPT.md` as the fourth required artifact under Convention 7. The file is a copy-pasteable AI prompt that asks any AI assistant to read the OV's update protocol (`INSTALL.md § Updating` + `OPERATOR-GUIDE.md § Updates and troubleshooting`) and walk the operator through the update step by step, with explicit discipline against destructive commands.
+
+### Added — `UPDATE-PROMPT.md` (fourth Convention 7 artifact)
+
+Sits at the OV root alongside `INSTALL.md`, `OPERATOR-GUIDE.md`, `CONTRIBUTING.md`. Contents:
+
+- A brief explanation of what the file is and how to use it.
+- **The prompt block** — copy-pasteable verbatim to any AI assistant (Claude, ChatGPT, Gemini, Cursor, Claude Code, etc.) with read/write access to the OV folder. The prompt instructs the AI to:
+  1. Read `INSTALL.md § Updating` and `OPERATOR-GUIDE.md § Updates and troubleshooting`
+  2. Run `git fetch` and report incoming commits + the new CHANGELOG entry
+  3. Check `git status` and propose a stash strategy if local engine modifications exist
+  4. Walk through `git pull --ff-only` step by step; stop and confirm before running
+  5. Surface migration recipes, major.minor folder renames, breaking-change notes from the CHANGELOG
+  6. Verify Operator-Extension and Operator-Private zones are intact after the update
+  7. (For OVE) run the validator and report findings
+- A "How to use this file" section for the operator.
+- A "When this file is the wrong tool" section (major-version transitions, folder-rename-required releases, fork-and-customize work).
+- A "Relationship to other docs" table showing where `UPDATE-PROMPT.md` fits with INSTALL/OPERATOR-GUIDE/CONTRIBUTING/CHANGELOG.
+
+The prompt's discipline:
+
+- Do not modify Operator-Extension or Operator-Private Zone content.
+- Do not run destructive commands without explicit operator confirmation (no auto `git reset --hard`, no auto `git clean`, no auto `git checkout --theirs`).
+- Stop and ask if anything is unclear or unexpected; don't improvise.
+
+### Added — `_design-engine/_templates/TEMPLATE-UPDATE-PROMPT.md`
+
+The canonical template used to generate per-OV `UPDATE-PROMPT.md` files. New OVs designed via OVE start from this template; the operator fills in the OV's name and customizes per OV-specific concerns (e.g., LFW mentions manuscripts; LLL mentions subjects; SOLVE-eX mentions case files; OVE mentions design cartridges).
+
+### Added — validator check C10 (`UPDATE-PROMPT.md` sanity)
+
+`_design-engine/_meta/validate.py` gains `check_C10_update_prompt_sanity`. Verifies:
+
+- `UPDATE-PROMPT.md` exists at the OV root — missing → **fail**.
+- No template placeholders remain (`<OV-Name>`, `<ov-slug>`, `<author>`) — found → **fail**.
+- The prompt references `INSTALL.md` and `OPERATOR-GUIDE.md` — missing → **warn**.
+- The prompt references the four-zone boundary (`zone`, `four-zone`, or `Operator-Extension`) — missing → **warn**.
+- The prompt includes destructive-command-confirmation discipline (`destructive`, `confirm`, `approve`, `stop and ask`) — missing → **warn**.
+
+Wired into `run()` dispatcher and `main()` defaults (`range(1, 11)`).
+
+### Changed — Convention 7 docs, BOOTSTRAP-NEW-OV Step 5, Phase 3.6 gate, VALIDATION-CHECKLIST
+
+- `_meta/CONVENTIONS.md § Convention 7` adds `UPDATE-PROMPT.md` to the "Required artifacts" list with concrete content requirements (OV name filled in, four-zone reference, destructive-command discipline). New subsection "Two update paths" explains the manual path (operator runs the git commands) vs the AI-assisted path (operator delegates via UPDATE-PROMPT.md).
+- `_meta/CONVENTIONS.md § Cascade list and verification checklist` add `UPDATE-PROMPT.md` as a required artifact.
+- `BOOTSTRAP-NEW-OV.md` Step 5 inserts `UPDATE-PROMPT.md` as item 11 in the artifact draft order, referencing `_templates/TEMPLATE-UPDATE-PROMPT.md` as the source.
+- `07-SHIPPING-CHECKLIST.md` Phase 3.6 hard-stop gate adds a `UPDATE-PROMPT.md` check to the artifact list and to the acceptance criteria.
+- `_meta/VALIDATION-CHECKLIST.md` gains a § "C10 — UPDATE-PROMPT.md sanity" prose fallback for markdown-only environments.
+
+### Changed — `README.md` links to UPDATE-PROMPT.md
+
+`README.md`'s "For environment setup..." paragraph now includes a reference to `UPDATE-PROMPT.md` for one-shot AI-assisted updates.
+
+### Coordinated multi-OV release
+
+This release ships in parallel with retrofits in the three sibling OVs:
+
+- **LFW v1.7.2** — `UPDATE-PROMPT.md` added at the LFW root, customized for the manuscript domain.
+- **LLL v1.3.1** — `UPDATE-PROMPT.md` added at the LLL root, customized for the subject domain.
+- **SOLVE-eX v2.1.3** — `UPDATE-PROMPT.md` added at the SOLVE-eX root, customized for the case-files domain.
+
+### Notes
+
+Patch release because the change is purely additive (a new optional artifact) and the underlying Convention 7 contract is otherwise unchanged. No engine prose modified beyond the documentation additions; no schema change; no Prototype change.
+
+The "AI-assisted update" path was already supported informally before this release — any AI session pointed at the existing INSTALL/OPERATOR-GUIDE docs would handle an update on request. `UPDATE-PROMPT.md` makes this path first-class: the operator opens one file, copies one prompt, pastes once, and approves the AI's proposed steps. Lower friction for routine updates.
+
 ## [1.2.0] — 2026-06-06
 
 Codifies the install-and-update contract that v1.0 and v1.1 left implicit. Every OV designed via OVE will now ship a documented install pattern (Convention 7) and a documented engine-vs-operator boundary (Convention 8). The retrofit across the OV ecosystem (LFW v1.7.1, LLL v1.3.0, SOLVE-eX v2.1.2) ships in parallel.

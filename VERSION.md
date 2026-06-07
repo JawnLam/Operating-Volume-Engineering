@@ -5,11 +5,11 @@ Title: "Operating-Volume-Engineering — Version"
 Date_Added: 2026-06-01
 Date_Modified: 2026-06-06
 Needs_Processing: false
-ove_Version: "1.2.0"
+ove_Version: "1.2.1"
 schema_version: "1.0"
 schema_status: "STABLE"
-release_date: 2026-06-06
-release_phase: "Minor release — Conventions 7 (install-and-update pattern) + 8 (engine vs operator-content boundary); validator C8/C9 checks; full dogfooding across INSTALL/OPERATOR-GUIDE/CONTRIBUTING"
+release_date: 2026-06-07
+release_phase: "Patch release — UPDATE-PROMPT.md added as fourth Convention 7 artifact; validator C10 check; TEMPLATE-UPDATE-PROMPT.md added to _templates/; Convention 7 docs, BOOTSTRAP-NEW-OV Step 5, and Phase 3.6 ship gate updated to require it"
 ---
 
 # Operating-Volume-Engineering — Version

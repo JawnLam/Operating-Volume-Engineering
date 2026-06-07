@@ -77,7 +77,7 @@ Or, if you want to audit an existing OV:
 
 The AI asks one question at a time about the domain. Don't expect a multi-bullet questionnaire — that's a documented failure mode this OV specifically guards against. Expect Socratic clarification, design proposals you can accept or push back on, and incremental construction of the new OV's files inside a cartridge here.
 
-For environment setup, see [`INSTALL.md`](INSTALL.md). For day-to-day operation and troubleshooting, see [`OPERATOR-GUIDE.md`](OPERATOR-GUIDE.md). To extend or contribute, see [`CONTRIBUTING.md`](CONTRIBUTING.md).
+For environment setup, see [`INSTALL.md`](INSTALL.md). For day-to-day operation and troubleshooting, see [`OPERATOR-GUIDE.md`](OPERATOR-GUIDE.md). To extend or contribute, see [`CONTRIBUTING.md`](CONTRIBUTING.md). For one-shot AI-assisted updates when a new release ships, see [`UPDATE-PROMPT.md`](UPDATE-PROMPT.md).
 
 ## System requirements
 

@@ -184,6 +184,7 @@ Conventions 7 (install-and-update pattern) and 8 (engine vs operator-content bou
 - [ ] **`CONTRIBUTING.md` § "Content zones"** enumerates all four zones with at least one concrete path pattern per zone (Convention 8)
 - [ ] **`.gitignore`** exists at the OV root with at least one Operator-Private Zone pattern; each pattern has an inline comment explaining what it excludes and why
 - [ ] **`README.md` § "What is in this folder"** identifies the zones or links to `CONTRIBUTING.md § "Content zones"`
+- [ ] **`UPDATE-PROMPT.md`** exists at the OV root, drawn from `_design-engine/_templates/TEMPLATE-UPDATE-PROMPT.md`. The OV's name is filled in concretely (no `<OV-Name>` placeholders); the prompt references the four-zone boundary; the prompt instructs the AI to stop and confirm before destructive commands.
 
 ### Run the gate
 
@@ -212,8 +213,9 @@ grep -v '^\s*$\|^#' .gitignore | wc -l   # expect > 0
 - [ ] `.gitignore` contains at least one non-comment, non-blank pattern matching the Operator-Private Zone
 - [ ] `INSTALL.md`'s clone URL is concrete (no `<author>` / `<OV-Name>` placeholders)
 - [ ] `OPERATOR-GUIDE.md`'s update workflow includes the stash-pop fallback for when fast-forward fails
+- [ ] `UPDATE-PROMPT.md` exists at the OV root; the OV's name is filled in concretely (no `<OV-Name>` placeholders); the prompt block references the four-zone boundary and instructs the AI to stop before destructive commands
 
-**If any of these is no, return to ARTIFACT-DRAFT to populate the install / operator / contributing docs. Phase 7 is locked until this gate is clean.**
+**If any of these is no, return to ARTIFACT-DRAFT to populate the install / operator / contributing / update-prompt docs. Phase 7 is locked until this gate is clean.**
 
 ## Phase 4 — License + attribution
 

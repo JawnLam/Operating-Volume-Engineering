@@ -382,6 +382,62 @@ def check_C8_zone_documentation(root):
     return findings
 
 
+def check_C10_update_prompt_sanity(root):
+    """Convention 7 (via C10): UPDATE-PROMPT.md exists at the OV root with the OV's
+    name filled in concretely (no placeholders) and references the four-zone boundary
+    and a no-destructive-commands-without-confirmation discipline. Soft checks; a
+    missing UPDATE-PROMPT.md is a fail, but the content checks are warnings (operators
+    may legitimately customize the prompt to a different shape).
+    """
+    findings = []
+    up = root / "UPDATE-PROMPT.md"
+    if not up.exists():
+        findings.append(Finding(
+            "C10-update-prompt", "fail", root,
+            message="UPDATE-PROMPT.md missing at OV root (Convention 7: required artifact). "
+                    "Copy from _design-engine/_templates/TEMPLATE-UPDATE-PROMPT.md if OVE is the engine."
+        ))
+        return findings
+    try:
+        text = up.read_text(encoding="utf-8")
+    except Exception as e:
+        findings.append(Finding(
+            "C10-update-prompt", "fail", up,
+            message=f"UPDATE-PROMPT.md present but unreadable: {e}"
+        ))
+        return findings
+
+    # Placeholder check — the template literal `<OV-Name>` should not appear post-customization.
+    if "<OV-Name>" in text or "<ov-slug>" in text or "<author>" in text:
+        findings.append(Finding(
+            "C10-update-prompt", "fail", up,
+            message="UPDATE-PROMPT.md still contains template placeholders (<OV-Name>, <ov-slug>, "
+                    "or <author>). Fill in the OV's concrete name throughout."
+        ))
+
+    # Content sanity — soft warnings if the prompt is missing key elements.
+    missing_signals = []
+    # The prompt must reference INSTALL.md and OPERATOR-GUIDE.md so the AI consults the canonical docs.
+    if "INSTALL.md" not in text:
+        missing_signals.append("reference to INSTALL.md")
+    if "OPERATOR-GUIDE.md" not in text:
+        missing_signals.append("reference to OPERATOR-GUIDE.md")
+    # The prompt must reference the four-zone boundary so the AI honors it.
+    if "zone" not in text.lower() and "four-zone" not in text.lower() and "Operator-Extension" not in text:
+        missing_signals.append("four-zone boundary reference")
+    # The prompt must instruct the AI to stop before destructive commands.
+    destructive_signals = ["destructive", "confirm", "approve", "stop and ask", "stop and confirm"]
+    if not any(sig in text.lower() for sig in destructive_signals):
+        missing_signals.append("destructive-command-confirmation discipline")
+    if missing_signals:
+        findings.append(Finding(
+            "C10-update-prompt", "warn", up,
+            message="UPDATE-PROMPT.md present but missing: " + ", ".join(missing_signals) +
+                    ". See _design-engine/_templates/TEMPLATE-UPDATE-PROMPT.md for the canonical shape."
+        ))
+    return findings
+
+
 def check_C9_gitignore_sanity(root):
     """Convention 8 (via C9): .gitignore exists at the OV root and contains at least
     one non-comment, non-blank pattern (presumed to be an Operator-Private Zone
@@ -584,6 +640,8 @@ def run(root, checks):
         findings.extend(check_C8_zone_documentation(root))
     if "C9" in checks:
         findings.extend(check_C9_gitignore_sanity(root))
+    if "C10" in checks:
+        findings.extend(check_C10_update_prompt_sanity(root))
     return findings, cartridges
 
 
@@ -613,7 +671,7 @@ def main(argv=None):
         print(f"Validating OVE at: {root}")
 
     skip = {c.strip() for c in args.skip.split(",") if c.strip()}
-    checks = {f"C{i}" for i in range(1, 10)} - skip
+    checks = {f"C{i}" for i in range(1, 11)} - skip
 
     findings, cartridges = run(root, sorted(checks))
 
