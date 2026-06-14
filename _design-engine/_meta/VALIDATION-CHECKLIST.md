@@ -129,6 +129,81 @@ grep -v '^\s*$\|^#' .gitignore | wc -l
 
 Expected: file exists; count > 0.
 
+## C11 — Source inventory completeness (F13 prevention — v2.0)
+
+If the OV cites external source material (per CQ3 in `BOOTSTRAP-NEW-OV.md`), `_source-inventory.md` exists at the OV root and is fully populated. Absence of the inventory file is OK only if the OV cites no external sources.
+
+- [ ] `_source-inventory.md` exists at the OV root (or the OV cites no external sources, in which case skip this check)
+- [ ] `ove_Source_Inventory_Status` in the frontmatter is one of: `drafting`, `inventoried`, `read-acknowledged`, `locked`
+- [ ] No unfilled template placeholders remain (`<TBD>`, `<source-slug>`, `<author year title>`, `<OV Name>`, `<ov-slug>`, `<Source Identifier>`)
+- [ ] For ARTIFACT-DRAFT to proceed: status is `read-acknowledged` or `locked` (not `drafting` or `inventoried`)
+- [ ] For SHIP-PREP to proceed (Phase 3.7): status is `locked`
+
+Shell recipe:
+
+```bash
+# Inventory present?
+ls -la _source-inventory.md
+
+# Status check
+grep '^ove_Source_Inventory_Status:' _source-inventory.md
+
+# Placeholder check
+grep -E '<TBD>|<source-slug>|<author year title>|<OV Name>|<ov-slug>|<Source Identifier>' _source-inventory.md && echo "FAIL: placeholders remain"
+```
+
+If `_source-inventory.md` does not exist but the OV's prose cites external sources, return to CQ3 (`BOOTSTRAP-NEW-OV.md`) to structurally capture them. F13 (`_meta/FAILURE-MODES.md`) documents the source-grounding-skipped failure mode this gate prevents.
+
+## C12 — Citation audit log (F13 prevention — v2.0)
+
+If `_source-inventory.md` is marked `locked`, `_citation-audit-log.md` must exist documenting that every "p.XX / § X.Y / named theorist / verbatim quote" in shippable content has been verified against its canonical source. Required at SHIP-PREP Phase 3.7.
+
+- [ ] If `_source-inventory.md` is `locked`: `_citation-audit-log.md` exists with substantive content (more than placeholder lines)
+- [ ] Every cite in shippable content traces to a source listed in `_source-inventory.md`
+- [ ] Every cite's content verified against the canonical source (operator-confirmed; not session-memory paraphrase)
+
+Shell recipe:
+
+```bash
+# Citation audit log present?
+ls -la _citation-audit-log.md
+
+# Cites in shippable content
+grep -rEhn 'p\.\s*[0-9]+|§\s*[0-9]+(\.[0-9]+)+' \
+  _*-engine _Prototypes README.md OPERATOR-GUIDE.md CONTRIBUTING.md INSTALL.md 2>/dev/null
+
+# Cross-check: each grep hit appears in the audit log (the operator's responsibility)
+```
+
+If `_source-inventory.md` exists but status is not `locked`, the audit log is not yet required (it only becomes required at SHIP-PREP Phase 3.7).
+
+## C13 — Vocabulary audit log (Voice + Client Promise — v2.0)
+
+If shippable content contains deliverable-promise nouns (dashboard, scorecard, playbook — the high-confidence set; broader sweep operator-driven), `_vocabulary-audit-log.md` must record each instance's disposition (kept-with-justification or replaced).
+
+- [ ] Sweep shippable content for deliverable-promise nouns
+- [ ] If any hit: `_vocabulary-audit-log.md` exists and records each instance's disposition
+- [ ] Audience-register violations against `ove_Audience_Prose_Register` (declared in the OV's manifest per Q14) are either fixed or explicitly waived in `_design-decisions.md`
+
+Shell recipe:
+
+```bash
+# High-confidence deliverable-promise noun sweep
+grep -rEhin '\b(dashboard|scorecard|playbook)\b' \
+  _*-engine _Prototypes README.md OPERATOR-GUIDE.md CONTRIBUTING.md INSTALL.md 2>/dev/null
+
+# Broader sweep (operator-discretion — these have legitimate role-uses too)
+grep -rEhin '\b(report|framework|tool)\b' \
+  _*-engine _Prototypes README.md OPERATOR-GUIDE.md CONTRIBUTING.md INSTALL.md 2>/dev/null
+```
+
+For each hit, decide:
+
+- **Kept-with-justification:** the word is a real artifact the OV ships, OR a meta-reference (OVE itself naming the noun in its own vocabulary-audit documentation), OR a role-word use that's clearly not a deliverable promise.
+- **Replaced:** the word is a deliverable-promise noun that anchors an artifact the OV does not actually ship — replace with a role-word (frame, lens, mental map, conceptual frame, conversational frame, capture, log, summary, method, approach, discipline, practice, pattern, move).
+
+Log each disposition to `_vocabulary-audit-log.md` as `<file:line> | <word> | <disposition> | <one-line justification>`.
+
 ## C10 — `UPDATE-PROMPT.md` sanity (Convention 7)
 
 - [ ] `UPDATE-PROMPT.md` exists at the OV root
@@ -159,7 +234,7 @@ Missing file is a `fail`. Content sanity gaps are `warn`-level (operators may le
 
 ## Overall outcome
 
-- [ ] All C1–C10 checks pass, or every warning is explicitly waived by the operator with a written rationale
+- [ ] All C1–C13 checks pass, or every warning is explicitly waived by the operator with a written rationale
 - [ ] No `fail`-class finding remains unresolved
 
 If `validate.py` is available, run it as well; this prose walkthrough is the fallback, not the canonical check.

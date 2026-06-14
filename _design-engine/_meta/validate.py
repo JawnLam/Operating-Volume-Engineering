@@ -492,13 +492,22 @@ def _find_prototype_definition(root, cartridge, prototype_name):
     """Return the Path of the Prototype definition file, or None if missing.
 
     Search order:
-      1. <cartridge>/_Prototypes/<NAME>.md  (cartridge-local override)
-      2. <root>/_Prototypes/<NAME>.md       (OV-root canonical home)
+      1. <cartridge>/_Prototypes/<NAME>.md           (cartridge-local override)
+      2. <cartridge>/Artifacts/_Prototypes/<NAME>.md (OVE design-cartridge layout — v2.0.1)
+      3. <root>/_Prototypes/<NAME>.md                (OV-root canonical home)
+
+    The Artifacts/_Prototypes/ path covers OVE design cartridges specifically:
+    per BOOTSTRAP-NEW-OV.md Step 1, a design cartridge nests its in-progress
+    OV under Artifacts/. The new OV's Prototype definitions live there during
+    design and only move to the OV root's _Prototypes/ when the OV ships.
     """
     if cartridge is not None:
         local = cartridge / "_Prototypes" / f"{prototype_name}.md"
         if local.exists():
             return local
+        nested = cartridge / "Artifacts" / "_Prototypes" / f"{prototype_name}.md"
+        if nested.exists():
+            return nested
     canonical = root / "_Prototypes" / f"{prototype_name}.md"
     if canonical.exists():
         return canonical
