@@ -11,6 +11,68 @@ Needs_Processing: false
 
 All notable changes to Operating-Volume-Engineering are documented in this file. Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); versioning follows [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.1.0] — 2026-06-13
+
+First minor release after v2.0.0 (same day; v2.0 cleared the major-version break, v2.1 adds the practice-archetype dogfood + a validator bug fix + markdown-only fallbacks). Additive over v2.0.0; no breaking changes.
+
+### Added — `Political-Landscape-Cartography-Retrospective/` worked example
+
+OVE's sixth worked-example cartridge and the canonical demonstration of the practice archetype (Q6b in v2.0's Q6 fork). v1.x's five worked examples all map to the finite-horizon archetype; until v2.1 ships, Q6b had specification but no dogfood.
+
+The retrospective documents how Political-Landscape-Cartography v1.0.0 (shipped 2026-06-13, private GitHub, restrictive LICENSE pending IP-attorney review) would have been designed under OVE v2.1's protocol. PLC was the concurrent substrate that motivated v2.0's five packages; v2.1's retrospective sits between PLC v1.0.0 and OVE v2.0.0 as the canonical example.
+
+Six cartridge files:
+
+- `_ov-manifest.md` — full v2.1 manifest with `ove_OV_Archetype: practice`, three `ove_Audience_*` fields populated with PLC's actual register declarations, restrictive-LICENSE acknowledgment
+- `_design-state.md` — phase `shipped`; nine retrospective decisions locked
+- `_design-decisions.md` — nine decisions reconstructed from PLC v1.0's actual build (D-A-1 archetype, D-A-2 audience register, D-B-1 source inventory, D-B-2 Citation Audit cleared, D-B-3 Worked-Example Slot-ID Verification cleared, D-C-1 Vocabulary Audit cleared with concrete `dashboard` → `conceptual frame` + `dissertation-defined set` → `Nine specific categories` replacements, D-D-1 restrictive LICENSE, D-D-2 Convention 9 sensitive-source pattern applied, D-D-3 IP-attorney review pending)
+- `_schema-draft.md` — Q0–Q14 answers, with **Q6b spelled out concretely** as the canonical example of the practice-archetype three-layer mastery signal (L1 per-cycle audit-trail integrity / L2 per-engagement sphere-close retrospective with 9 named contents / L3 per-operator practice longitudinal signals exported, no meta-cartridge in v1.0)
+- `_source-inventory.md` — three sources verified, with the Lam 2018 Pepperdine dissertation flagged `Sensitivity: Ship-by-reference (Convention 9)`. Demonstrates the inventory pattern's full structure: identifier, canonical location, page count, full-vs-excerpt status with the documented "Table-3-only excerpt" historical incident, sensitivity classification, AI-read acknowledgment, verification status.
+- `Sessions/RETROSPECTIVE.md` — one session log; new `ove_Session_Activity: RETROSPECTIVE` value documented.
+
+### Fixed — `_Prototypes/OVE_Source_Inventory.md` backfilled (v2.0.0 omission)
+
+The v2.0.0 release added `_design-engine/_templates/TEMPLATE-source-inventory.md` and `TEMPLATE-LICENSE-restrictive.md` + `TEMPLATE-sensitive-source-placeholder.md`. The two LICENSE/placeholder templates correctly use `Item_Prototype: Fleeting`, but the source-inventory template declares a new Prototype (`OVE_Source_Inventory`) that needed a corresponding definition file in `_Prototypes/` per Convention 6. v2.0.0 shipped without that definition file; v2.1.0 backfills it as `_Prototypes/OVE_Source_Inventory.md`. The PLC-Retrospective worked example's `_source-inventory.md` (which uses the new Prototype) now resolves cleanly via C7 Prototype-coverage check.
+
+### Fixed — C7 walks design-cartridge `Artifacts/_Prototypes/` (v2.0.0 regression)
+
+`validate.py`'s `_find_prototype_definition()` now also checks `<cartridge>/Artifacts/_Prototypes/<NAME>.md` in addition to the cartridge-local and OV-root paths. This is the OVE design-cartridge layout per `BOOTSTRAP-NEW-OV.md` Step 1 — a design cartridge nests its in-progress OV under `Artifacts/`, and the new OV's Prototype definitions live there during design.
+
+Before v2.1.0, C7 only looked in `<cartridge>/_Prototypes/` and `<root>/_Prototypes/`, so it could not find Prototypes for OVE-design-cartridges with content nested under `Artifacts/`. This produced spurious C7 failures when running the validator against an OVE folder containing operator-private design cartridges (e.g., the PLC design cartridge in the operator's canonical OVE folder).
+
+Search order is now:
+
+1. `<cartridge>/_Prototypes/<NAME>.md` (cartridge-local override)
+2. `<cartridge>/Artifacts/_Prototypes/<NAME>.md` (OVE design-cartridge layout — new in v2.1.0)
+3. `<root>/_Prototypes/<NAME>.md` (OV-root canonical home)
+
+This is a bug fix, not a behavior change for shipped OVs — finite-horizon worked examples (SOLVE-eX-Retrospective, LFW, etc.) and the new PLC-Retrospective use the cartridge-local pattern (path 1), which was already supported.
+
+### Added — VALIDATION-CHECKLIST.md prose fallbacks for C11/C12/C13
+
+`_design-engine/_meta/VALIDATION-CHECKLIST.md` gains markdown-only operator fallback sections for the three checks added in v2.0.0:
+
+- **C11 — Source inventory completeness.** Prose walkthrough + shell recipe for verifying `_source-inventory.md` presence, status value, no placeholders, and the ARTIFACT-DRAFT vs SHIP-PREP status gates.
+- **C12 — Citation audit log.** Prose walkthrough + shell recipe for verifying `_citation-audit-log.md` exists when inventory status is `locked`, and the operator's responsibility to cross-check each cite in shippable content against the audit log.
+- **C13 — Vocabulary audit log.** Prose walkthrough + two shell recipes (high-confidence sweep for `dashboard | scorecard | playbook`; broader operator-discretion sweep for `report | framework | tool`). Disposition guidance with concrete role-word replacements (frame, lens, mental map, conceptual frame, capture, log, method, approach, discipline, practice, pattern, move).
+
+Closes the v2.0.0 gap where `validate.py` had the three new checks but markdown-only operators (per v1.1.0's substrate-agnostic commitment) lacked the prose fallback. The "Overall outcome" section now references C1–C13.
+
+### Notes
+
+This release is fully additive. No engine prose modified beyond the new worked example, the C7 patch, and the VALIDATION-CHECKLIST extension. No schema change; no Prototype change; no Convention change.
+
+The PLC-Retrospective is the operationally meaningful addition — it converts v2.0's practice-archetype spec from "spec without dogfood" to "spec + canonical demonstration." Future practice-archetype OV designers walking OVE v2.1+'s protocol can read PLC-Retrospective as the reference implementation, particularly for:
+
+- How to spell out Q6b's three-layer mastery signal concretely (L1 audit-trail integrity criteria; L2 sphere-close retrospective contents; L3 longitudinal signals)
+- How to populate the audience register with concrete persona (not "professionals")
+- How Convention 9 ship-by-reference works in practice (`.gitignore` + placeholder `.md` + post-push 404 verification)
+- How the restrictive LICENSE template's six load-bearing sections actually read
+
+The C7 fix is a bug fix, not a feature addition — operators running `validate.py` against their canonical OVE folder (containing operator-private design cartridges) will see fewer spurious failures.
+
+The VALIDATION-CHECKLIST extension closes a v2.0.0 ship gap that the v2.0 build noticed but punted to v2.0.1.
+
 ## [2.0.0] — 2026-06-13
 
 First major release. Codifies the architectural and process lessons surfaced during the v1.0 build of Political Landscape Cartography (PLC) — a practice-archetype OV citing a 294-page dissertation as substrate. Five packages, each fixing a documented v1.x gap that PLC's build either hit or worked around inventively at design time.

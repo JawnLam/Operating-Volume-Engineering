@@ -5,27 +5,27 @@ Title: "Operating-Volume-Engineering — Version"
 Date_Added: 2026-06-01
 Date_Modified: 2026-06-13
 Needs_Processing: false
-ove_Version: "2.0.0"
+ove_Version: "2.1.0"
 schema_version: "2.0"
 schema_status: "STABLE"
 release_date: 2026-06-13
-release_phase: "Major release — OV Archetype Declaration (finite-horizon vs practice); Source Discipline gates (F13 prevention); Voice + Client Promise gates (Audience Register + Vocabulary Audit); Convention 9 (Sensitive Source Materials); restrictive LICENSE template. Breaking against v1.x in Q6 framing, manifest schema, and SHIP-PREP phase structure."
+release_phase: "Minor release — PLC-Retrospective worked example (canonical practice-archetype demonstration; the sixth worked-example cartridge); C7 validator fix for design-cartridge Artifacts/_Prototypes/ nesting; VALIDATION-CHECKLIST.md prose fallbacks for C11/C12/C13. Additive over v2.0.0; no breaking changes."
 ---
 
 # Operating-Volume-Engineering — Version
 
-This is Operating-Volume-Engineering **v2.0.0** — the first major release. Breaking against v1.x in three places: Q6 framing (now forks by archetype), manifest schema (new required fields `ove_OV_Archetype` and Q14 audience register fields), and SHIP-PREP phase structure (new Phase 3.7 / 3.8 / 3.9 hard-stops). No runtime impact on OVs *already shipped* under v1.x — see "Compatibility with v1.x OVs" below.
+This is Operating-Volume-Engineering **v2.1.0** — first minor release after the v2.0.0 major. Additive over v2.0.0: a new worked-example cartridge for the practice archetype (PLC-Retrospective), a C7 validator fix for OVE design-cartridge layout, and markdown-only prose fallbacks for the v2.0 validator additions. No breaking changes; v2.0-built artifacts continue to work as-is.
 
 ## Version identifiers
 
 | Identifier              | Value         | Notes                                                                  |
 |-------------------------|---------------|------------------------------------------------------------------------|
-| **Software**            | v2.0.0        | Major release — five v2.0 packages (Archetype Declaration, Source Discipline, Voice + Client Promise, Sensitive Sources + Restrictive LICENSE, Bookkeeping) |
-| **Design schema**       | v2.0          | BREAKING — `ove_OV_Archetype`, `ove_Audience_Target_Reader`, `ove_Audience_Business_Context`, `ove_Audience_Prose_Register` added to manifest as required for v2.0-designed OVs |
-| **Design engine**       | v2.0          | Q6 forks by archetype; Q14 audience register; INTERVIEW CQ11 (archetype) + strengthened CQ3 (structured source inventory); 03-DESIGN-PROTOCOL.md Step 4.5 source-inventory gate |
-| **Templates**           | v2.0          | Three new templates: TEMPLATE-source-inventory, TEMPLATE-LICENSE-restrictive, TEMPLATE-sensitive-source-placeholder. TEMPLATE-ov-manifest and TEMPLATE-schema-draft extended for archetype + audience register |
-| **Validator**           | v2.0          | Three new checks: C11 source-inventory-completeness, C12 citation-audit-log, C13 vocabulary-audit-log. `range(1, 14)` |
-| **Worked examples**     | v1.0          | Unchanged — five v1.x worked-example cartridges grandfather (see "Compatibility with v1.x OVs") |
+| **Software**            | v2.1.0        | Minor release — PLC-Retrospective worked example, C7 design-cartridge nesting fix, VALIDATION-CHECKLIST prose fallbacks |
+| **Design schema**       | v2.0          | Unchanged from v2.0.0 — `ove_OV_Archetype`, `ove_Audience_Target_Reader`, `ove_Audience_Business_Context`, `ove_Audience_Prose_Register` |
+| **Design engine**       | v2.0          | Unchanged from v2.0.0 — Q6 forks by archetype; Q14 audience register; CQ11 archetype declaration; CQ3 structured source inventory; Step 4.5 gate |
+| **Templates**           | v2.0          | Unchanged from v2.0.0 — three new templates added in v2.0 |
+| **Validator**           | v2.1          | C7 patched to also check `<cartridge>/Artifacts/_Prototypes/` for OVE design-cartridge layouts. C11/C12/C13 unchanged from v2.0. |
+| **Worked examples**     | v2.1          | Six examples — five v1.x finite-horizon retrospectives/fresh + PLC-Retrospective (v2.1, canonical Q6b practice-archetype demonstration) |
 | **Release date**        | 2026-06-13    |                                                                        |
 
 ## Schema policy
@@ -57,12 +57,13 @@ If an operator chooses to rebuild an existing OV under v2.0 conventions, the pat
   - Validator (`_meta/validate.py`) — v2.0 adds C11 / C12 / C13
 - **Front-door docs at the root**: `README`, `AI-BOOTSTRAP`, `INSTALL`, `OPERATOR-GUIDE`, `CONTRIBUTING`, `LICENSE`, `VERSION`, `CHANGELOG`, `UPDATE-PROMPT`
 - **Optional user profile template**: `_USER.md.template`
-- **Five worked-example cartridges** (unchanged from v1.x):
-  - `SOLVE-eX-Retrospective/` — retrospective design analysis of [SOLVE-eX](https://github.com/JawnLam/SOLVE-eX)
-  - `LifeLong-Learning-Retrospective/` — retrospective design analysis of [LifeLong-Learning](https://github.com/JawnLam/LifeLong-Learning)
-  - `Negotiation-Preparation/` — fresh worked example, anchor demonstration (full depth)
-  - `Long-Form-Writing/` — fresh worked example, lighter depth
-  - `Relationship-Cultivation/` — fresh worked example, lighter depth
+- **Six worked-example cartridges** (one added in v2.1):
+  - `SOLVE-eX-Retrospective/` — retrospective design analysis of [SOLVE-eX](https://github.com/JawnLam/SOLVE-eX) (finite-horizon)
+  - `LifeLong-Learning-Retrospective/` — retrospective design analysis of [LifeLong-Learning](https://github.com/JawnLam/LifeLong-Learning) (finite-horizon)
+  - `Negotiation-Preparation/` — fresh worked example, anchor demonstration (full depth; finite-horizon)
+  - `Long-Form-Writing/` — fresh worked example, lighter depth (finite-horizon)
+  - `Relationship-Cultivation/` — fresh worked example, lighter depth (finite-horizon)
+  - `Political-Landscape-Cartography-Retrospective/` — **v2.1, canonical practice-archetype demonstration**; retrospective analysis of [Political-Landscape-Cartography v1.0.0](https://github.com/JawnLam/Political-Landscape-Cartography) (private). Shows Q6b three-layer mastery signal, Q14 audience register, Convention 9 sensitive-source pattern, and restrictive LICENSE template applied concretely.
 - **`.gitignore`** that keeps a user's private design work out of source control by default while preserving the five shipped worked examples
 
 ## Compatibility
