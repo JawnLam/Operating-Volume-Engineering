@@ -53,7 +53,8 @@ Evaluate in order. First condition that fires determines the default proposal.
 
 ### Step 2 — Interview not complete
 
-- **If** `_ov-manifest.md` is missing required sections (domain, user goals, intended use, prior-art references) → propose **INTERVIEW**
+- **If** `_ov-manifest.md` is missing required sections (domain, user goals, intended use, prior-art references, **OV archetype** per CQ11) → propose **INTERVIEW**
+- **If** `ove_OV_Archetype` is empty in the manifest → INTERVIEW is incomplete (CQ11 unanswered); proposed activity remains **INTERVIEW** until archetype is declared. The archetype gates Q6 in SCHEMA-DESIGN; SCHEMA-DESIGN cannot proceed past Q5 without it.
 
 ### Step 3 — Schema not locked
 
@@ -62,6 +63,14 @@ Evaluate in order. First condition that fires determines the default proposal.
 ### Step 4 — Cartridge shape undecided
 
 - **If** `_design-decisions.md` doesn't yet record "Cartridge represents: ___" → propose **CARTRIDGE-SHAPE**
+
+### Step 4.5 — Source inventory not read-acknowledged
+
+- **If** `_source-inventory.md` exists and any source is missing `Canonical location` OR is missing `AI-read acknowledgment` → propose **INTERVIEW** (return to CQ3 source-capture to fill the gaps). ARTIFACT-DRAFT is locked until every cited source has been located, the canonical-source-extent has been verified (not a Table-3-only excerpt; not a wrong-year edition), and the AI has read the canonical source.
+- **If** `_source-inventory.md` doesn't exist but CQ3 surfaced cited sources → return to **INTERVIEW** (CQ3 was incomplete).
+- **If** CQ3 surfaced no cited sources → skip this step.
+
+This step exists to prevent F13 (source-grounding skipped) — see `_meta/FAILURE-MODES.md`.
 
 ### Step 5 — Artifacts incomplete
 

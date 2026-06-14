@@ -106,9 +106,42 @@ This shapes the **cartridge progression** (curriculum, phases, stages, or none).
 
 ### Q6 — What does "done" look like?
 
+**Q6 has two forms — the answer depends on the OV's archetype, declared in CQ11 (`BOOTSTRAP-NEW-OV.md`) and logged in the manifest's `ove_OV_Archetype` field. Confirm the archetype before answering Q6. If the archetype is not yet declared, return to CQ11 first.**
+
+#### Q6a — Finite-horizon archetype (terminal artifact)
+
 Concretely, what is the user trying to be able to *do* at the end of this kind of engagement? Be specific.
 
-This question is harder than it looks. "Mastery" or "completion" is too vague. The mastery endpoint should be **observable** — a specific kind of artifact, demonstrated behavior, or measurable outcome.
+"Mastery" or "completion" is too vague. The mastery endpoint should be **observable** — a specific kind of artifact, demonstrated behavior, or measurable outcome.
+
+Examples from existing OVs:
+
+- LFW → a published manuscript
+- LLL → a study subject mastered to teachable level
+- SOLVE-eX → a solved problem with a documented decision path
+- OVE → a shipped OV
+
+#### Q6b — Practice archetype (three-layer mastery signal)
+
+Practice OVs have no terminal artifact. The principal's engagement with the domain *continues* indefinitely. "Mastery" is operationalized as **observable signals at three nested time-scales**, each with its own contract.
+
+**Layer 1 — Per-cycle: discipline demonstrated.** Every cycle the operator runs IS a mastery demonstration. The observable: *audit-trail integrity* — did the cycle's required disciplines (decision-quality audit, ethical accounting, perception-gap capture, alternatives review, whatever the OV requires) all complete? Each cycle either passes or fails this audit; the percentage that pass is a per-engagement quality metric.
+
+**Layer 2 — Per-engagement: retrospective deliverable.** The OV produces an *engagement retrospective* at engagement-close. Contents: cycles run + their audit-pass rate; sub-engagement lifecycle history; trajectory metrics (whatever quantities the OV tracks per engagement); forecasted-vs-actual outcomes; explicit instances where the OV's machinery earned its keep. **This is the closest a practice OV has to a terminal artifact.** It's bounded, concrete, observable — and it ships at engagement-close, not at "done with the domain."
+
+**Layer 3 — Per-operator practice: longitudinal signals across engagements.** The operator's overall practice has *signals*, not endpoints — calibration improving over time, discipline holding rate, pattern-recognition accuracy, aggregate quantitative trajectories the OV tracks, cross-engagement portfolio quality (if a consultant or principal-with-multiple-spheres). There is no terminal state at this layer. The practice is a trajectory.
+
+Practice OVs answer Q6 by specifying:
+
+- **L1 spec:** what audit-trail integrity check fires per cycle?
+- **L2 spec:** what does the engagement-close retrospective contain?
+- **L3 spec:** what longitudinal signals get exported at engagement-close for the operator's cross-engagement view?
+
+Plus a **meta-cartridge decision:** does the OV ship with a meta-cartridge concept (one practice-level cartridge aggregating from N engagement cartridges), or does each engagement export structured data the operator composes externally? Default: **structured export, no meta-cartridge** — keeps the OV's schema clean and serves both solo-principal-self-coach and consultant-with-portfolio modes.
+
+#### Why the fork matters
+
+The pre-v2.0 framing of Q6 implicitly assumed every OV has a terminal artifact. v2.0 acknowledges that some OV domains — political navigation, longevity health, relationship cultivation, leadership development, financial stewardship — have **no terminal arrival**. The principal's engagement with the domain continues across their career or life-stage. Forcing those OVs into a finite-horizon Q6 frame produces stilted designs (the design conversation invents fake terminal artifacts; the shipped OV mis-represents itself to the operator). The fork lets each archetype answer Q6 in its own native form.
 
 ### Q7 — What subject-specific session activities are needed?
 
@@ -164,6 +197,28 @@ Templates scaffold the work. Every Prototype needs one. Every artifact-kind (ses
 ### Q13 — What's the bootstrap-new-cartridge protocol?
 
 This is the OV's analog to `BOOTSTRAP-NEW-OV.md`. It's the prompt the AI follows to open a new cartridge from a user request.
+
+### Q14 — Audience register declaration
+
+Who is the OV's intended reader / operator, and in what voice should the OV's prose and templates be written? This is distinct from CQ9 (which captured the AI ↔ operator communication preferences during the *design* conversation). Q14 captures the voice of the *shipped* OV's prose for *its* future operator.
+
+Answer specifically — three slots:
+
+- **Target reader** — concrete persona. Not "professionals" or "executives." Specific personas like: *"COO of a $20B+ market-cap public company aspiring to CEO within five years"*; *"Senior software engineer (10+ years) leading a small platform team"*; *"Self-directed adult learner working through a specialist subject without a teacher"*; *"Pre-med student preparing for residency interviews."*
+- **Business / life context** — what context the reader is in when they consult the OV. *"In a business engagement with a senior client"*; *"alone late at night with a personal problem"*; *"in a coaching conversation with a peer"*; *"preparing materials for a board meeting."*
+- **Prose register** — the voice the OV's prose should embody when read aloud. *"Senior Managing Partner at a global strategy consultancy speaking to a peer — direct, substantive, no flattery, no academic jargon at business dinners"*; *"Surgical attending teaching a senior resident — precise, time-conscious, anatomically specific"*; *"Veteran beat reporter explaining a story to a smart but non-expert friend — concrete, no inside-baseball without unpacking."*
+
+**Why this matters.** Without an explicit audience-register declaration, OV prose drifts toward the AI's default register (academic, hedged, peer-coded). The drift is most visible at the artifact level — the worked-example coaching script that reads as a textbook chapter; the operator-guide section that uses jargon the target reader wouldn't tolerate. Documented historical recurrence: the v1.0 build of Political Landscape Cartography drafted a 4R coaching script with the phrase "dissertation-defined set" before the audience register was explicitly declared as "Senior Managing Partner voice; no academic terms at business dinners." The slip was caught only at REVIEW, after rework.
+
+**Cascade.** Q14's answer cascades into every ARTIFACT-DRAFT session: prose voice, example selection, jargon tolerance, hedging level, the kinds of analogies that resonate vs land flat. SHIP-PREP Phase 3.9 (Vocabulary Audit, `07-SHIPPING-CHECKLIST.md`) cross-checks shippable prose against the declared register.
+
+Log the answer as three manifest fields:
+
+```yaml
+ove_Audience_Target_Reader: "<concrete persona>"
+ove_Audience_Business_Context: "<context of use>"
+ove_Audience_Prose_Register: "<voice description>"
+```
 
 ## Materializing the `_Prototypes/` folder
 

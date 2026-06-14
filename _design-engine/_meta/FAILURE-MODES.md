@@ -138,6 +138,28 @@ updated: 2026-06-01
 
 **Prevention:** Phase 0 environment checks in `AI-BOOTSTRAP.md` include writability verification.
 
+## F13 — Source-grounding skipped (F2 vector specific to source-grounded OVs)
+
+**Trigger pattern:** The OV cites external source material (a dissertation, a published methodology, a field manual, a theorist's body of work) but the AI drafts artifacts from session-memory paraphrase of the source rather than verbatim quotes with verified page citations. Specific cite-prone failure cases:
+
+- Citing "p. XX" of a source the AI has not actually located in its working environment
+- Inventing structural counts ("the framework has N steps") not present in the source
+- Misattributing concepts (assigning a label or category that doesn't exist in the canonical text)
+- Hallucinating worked-example mappings ("character X → § Y.Z.W `<slot-id>`") without source-text verification
+- Misstating publication metadata (wrong year, wrong publisher) of cited works
+
+**Why it matters:** This is the F2 vector specifically triggered by source-grounded OVs. Once a fabricated citation lands in the shipped OV, every downstream cartridge inherits it. The operator discovers the fabrication later — often when trying to look up the cited page or verify a structural count — and trust collapses. Documented historical recurrence: the v1.0 build of Political Landscape Cartography (an OV citing a 294-page dissertation as substrate) hit this failure mode at high frequency — fabricated "N-step protocol" with false "p.XX-YY" cite, invented sub-section labels, multiple fabricated worked-example archetype assignments, wrong publication year. Most fabrications survived the SHIP-PREP gauntlet and only surfaced via operator spot-check, after substantial rework.
+
+**Fix:** When you discover the source is not actually accessible in your working environment, **stop**. Don't paraphrase from memory. Either find the canonical source, ask the operator for it, or flag the cite as `[SOURCE-VERIFICATION-REQUIRED]` and route the question to the operator. Do not ship the cite as fact.
+
+**Prevention:**
+
+- CQ3 (`BOOTSTRAP-NEW-OV.md`) structurally captures each cited source with canonical location, page count, full-vs-excerpt status, and sensitivity.
+- ARTIFACT-DRAFT (`03-DESIGN-PROTOCOL.md` Step 4.5) blocks until `_source-inventory.md` has every cited source's canonical location filled AND the AI has acknowledged reading the canonical source with a one-line per-source summary.
+- SHIP-PREP Phase 3.7 (`07-SHIPPING-CHECKLIST.md`) — Citation Audit — every "p.XX / § X.Y / named theorist / verbatim quote" in shippable content is verified against source; unverified cite = ship block.
+- SHIP-PREP Phase 3.8 — Worked-Example Slot-ID Verification — every worked-example reference to a Prototype slot ID carries a one-line source-justification; unjustified assignment = ship block.
+- Validator checks C11 (source-inventory presence + completeness) and C12 (citation-audit-log presence) enforce the gates programmatically.
+
 ## Adding new entries
 
 When a new failure mode surfaces in real use, add it here with:

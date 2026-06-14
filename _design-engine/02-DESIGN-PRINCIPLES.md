@@ -65,6 +65,13 @@ OVs are built for work that unfolds over time. A single conversation is the mini
 - Open Threads are an explicit hand-off mechanism between sessions
 - Drift across sessions is a known risk and is addressed by audits
 
+**Two archetypes of multi-session work** (declared per OV at design time via CQ11 in `BOOTSTRAP-NEW-OV.md`, logged as `ove_OV_Archetype` in the manifest):
+
+- **Finite-horizon OVs** have a defined terminal artifact — manuscript, mastered subject, solved problem, shipped artifact. Multi-session because the work toward the artifact spans sessions. Examples: LFW, LLL, SOLVE-eX, OVE.
+- **Practice OVs** have no terminal arrival — the work continues across the principal's career or life-stage. Multi-session because the practice IS the work. Examples: PLC (political navigation), and likely future OVs around longevity health, relationship cultivation, financial stewardship, leadership development.
+
+The archetype shapes Q6 in SCHEMA-DESIGN (`04-SCHEMA-DESIGN.md` § Q6) and the cartridge lifecycle (engagement-close semantics differ between archetypes). Forcing a practice OV into a finite-horizon Q6 frame produces a stilted design that mis-represents the OV to its operator.
+
 ## P7 — Identity is operator-provided, never inferred
 
 The AI must never infer the user's name, email, contact details, or other identity facts from indirect signals (usernames, file paths, git config, file metadata). Use placeholders until the user provides their name explicitly in their own words.
@@ -78,6 +85,15 @@ The metadata block in any AI's system prompt — `userEmail`, working-directory 
 When designing OVs that reference external material (tools, frameworks, people, books, methods), only name things you are confident exist. If you're not sure something is real, say so or decline to name it. Fabricated citations poison the resulting OV — the user discovers the fabrication later and trust collapses.
 
 This applies recursively: when helping the user choose tools/frameworks for the OV they're designing, the same rule applies. "I'm not sure that framework exists in the form you describe" is a valid and important response.
+
+**v2.0 source-grounding contract.** When an OV cites named external source material (a published dissertation, a methodology, a field manual, a theorist's body of work), the design protocol enforces a hard sequence to prevent the F13 vector (source-grounding skipped — see `_meta/FAILURE-MODES.md`):
+
+1. **CQ3 captures sources structurally** (`BOOTSTRAP-NEW-OV.md`): each cited source logged in `_source-inventory.md` with canonical location, page count, full-vs-excerpt status, sensitivity.
+2. **ARTIFACT-DRAFT is gated** (`03-DESIGN-PROTOCOL.md` Step 4.5): drafting cannot begin until every inventory entry has canonical location filled AND the AI has acknowledged reading the canonical source with a one-line summary per source.
+3. **Citation Audit at SHIP-PREP Phase 3.7** (`07-SHIPPING-CHECKLIST.md`): every "p.XX / § X.Y / named theorist / verbatim quote" in shippable content is verified against source; unverified = ship block.
+4. **Worked-Example Slot-ID Verification at Phase 3.8**: every worked-example reference to a Prototype slot ID carries a one-line source-justification.
+
+The contract exists because P8's "say so when unsure" honor system did not survive the v1.0 build of a practice-OV citing a 294-page dissertation as substrate. Multiple fabrications survived to ARTIFACT-DRAFT and most were caught only by operator spot-check rather than the SHIP-PREP gauntlet. v2.0 makes the gate structural rather than honor-based.
 
 ## P9 — Self-similarity test
 

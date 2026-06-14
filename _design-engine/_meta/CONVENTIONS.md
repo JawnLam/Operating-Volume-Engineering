@@ -250,6 +250,55 @@ The optional `validate.py` scans `CONTRIBUTING.md` (with `OPERATOR-GUIDE.md` as 
 
 Without explicit zoning, the operator and the engine compete for the same paths. The operator hand-edits a `00-START-HERE.md` to taste; the next `git pull` produces a conflict. The operator adds private work to an example cartridge; the next pull silently rewrites part of it. The four zones prevent both failure modes by making the contract legible: engine moves; operator moves; nobody steps on each other.
 
+## Convention 9 — Sensitive source materials (ship-by-reference)
+
+*Added v2.0.* Some OVs cite source material that is sensitive — typically the Methodology Author's personal academic work (a dissertation, in-progress research), an internal client report used as basis, or any source the operator does not want bundled into the public OV release. Convention 9 codifies the pattern OVs use to **cite sensitive material as substrate while excluding the source file itself from the shipped artifact**.
+
+### When Convention 9 applies
+
+Apply Convention 9 to any source listed in `_source-inventory.md` (Convention 9 depends on the source-inventory pattern documented in `BOOTSTRAP-NEW-OV.md` CQ3) with `Sensitivity: Ship-by-reference (Convention 9)`. Examples:
+
+- A Methodology Author's personal academic dissertation referenced as substrate but not redistributed
+- An internal client report whose ideas inform the OV's structure but whose contents are confidential
+- In-progress academic work the author is not yet ready to release publicly
+- Proprietary methodology documents licensed for the author's use but not for republication
+
+### The ship-by-reference pattern
+
+For every Convention 9 source, the OV ships **the inventory listing and a placeholder**, not the source itself. Concretely:
+
+1. **`_source-inventory.md`** lists the sensitive source with `Sensitivity: Ship-by-reference (Convention 9)`. This makes the source visible to readers as known substrate.
+2. **`.gitignore`** excludes the physical source file at its canonical path. Example pattern:
+   ```
+   # Sensitive substrate — Convention 9 (sensitive source materials)
+   # Source file stays local in operator's working copy; never tracked.
+   _frameworks/sources/<source-slug>.pdf
+   _frameworks/sources/<another-source-slug>.docx
+   ```
+3. **A placeholder `.md` file** at the canonical location (e.g., `_frameworks/sources/<source-slug>.md`) directs readers to contact the Methodology Author for source access. Drawn from `_design-engine/_templates/TEMPLATE-sensitive-source-placeholder.md`. This file IS tracked (it ships as the public artifact that points at the private substrate).
+4. **`LICENSE.md`** — if the OV uses a restrictive license (drawn from `_design-engine/_templates/TEMPLATE-LICENSE-restrictive.md`), the restrictive template includes language acknowledging the sacred-source distinction and the academic-archive carve-out for cited work.
+
+### Required artifacts per OV (Convention 9 sources only)
+
+- `_source-inventory.md` entry with `Sensitivity: Ship-by-reference (Convention 9)`
+- `.gitignore` block excluding each sensitive source file at its canonical path, with inline comment naming Convention 9
+- Placeholder `.md` file at the canonical location of each sensitive source, drawn from `TEMPLATE-sensitive-source-placeholder.md` with the source slug + Methodology Author contact filled in
+- If the OV ships restrictive LICENSE, language acknowledging the sacred-source distinction (the restrictive template includes this by default)
+
+### Defense-in-depth
+
+The pattern is **belt-and-suspenders** on purpose:
+
+- Physical exclusion: the source file is held back from the staging tree before `git init` runs
+- `.gitignore` exclusion: even if the file is later re-added, the gitignore prevents tracking
+- Post-push verification: after `git push`, fetch the canonical source's expected path via `gh api repos/<user>/<repo>/contents/<path>` — a 404 confirms the source is not on the remote
+
+Both physical exclusion and gitignore are required because either alone is brittle: physical-only fails if the operator copies the file in later; gitignore-only fails if `.gitignore` is misconfigured or removed.
+
+### Why this matters
+
+The v1.0 build of Political Landscape Cartography needed to ship public-facing methodology while keeping its Methodology Author's 294-page dissertation private. The pattern (physical exclusion + gitignore + placeholder + post-push 404 verification) was invented during that build's SHIP-PREP phase. v2.0 formalizes the pattern as a numbered Convention so future OVs that cite sensitive source material can apply it out of the box rather than inventing it on the fly. The convention also documents the academic-archive friction (operators legitimately archiving cited work for published scholarly research need a carve-out from delete-or-destroy obligations in restrictive LICENSEs) and the self-coaching loophole (a principal coaching themselves is NOT personal evaluation under a restrictive license).
+
 ## How to apply during a new-OV design
 
 The AI walking `BOOTSTRAP-NEW-OV.md` asks the operator one question early:
