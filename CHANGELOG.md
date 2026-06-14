@@ -11,6 +11,84 @@ Needs_Processing: false
 
 All notable changes to Operating-Volume-Engineering are documented in this file. Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); versioning follows [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.0.0] — 2026-06-13
+
+First major release. Codifies the architectural and process lessons surfaced during the v1.0 build of Political Landscape Cartography (PLC) — a practice-archetype OV citing a 294-page dissertation as substrate. Five packages, each fixing a documented v1.x gap that PLC's build either hit or worked around inventively at design time.
+
+**v2.0 is breaking against v1.x in three places:** (a) Q6 framing now forks by archetype, (b) manifest schema adds four new required fields for v2.0-designed OVs (`ove_OV_Archetype` + three `ove_Audience_*` fields), (c) SHIP-PREP gains three new hard-stop phases (3.7 / 3.8 / 3.9). **No runtime impact on already-shipped v1.x OVs** — OVs have no runtime dependency on OVE; v1.x OVs stand alone with their own engine + conventions baked in, and the OVE version that produced them is provenance trivia, not operational metadata. v2.0 changes how the *next* OV gets built.
+
+### Added — Package A: OV Archetype Declaration
+
+A new CQ11 in `BOOTSTRAP-NEW-OV.md` asks the operator whether the OV is **finite-horizon** (defined finish line — manuscript published, subject mastered, problem solved, artifact shipped) or **practice** (no terminal arrival — political navigation, longevity health, relationship cultivation, leadership development). The archetype is logged as `ove_OV_Archetype` in the manifest and shapes Q6 in SCHEMA-DESIGN.
+
+- **`BOOTSTRAP-NEW-OV.md`** — new CQ11 (OV Archetype) after CQ10
+- **`_templates/TEMPLATE-ov-manifest.md`** — `ove_OV_Archetype` frontmatter field + `## OV Archetype` body section (with rationale field)
+- **`04-SCHEMA-DESIGN.md` § Q6** — forks into **Q6a (finite-horizon: terminal-artifact spec)** and **Q6b (practice: three-layer mastery signal — L1 per-cycle audit integrity / L2 per-engagement retrospective / L3 per-operator practice trajectory)**. Explains why the fork matters with the PLC motivating case.
+- **`_templates/TEMPLATE-schema-draft.md`** — Q6 fork rendering for both archetypes
+- **`01-WHAT-IS-AN-OV.md`** — new Property 8 (archetype-declared)
+- **`02-DESIGN-PRINCIPLES.md` § P6** — extended with two-archetype framing
+- **`03-DESIGN-PROTOCOL.md` § Step 2** — interview-not-complete check now includes archetype declaration
+
+**Why this matters.** Pre-v2.0 Q6 implicitly assumed every OV has a terminal artifact. PLC broke that assumption mid-protocol; v2.0 acknowledges that practice-archetype OVs (whose principal's engagement with the domain continues indefinitely) need a different Q6 form to avoid stilted designs.
+
+### Added — Package B: Source Discipline (F13 prevention)
+
+Three structural gates that prevent F2-class fabrication when an OV cites external source material. Replaces the honor-system "say so when unsure" of pre-v2.0 P8 with mechanical enforcement.
+
+- **`_meta/FAILURE-MODES.md` § F13** — Source-grounding skipped. New failure-mode catalog entry documenting the F2 vector specific to source-grounded OVs (fabricated "p.XX" cites, invented structural counts, fabricated worked-example slot-ID mappings, wrong publication metadata). Documents the PLC v1.0 build as the motivating recurrence — multiple fabrications survived the SHIP-PREP gauntlet and only surfaced via operator spot-check.
+- **`02-DESIGN-PRINCIPLES.md` § P8** — extended with the v2.0 source-grounding contract: structural capture at CQ3 → ARTIFACT-DRAFT gate at Step 4.5 → SHIP-PREP Phase 3.7 + 3.8.
+- **`BOOTSTRAP-NEW-OV.md` § CQ3** — strengthened from "Do you have prior art?" to a structured source-capture conversation. For each named source: identifier, canonical location (where the AI can actually access the full source), page count / extent, full-vs-excerpt status, sensitivity. Logged in `_source-inventory.md`. CQ3 also added to the "Common failure modes" list as F13.
+- **`_templates/TEMPLATE-source-inventory.md`** — new template. The inventory file is the substrate for the gates: ARTIFACT-DRAFT cannot begin until every entry has canonical location filled AND the AI has acknowledged reading the canonical source with a one-line summary.
+- **`03-DESIGN-PROTOCOL.md` § Step 4.5** — new decision-algorithm step. If `_source-inventory.md` exists and any entry is missing `Canonical location` or `AI-read acknowledgment`, INTERVIEW is proposed (CQ3 incomplete). ARTIFACT-DRAFT is locked.
+- **`07-SHIPPING-CHECKLIST.md` § Phase 3.7** — Citation Audit (HARD STOP). Every "p.XX / § X.Y / named theorist / verbatim quote" in shippable content traces back to a source in inventory and verifies against the canonical source. Backed by validator check C11 (source inventory) and C12 (citation audit log).
+- **`07-SHIPPING-CHECKLIST.md` § Phase 3.8** — Worked-Example Slot-ID Verification (HARD STOP). Every worked-example reference to a Prototype slot ID (e.g., `<character> → § X.Y.Z <slot-id>`) carries an inline one-line source-justification. Prevents the highest-stakes locus of F13: the worked example, which operators consume as canonical "how to use this OV."
+
+### Added — Package C: Voice + Client Promise
+
+Two new gates that prevent prose-level drift: an audience-register declaration at design time, and a vocabulary audit at ship time.
+
+- **`04-SCHEMA-DESIGN.md` § Q14** — new Audience Register Declaration. The operator specifies three slots: target reader (concrete persona — not "professionals"), business / life context, and prose register (the voice the OV's prose embodies when read aloud, with a concrete analogue). Distinct from CQ9 (which captures AI ↔ operator communication during the *design* conversation); Q14 captures the voice of the *shipped* OV's prose for *its* future operator.
+- **`_templates/TEMPLATE-ov-manifest.md`** — three frontmatter fields (`ove_Audience_Target_Reader`, `ove_Audience_Business_Context`, `ove_Audience_Prose_Register`) + `## Audience Register (Q14)` body section
+- **`_templates/TEMPLATE-schema-draft.md`** — Q14 section after Q13
+- **`07-SHIPPING-CHECKLIST.md` § Phase 3.9** — Vocabulary Audit (HARD STOP). Two-pass sweep: (1) deliverable-promise nouns (dashboard, scorecard, report, framework, tool, playbook) flagged unless the OV ships a real artifact with that name; (2) audience-register violations against the declared `ove_Audience_Prose_Register`. Backed by validator check C13.
+
+**Why this matters.** Without explicit audience-register declaration, OV prose drifts toward the AI's default register (academic, hedged, peer-coded). PLC's 4R coaching script drafted "dissertation-defined set" before the register was explicitly named as "Senior Managing Partner voice; no academic terms at business dinners." PLC also used "dashboard" as a noun in two coaching documents, anchoring a client-expectation the OV didn't ship. Both slipped past pre-v2.0 REVIEW and only surfaced via operator spot-check.
+
+### Added — Package D: Sensitive Sources + Restrictive LICENSE template
+
+Convention 9 codifies the ship-by-reference pattern for sensitive substrate. A new restrictive LICENSE template captures the legal language PLC landed on after multiple rounds of refinement.
+
+- **`_meta/CONVENTIONS.md` § Convention 9** — Sensitive source materials (ship-by-reference). For sources flagged `Ship-by-reference` in `_source-inventory.md`: the physical source stays local, `.gitignore` excludes it at its canonical path, a placeholder `.md` at the canonical location directs readers to contact the Methodology Author, and (if restrictive-licensed) the LICENSE acknowledges the sacred-source distinction. Defense-in-depth (physical exclusion + gitignore + post-push 404 verification) because either alone is brittle.
+- **`_templates/TEMPLATE-sensitive-source-placeholder.md`** — new template. The placeholder `.md` that ships in place of the sensitive source file; directs readers to contact the Methodology Author with structured guidance on what to mention and what to expect.
+- **`_templates/TEMPLATE-LICENSE-restrictive.md`** — new template. Maximally restrictive license modeled on PLC's: § 1 personal-evaluation 14-day window with 6 limits (application-prohibited, no-sphere-creation, no-reference-during-engagement, no-retention-after-expiration, burden-of-distinction, no-derivative-works); § 2 principal self-coaching ≠ personal evaluation under any circumstance (closing the loophole); § 3 commercial-use authorization required; § 4 Academic Archive Carve-Out (resolves the academic fair-use friction with delete-or-destroy obligations); § 5 sensitive source materials per Convention 9; § 6 automatic termination; § 7 warranty disclaimer; § 8 governing law; § 9 contact. **Prominent IP-attorney review notice at top** — restrictive-template OVs must complete legal review before public release; private GitHub is the default interim posture.
+- **`07-SHIPPING-CHECKLIST.md` § Phase 4** — restructured into three paths (Path A: CC-BY 4.0 default; Path B: MIT / Apache; Path C: restrictive with IP-attorney review flag and private-GitHub interim).
+- **`BOOTSTRAP-NEW-OV.md` § Step 5 item 12** — references all three LICENSE template paths.
+
+### Added — Validator checks C11, C12, C13
+
+- **`_meta/validate.py`** — three new checks added; `range(1, 11)` → `range(1, 14)`:
+  - **C11 — source-inventory-completeness.** Absence of `_source-inventory.md` is info-class. If present: valid `ove_Source_Inventory_Status` value, no unfilled template placeholders, status `read-acknowledged` or `locked` before ARTIFACT-DRAFT.
+  - **C12 — citation-audit-log.** If inventory status is `locked`, `_citation-audit-log.md` must exist with substantive content (more than placeholder lines).
+  - **C13 — vocabulary-audit-log.** Sweep for high-confidence deliverable-promise nouns (dashboard, scorecard, playbook — broader sweep deferred to operator markdown-grep at Phase 3.9). Hits without `_vocabulary-audit-log.md` recording disposition produce warn-class findings.
+- Header docstring updated to document C11 / C12 / C13.
+- Run dispatch wires new checks into `run()`.
+
+### Added — Package E: Bookkeeping
+
+- **`VERSION.md`** — bumped to v2.0.0; major-version rationale documented; "Compatibility with v1.x OVs" section confirms v1.x-built OVs do not need migration (OVs have no runtime dependency on OVE).
+- **`UPDATE-PROMPT.md`** — updated to acknowledge the v1.x → v2.0 transition. The major-version-transition guidance is now first-class: operators upgrading from v1.x should read this CHANGELOG entry's "v2.0 is breaking" paragraph before running the standard update flow.
+- **`CHANGELOG.md`** — this entry.
+
+### Notes
+
+This is the first major release since v1.0 (2026-06-01, twelve days ago). The compressed release cadence reflects the v2.0 substrate: the lessons codified in v2.0 were discovered concurrently with the PLC v1.0 build (the first practice-archetype OV designed via OVE). Rather than ship the lessons as a v1.3 patch and force a later v2.0 break, the v2.0 jump consolidates the breaking changes in one release.
+
+**Vault-Infrastructure dependency:** none. v2.0's manifest schema additions are OV-local; no vault-wide schema cascade required.
+
+**Sibling OV releases:** none coordinated with this release. SOLVE-eX, LFW, LLL all stay on their current v1.x releases — they are finite-horizon OVs that ship under v1.x conventions and do not benefit from v2.0's practice-archetype-specific additions. Adoption of v2.0 conventions in those OVs is at each OV's discretion when they next ship.
+
+**Restrictive LICENSE template — operator action required.** The template includes a prominent IP-attorney review notice. Operators who adopt the restrictive LICENSE for their own OV must complete legal review against their jurisdiction before any public release. The OV may ship to a private GitHub repository during the interim.
+
 ## [1.2.1] — 2026-06-07
 
 Adds `UPDATE-PROMPT.md` as the fourth required artifact under Convention 7. The file is a copy-pasteable AI prompt that asks any AI assistant to read the OV's update protocol (`INSTALL.md § Updating` + `OPERATOR-GUIDE.md § Updates and troubleshooting`) and walk the operator through the update step by step, with explicit discipline against destructive commands.

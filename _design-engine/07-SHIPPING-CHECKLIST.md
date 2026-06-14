@@ -217,17 +217,158 @@ grep -v '^\s*$\|^#' .gitignore | wc -l   # expect > 0
 
 **If any of these is no, return to ARTIFACT-DRAFT to populate the install / operator / contributing / update-prompt docs. Phase 7 is locked until this gate is clean.**
 
+## Phase 3.7 — Citation Audit (HARD STOP)
+
+Every "p.XX / § X.Y / named theorist / verbatim quote" in shippable content traces back to an entry in `_source-inventory.md` (template at `_design-engine/_templates/TEMPLATE-source-inventory.md`) and verifies against the canonical source. This phase exists to prevent F13 (source-grounding skipped — fabricated cites that survive to ship). The historical motivation: the v1.0 build of Political Landscape Cartography shipped multiple fabricated cites that survived the pre-v2.0 SHIP-PREP gauntlet and only surfaced via operator spot-check. v2.0 makes the gate structural.
+
+### Walk the cite list
+
+- [ ] `_source-inventory.md` exists at the OV root with `ove_Source_Inventory_Status: read-acknowledged` (or `locked`)
+- [ ] For every "p.XX" cite in shippable content, the citing source is in inventory AND the citation content matches the canonical page
+- [ ] For every "§ X.Y" cite (or other structural identifier) in shippable content, the cited structural element exists in the canonical source
+- [ ] For every named theorist / concept / framework cited, the citation is verifiable against the canonical source's text
+- [ ] For every verbatim quote, the quote matches the canonical source word-for-word
+- [ ] No structural-count claims ("the framework has N steps," "the dissertation lists M categories") that don't appear explicitly in the canonical source
+- [ ] No `[SOURCE-VERIFICATION-REQUIRED]` placeholders remain in shippable content
+
+### Run the gate
+
+If `validate.py` is in use:
+
+```bash
+python3 _design-engine/_meta/validate.py
+```
+
+Check 11 (C11 — source-inventory presence and completeness) verifies the inventory file exists and every entry is fully filled in. Check 12 (C12 — citation audit log) requires a `_citation-audit-log.md` documenting verified cites with one entry per cite.
+
+If running markdown-only:
+
+```bash
+# Extract all "p.NN" and "§ N.N" cites from shippable content
+grep -rEhn 'p\.\s*[0-9]+|§\s*[0-9]+(\.[0-9]+)+' \
+  <NewOV>/_*-engine <NewOV>/_Prototypes <NewOV>/README.md <NewOV>/OPERATOR-GUIDE.md
+```
+
+For each cite, manually verify against `_source-inventory.md` and the canonical source text. Log each verification in `_citation-audit-log.md` as `<cite> | <source> | <verification status>`.
+
+### Acceptance — all must be true
+
+- [ ] `_source-inventory.md` exists with `ove_Source_Inventory_Status: read-acknowledged` or `locked`
+- [ ] Every cite in shippable content traces to a source in inventory
+- [ ] Every cite's content verifies against the canonical source (operator-confirmed)
+- [ ] `_citation-audit-log.md` records the verification of every cite
+- [ ] No `[SOURCE-VERIFICATION-REQUIRED]` placeholders remain
+
+**If any of these is no, return to ARTIFACT-DRAFT to resolve the unverified cites. Phase 7 is locked until this gate is clean.**
+
+If this gate passes, flip `ove_Source_Inventory_Status` to `locked`.
+
+## Phase 3.8 — Worked-Example Slot-ID Verification (HARD STOP)
+
+If the OV ships a worked-example cartridge with references to specific Prototype slot IDs (e.g., "Sam → § 13.1.1.8 `incumbent_defender`" mapping a worked-example character to a canonical archetype), every such mapping carries an inline one-line source-justification. Without this, worked-example mappings drift toward session-inferred fabrications that survive to ship.
+
+This phase exists to prevent F13 (source-grounding skipped) at its highest-stakes locus: the worked example, which the operator uses as the canonical "how to use this OV" demonstration. The v1.0 build of Political Landscape Cartography shipped four fabricated worked-sphere archetype assignments that survived the SHIP-PREP gauntlet — the motivating incident for this phase.
+
+### Walk the worked-example mappings
+
+- [ ] Every worked-example reference to a Prototype slot ID (e.g., `<name> → § X.Y.Z <slot-id>`) carries an inline one-line source-justification (why this mapping, against which source page or section)
+- [ ] Every cited slot ID exists in the OV's canonical schema (cross-check against `_meta/SCHEMA-OF-SCHEMAS.md` or the worked-example's underlying source)
+- [ ] No worked-example mapping is "best guess from name" / "by inference from similar archetype" / "based on session memory" — the source-justification must be verifiable
+- [ ] If the worked example draws from a real underlying case (a real person, a real organization, a real event), the source-justification cites the underlying source verbatim or by canonical reference
+
+### Acceptance — all must be true
+
+- [ ] Every worked-example slot-ID assignment has an inline source-justification
+- [ ] Every cited slot ID exists in the canonical schema or source
+- [ ] No "by inference" / "by memory" / "best guess" assignments remain
+
+**If any of these is no, return to ARTIFACT-DRAFT to verify or remove the unverified assignments. Phase 7 is locked until this gate is clean.**
+
+## Phase 3.9 — Vocabulary Audit (HARD STOP)
+
+The OV's shippable prose is swept for two failure-class words/phrases: **deliverable-promise nouns** that anchor reader expectations the OV doesn't actually ship, and **audience-register violations** (jargon, hedging, academic prose) that conflict with the Q14 declared register.
+
+This phase exists because of two documented historical incidents in the v1.0 build of Political Landscape Cartography:
+
+- "Dashboard" was used as a noun in two coaching documents — anchoring a deliverable expectation (the operator's client would ask "where's my dashboard?") that the OV did not actually ship. The fix was to replace "dashboard" with role-words ("conceptual frame," "mental map") that don't carry artifact-promise weight.
+- The 4R coaching script drafted prose using "dissertation-defined set" — an academic register slip in a script declared for "Senior Managing Partner voice; no academic terms at business dinners."
+
+### Walk the prose
+
+**Deliverable-promise noun sweep.** Scan for nouns that imply a shipped artifact unless the OV actually ships one with that name:
+
+| Noun | Replace with role-word unless OV ships | Examples of role-word replacement |
+|------|-----------------------------------------|-----------------------------------|
+| `dashboard` | a dashboard generator | frame / lens / mental map |
+| `scorecard` | a structured rating output | rubric / audit list |
+| `report` | a written-output template | summary / capture / log |
+| `framework` (as deliverable noun) | a portable framework artifact | method / approach / discipline |
+| `tool` (as delivered noun) | runnable software | practice / pattern / move |
+| `playbook` | a packaged playbook | protocol / sequence |
+| `template` (as marketed deliverable, not the design-time template) | shipped template files for end-users | scaffold / structure |
+
+If the OV does ship one of these as a real artifact, the word is fine — just verify it's grounded in a real shipped file.
+
+**Audience-register violation sweep.** Cross-reference shippable prose against the manifest's `ove_Audience_Prose_Register`:
+
+- If `prose_register` is "Senior Managing Partner / business dinner voice" — scan for academic phrasings: "dissertation-defined," "as the literature suggests," "theoretical framework," "operationalized as," "construct of."
+- If `prose_register` is "peer engineering" — scan for excessive formality, marketing-coded adjectives, consultant-speak.
+- If `prose_register` is "warm coaching" — scan for cold-clinical phrasings, jargon, hedging.
+
+### Run the gate
+
+```bash
+# Deliverable-promise noun sweep
+grep -rEhin '\b(dashboard|scorecard|report|framework|tool|playbook)\b' \
+  <NewOV>/_*-engine <NewOV>/_Prototypes <NewOV>/README.md <NewOV>/OPERATOR-GUIDE.md <NewOV>/CONTRIBUTING.md
+
+# Inspect each hit. For each, log to _vocabulary-audit-log.md as:
+#   <file:line> | <word> | <decision: kept-with-justification | replaced-with-<role-word>>
+```
+
+Validator check C13 (vocabulary audit log) requires `_vocabulary-audit-log.md` documenting each flagged word and its resolution.
+
+### Acceptance — all must be true
+
+- [ ] Every deliverable-promise noun in shippable content is either (a) a real artifact the OV ships, or (b) replaced with a role-word
+- [ ] Every audience-register violation against `ove_Audience_Prose_Register` is either fixed or explicitly waived in `_design-decisions.md`
+- [ ] `_vocabulary-audit-log.md` records the sweep + resolution
+
+**If any of these is no, return to ARTIFACT-DRAFT or REVIEW to resolve. Phase 7 is locked until this gate is clean.**
+
 ## Phase 4 — License + attribution
 
-The default for the OV ecosystem is CC-BY 4.0 (matching SOLVE-eX and LifeLong-Learning). Other reasonable options: MIT, Apache-2.0. Confirm with the user.
+The default for the OV ecosystem is CC-BY 4.0 (matching SOLVE-eX, LifeLong-Learning, OVE itself). Reasonable open alternatives: MIT, Apache-2.0. For OVs where the Methodology Author wants restrictive licensing (proprietary methodology, sensitive substrate per Convention 9, monetized release), use the v2.0 restrictive template. Confirm the choice with the user.
 
-For CC-BY 4.0:
+Three paths:
+
+### Path A — CC-BY 4.0 (default for the open OV ecosystem)
 
 1. Copy `_design-engine/_templates/TEMPLATE-LICENSE-CCBY40.md` to the new OV's `LICENSE.md`
 2. Update the attribution line with the user's actual name (operator-confirmed) and the GitHub URL (if applicable)
 3. Ensure the attribution format appears in `README.md` under a "License" heading
 
-For MIT or Apache: use canonical text from [choosealicense.com](https://choosealicense.com).
+### Path B — MIT or Apache-2.0
+
+Use canonical text from [choosealicense.com](https://choosealicense.com). Fill in the user's actual name (operator-confirmed).
+
+### Path C — Restrictive (proprietary methodology)
+
+*Added v2.0. Modeled on the LICENSE that the v1.0 build of Political Landscape Cartography landed on after multiple rounds of refinement (self-coaching loophole closure, academic-archive carve-out, personal-evaluation 14-day window with 6 limits).*
+
+1. Copy `_design-engine/_templates/TEMPLATE-LICENSE-restrictive.md` to the new OV's `LICENSE.md`
+2. Fill in the Methodology Author's name (operator-confirmed) and the OV's name throughout
+3. Fill in `<Jurisdiction>` (§ 8) and `<Contact Method>` (§ 9) with operator-confirmed values
+4. If the OV cites sensitive source material per Convention 9 (`_meta/CONVENTIONS.md`), § 5 of the LICENSE applies as drafted
+5. **Add to `CONTRIBUTING.md`:** "Before any public release, `LICENSE.md` must be reviewed by an IP attorney." The template includes this notice at the top; mirror it in CONTRIBUTING for operator visibility.
+6. **Public-release decision is deferred until IP-attorney review.** The OV may ship to private GitHub during the interim per Phase 8 — the public-flip happens later via a single `gh repo edit --visibility public` after legal sign-off.
+
+### Phase 4 acceptance
+
+- [ ] LICENSE path chosen and documented in `_design-decisions.md`
+- [ ] `LICENSE.md` populated from the selected template with no placeholders remaining
+- [ ] If Path C: `CONTRIBUTING.md` flags IP-attorney review as ship-blocker for public release
+- [ ] `README.md` § "License" includes the attribution format from the chosen LICENSE
 
 ## Phase 5 — Version + changelog
 

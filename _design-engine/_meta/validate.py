@@ -29,11 +29,25 @@ Checks (independently togglable via --skip):
         AI-BOOTSTRAP.md and _design-engine/00-START-HERE.md state the same
         Tier 1 read protocol and name 00-START-HERE.md as canonical.
 
+  C11 source-inventory-completeness (F13 vector — v2.0)
+        If _source-inventory.md exists at OV root, status is valid and no
+        template placeholders remain. Status must be read-acknowledged or
+        locked before ARTIFACT-DRAFT proceeds.
+
+  C12 citation-audit-log (F13 vector — v2.0)
+        If _source-inventory.md is marked 'locked', _citation-audit-log.md
+        must exist documenting verified cites (SHIP-PREP Phase 3.7).
+
+  C13 vocabulary-audit-log (v2.0)
+        If shippable content contains deliverable-promise nouns (dashboard,
+        scorecard, playbook), _vocabulary-audit-log.md must record each
+        instance's disposition (kept-with-justification or replaced).
+
 This validator is a safety net, not a replacement for the SHIPPING-CHECKLIST
 or operator judgment. It catches the high-embarrassment failure modes (F3
-identity, F6 drift, placeholder leaks) without requiring perfect discipline.
-The prose-fallback equivalent for markdown-only environments is in
-_design-engine/_meta/VALIDATION-CHECKLIST.md.
+identity, F6 drift, F13 source-grounding, placeholder leaks) without requiring
+perfect discipline. The prose-fallback equivalent for markdown-only environments
+is in _design-engine/_meta/VALIDATION-CHECKLIST.md.
 """
 
 import argparse
@@ -615,6 +629,194 @@ def check_C6_bootstrap_engine_drift(root):
     return findings
 
 
+SOURCE_INVENTORY_PLACEHOLDERS = [
+    "<TBD>",
+    "<source-slug>",
+    "<author year title>",
+    "<OV Name>",
+    "<ov-slug>",
+    "<Source Identifier>",
+]
+
+VALID_INVENTORY_STATUSES = {"drafting", "inventoried", "read-acknowledged", "locked"}
+
+
+def check_C11_source_inventory(root):
+    """v2.0 Source Discipline (F13 prevention): if _source-inventory.md exists
+    at OV root, status is valid and no template placeholders remain. Absence
+    of the inventory file is informational (not every OV cites external sources)."""
+    findings = []
+    inv = root / "_source-inventory.md"
+    if not inv.exists():
+        findings.append(Finding(
+            "C11-source-inv", "info", root,
+            message="no _source-inventory.md at OV root — OK if this OV cites no external sources. "
+                    "If sources are cited (CQ3 in BOOTSTRAP-NEW-OV.md), create the inventory before "
+                    "ARTIFACT-DRAFT per 03-DESIGN-PROTOCOL.md Step 4.5."
+        ))
+        return findings
+    try:
+        text = inv.read_text(encoding="utf-8")
+    except Exception as e:
+        findings.append(Finding("C11-source-inv", "fail", inv, message=f"unreadable: {e}"))
+        return findings
+
+    status_m = re.search(r'^ove_Source_Inventory_Status:\s*([a-z\-]+)', text, re.MULTILINE)
+    status = status_m.group(1) if status_m else None
+    if status not in VALID_INVENTORY_STATUSES:
+        findings.append(Finding(
+            "C11-source-inv", "fail", inv,
+            message=(f"ove_Source_Inventory_Status is '{status}' — must be one of "
+                     f"{sorted(VALID_INVENTORY_STATUSES)}")
+        ))
+
+    for placeholder in SOURCE_INVENTORY_PLACEHOLDERS:
+        if placeholder in text:
+            findings.append(Finding(
+                "C11-source-inv", "fail", inv,
+                message=f"unfilled template placeholder remains: {placeholder}"
+            ))
+
+    if status in ("drafting", "inventoried"):
+        findings.append(Finding(
+            "C11-source-inv", "warn", inv,
+            message=(f"inventory status '{status}' — ARTIFACT-DRAFT is gated until "
+                     "'read-acknowledged' (03-DESIGN-PROTOCOL.md Step 4.5). Add per-source "
+                     "AI-read acknowledgments and bump status.")
+        ))
+
+    return findings
+
+
+def check_C12_citation_audit(root):
+    """v2.0 Source Discipline: if _source-inventory.md is marked 'locked',
+    _citation-audit-log.md must exist documenting verified cites (SHIP-PREP
+    Phase 3.7 requirement)."""
+    findings = []
+    inv = root / "_source-inventory.md"
+    audit = root / "_citation-audit-log.md"
+    if not inv.exists():
+        return findings  # no inventory → no audit obligation
+
+    try:
+        inv_text = inv.read_text(encoding="utf-8")
+    except Exception:
+        return findings
+
+    status_m = re.search(r'^ove_Source_Inventory_Status:\s*([a-z\-]+)', inv_text, re.MULTILINE)
+    status = status_m.group(1) if status_m else None
+
+    if status == "locked":
+        if not audit.exists():
+            findings.append(Finding(
+                "C12-citation-audit", "fail", root,
+                message=("_source-inventory.md is marked 'locked' but _citation-audit-log.md "
+                         "is missing. SHIP-PREP Phase 3.7 (07-SHIPPING-CHECKLIST.md) requires "
+                         "the audit log before claiming inventory-locked.")
+            ))
+        else:
+            try:
+                audit_text = audit.read_text(encoding="utf-8")
+                substantive = [l for l in audit_text.splitlines()
+                               if l.strip() and not l.lstrip().startswith("#")
+                               and not l.strip().startswith("---")]
+                if len(substantive) < 3:
+                    findings.append(Finding(
+                        "C12-citation-audit", "warn", audit,
+                        message=("audit log present but appears empty / placeholder-only. "
+                                 "Phase 3.7 expects one entry per cite verified against source.")
+                    ))
+            except Exception:
+                pass
+    else:
+        if not audit.exists():
+            findings.append(Finding(
+                "C12-citation-audit", "info", root,
+                message=(f"_source-inventory.md present (status: {status}); audit log not yet "
+                         "required (only at ship-time, Phase 3.7).")
+            ))
+    return findings
+
+
+DELIVERABLE_PROMISE_NOUN_RE = re.compile(
+    r'\b(dashboard|scorecard|playbook)\b',
+    re.IGNORECASE
+)
+
+
+def check_C13_vocabulary_audit(root):
+    """v2.0 Voice + Client Promise: if shippable content contains the high-
+    confidence deliverable-promise nouns (dashboard, scorecard, playbook),
+    _vocabulary-audit-log.md must record each instance's disposition. Broader
+    sweep (report, framework, tool, etc.) is operator-driven via markdown grep
+    at SHIP-PREP Phase 3.9 — those words have legitimate role-uses that would
+    produce too many false positives here."""
+    findings = []
+    audit = root / "_vocabulary-audit-log.md"
+
+    hits = []
+    shippable_root_files = ["README.md", "OPERATOR-GUIDE.md", "CONTRIBUTING.md", "INSTALL.md"]
+    for fname in shippable_root_files:
+        f = root / fname
+        if not f.exists():
+            continue
+        try:
+            for lineno, line in iter_prose_lines(f):
+                for m in DELIVERABLE_PROMISE_NOUN_RE.finditer(line):
+                    hits.append((f, lineno, m.group(0)))
+        except Exception:
+            continue
+
+    for sub in ("_design-engine", "_Prototypes"):
+        subroot = root / sub
+        if not subroot.is_dir():
+            continue
+        for f in subroot.rglob("*.md"):
+            if is_skip_path(f, root):
+                continue
+            try:
+                for lineno, line in iter_prose_lines(f):
+                    for m in DELIVERABLE_PROMISE_NOUN_RE.finditer(line):
+                        hits.append((f, lineno, m.group(0)))
+            except Exception:
+                continue
+
+    if not hits:
+        return findings
+
+    if not audit.exists():
+        for (f, lineno, word) in hits[:5]:
+            findings.append(Finding(
+                "C13-vocab-audit", "warn", f, line=lineno,
+                message=(f"deliverable-promise noun '{word}' found; _vocabulary-audit-log.md "
+                         "must record its disposition (kept-with-justification or replaced) "
+                         "before ship (07-SHIPPING-CHECKLIST.md Phase 3.9).")
+            ))
+        if len(hits) > 5:
+            findings.append(Finding(
+                "C13-vocab-audit", "warn", root,
+                message=f"...and {len(hits) - 5} more deliverable-promise noun hits not shown."
+            ))
+    else:
+        try:
+            audit_text = audit.read_text(encoding="utf-8")
+            for (f, lineno, word) in hits:
+                try:
+                    rel_f = str(f.relative_to(root))
+                except ValueError:
+                    rel_f = f.name
+                if word.lower() not in audit_text.lower() and rel_f not in audit_text:
+                    findings.append(Finding(
+                        "C13-vocab-audit", "warn", f, line=lineno,
+                        message=(f"deliverable-promise noun '{word}' found, but no matching "
+                                 "entry in _vocabulary-audit-log.md.")
+                    ))
+        except Exception:
+            pass
+
+    return findings
+
+
 # ---------------------------------------------------------------------------
 # Driver
 # ---------------------------------------------------------------------------
@@ -642,6 +844,12 @@ def run(root, checks):
         findings.extend(check_C9_gitignore_sanity(root))
     if "C10" in checks:
         findings.extend(check_C10_update_prompt_sanity(root))
+    if "C11" in checks:
+        findings.extend(check_C11_source_inventory(root))
+    if "C12" in checks:
+        findings.extend(check_C12_citation_audit(root))
+    if "C13" in checks:
+        findings.extend(check_C13_vocabulary_audit(root))
     return findings, cartridges
 
 
@@ -671,7 +879,7 @@ def main(argv=None):
         print(f"Validating OVE at: {root}")
 
     skip = {c.strip() for c in args.skip.split(",") if c.strip()}
-    checks = {f"C{i}" for i in range(1, 11)} - skip
+    checks = {f"C{i}" for i in range(1, 14)} - skip
 
     findings, cartridges = run(root, sorted(checks))
 

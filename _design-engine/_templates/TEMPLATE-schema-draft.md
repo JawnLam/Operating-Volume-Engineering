@@ -35,7 +35,20 @@ ove_Schema_Status: drafting    # drafting | locked | shipped
 
 ## Q6 — Mastery / completion endpoint
 
-*To be answered.*
+**This question forks based on the OV's archetype (CQ11 in `BOOTSTRAP-NEW-OV.md`, manifest field `ove_OV_Archetype`). Confirm archetype before answering. See `04-SCHEMA-DESIGN.md` § Q6 for the fork specification.**
+
+### If archetype = finite-horizon (Q6a)
+
+*Terminal-artifact spec. To be answered: what observable artifact, demonstrated behavior, or measurable outcome signals "done"?*
+
+### If archetype = practice (Q6b)
+
+*Three-layer mastery signal. To be answered:*
+
+- **L1 — Per-cycle audit-trail integrity:** *(what discipline check fires per cycle?)*
+- **L2 — Per-engagement retrospective contents:** *(what the engagement-close deliverable contains)*
+- **L3 — Per-operator practice longitudinal signals exported at engagement-close:** *(what cross-engagement quantities are exported as structured data)*
+- **Meta-cartridge decision:** *(structured-export-only — recommended default — vs ship a per-operator aggregate meta-cartridge)*
 
 ## Q7 — Custom session activities
 
@@ -64,6 +77,14 @@ ove_Schema_Status: drafting    # drafting | locked | shipped
 ## Q13 — Bootstrap-new-cartridge protocol
 
 *To be answered. The CQ-style questions the AI asks to open a new cartridge in this OV.*
+
+## Q14 — Audience register declaration
+
+*Per Q14 in `_design-engine/04-SCHEMA-DESIGN.md`. Cascades into every ARTIFACT-DRAFT; verified at SHIP-PREP Phase 3.9 (Vocabulary Audit).*
+
+- **Target reader:** *concrete persona of the OV's intended user*
+- **Business / life context:** *context the reader is in when consulting the OV*
+- **Prose register:** *voice the OV's prose embodies, with at least one concrete analogue (e.g., "Senior Managing Partner at a global strategy consultancy")*
 
 ---
 

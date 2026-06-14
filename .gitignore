@@ -1,22 +1,127 @@
+# Operating-Volume-Engineering — .gitignore
+#
+# What this file does:
+#   - Excludes OS / editor / AI-tooling junk that should never be committed
+#   - Excludes operator-private environment + secrets files
+#   - Excludes the operator's _USER.md and per-cartridge design-state by default
+#     (Convention 8 — Operator-Private Zone)
+#   - DOES NOT exclude any engine, template, prototype, or meta content
+#   - DOES NOT exclude the five shipped worked-example cartridges (Convention 8
+#     Shipped Examples Zone — overrides re-include them at the bottom)
+
+# ============================================================
 # Mac filesystem metadata
+# ============================================================
 .DS_Store
 **/.DS_Store
+._*
+.Spotlight-V100
+.Trashes
 
+# ============================================================
 # Editor / IDE artifacts
+# ============================================================
 .vscode/
+*.code-workspace
 .idea/
+*.iml
+*.iws
 *.swp
 *.swo
+*.swn
 *~
+.netrwhist
+\#*\#
+.\#*
+*.sublime-workspace
+*.sublime-project
 
-# Obsidian workspace state
+# ============================================================
+# Obsidian workspace state (user-specific UI)
+# ============================================================
 .obsidian/workspace*
 .obsidian/cache
 .obsidian/graph.json
+.obsidian/workspace-mobile.json
+.obsidian/workspaces.json
 
+# ============================================================
 # OS / network artifacts
+# ============================================================
 Thumbs.db
 .directory
+ehthumbs.db
+desktop.ini
+$RECYCLE.BIN/
+
+# ============================================================
+# AI tooling state (Claude Code, Cursor, etc.)
+# ============================================================
+.claude/
+.claude.json
+.cursor/
+.copilot/
+.ai-cache/
+.chatcache/
+
+# ============================================================
+# Environment + secrets
+# ============================================================
+.env
+.env.local
+.env.*.local
+.envrc
+*.pem
+*.key
+*.p12
+*.pfx
+credentials.json
+secrets.yaml
+secrets.yml
+*.secret
+
+# ============================================================
+# Backup + temporary files
+# ============================================================
+*.bak
+*.backup
+*.orig
+*.tmp
+*.temp
+
+# ============================================================
+# Log files
+# ============================================================
+*.log
+logs/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# ============================================================
+# Archive + compressed files
+# ============================================================
+*.zip
+*.tar
+*.tar.gz
+*.tgz
+*.rar
+*.7z
+
+# ============================================================
+# Language runtimes (in case the operator runs scripts alongside OVE)
+# ============================================================
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.egg-info/
+.venv/
+venv/
+
+# Node
+node_modules/
+.npm/
 
 # ----------------------------------------------------------------------
 # Personal design work — excluded by default so this folder can be shared
@@ -33,7 +138,9 @@ Thumbs.db
 # Design-state files: live record of where each design engagement stands
 **/_design-state.md
 
-# Optional user profile
+# Optional user profile (Convention 8 — Operator-Private Zone; never auto-inferred
+# per P7 / F3 identity rule — the populated _USER.md stays local; only the
+# _USER.md.template ships)
 _USER.md
 
 # Personal cartridges — exclude session content and decision logs by default.

@@ -85,6 +85,7 @@ The names of these components vary per OV. In `LifeLong-Learning`, the engine is
 5. **Conversational interface.** No GUI, no CLI flags. The user talks to the AI; the AI consults the OV.
 6. **Cartridge-specializable.** The engine is subject-agnostic; cartridges specialize it for a specific engagement.
 7. **Multi-session by design.** Built to support work that unfolds over weeks, months, or years.
+8. **Archetype-declared — finite-horizon or practice.** Every OV declares its archetype at design time. **Finite-horizon OVs** have a defined finish line (manuscript published, subject mastered, problem solved, artifact shipped). **Practice OVs** have no terminal arrival — the principal's engagement continues indefinitely (political navigation, longevity health, ongoing relationship cultivation, lifelong leadership development). The archetype shapes how the OV answers "what does done look like" — terminal-artifact spec vs three-layer mastery signal. See `04-SCHEMA-DESIGN.md` § Q6 and `BOOTSTRAP-NEW-OV.md` § CQ11.
 
 ## When is OV the right form?
 

@@ -66,9 +66,19 @@ What domain or kind of work do you want this OV to support? Be as specific as yo
 
 What's driving you to design this OV? What's the current state of the work that the OV is meant to improve?
 
-### CQ3 — Existing artifacts and prior art
+### CQ3 — Existing artifacts and prior art (source inventory)
 
 Do you have existing notes, frameworks, prior systems, or methodologies (in the proper sense — bodies of method) that this OV should incorporate or replace?
+
+**For each named source the OV will cite as substrate** (a dissertation, a published methodology, a field manual, a theorist's body of work — anything the OV will reference as "per source X"), capture structurally:
+
+- **Source identifier** — author + year + title (e.g., "Lam 2018 Pepperdine dissertation, *The Accumulation, Utilization, And Protection of Political Capital*")
+- **Canonical location** — file path / URL where the AI can actually access the full canonical text. Not a session-memory paraphrase; the actual canonical source bytes.
+- **Page count or extent** — to detect partial / truncated copies (e.g., a Table-3-only excerpt mistaken for the full dissertation) before drafting begins.
+- **Full-vs-excerpt status** — is this the full source or a fragment? If a fragment, what's the gap?
+- **Sensitivity** — is this source shareable publicly, ship-by-reference only (per Convention 9 in `_meta/CONVENTIONS.md`), or operator-private?
+
+Log each source in `_source-inventory.md` (template at `_design-engine/_templates/TEMPLATE-source-inventory.md`). The file becomes a hard precondition for ARTIFACT-DRAFT — Step 4.5 of `03-DESIGN-PROTOCOL.md` blocks drafting until every entry has canonical location filled AND the AI has acknowledged reading the canonical source (a one-line summary per source as evidence of the read). This prevents the F13 failure mode (source-grounding skipped) that hit the v1.0 build of Political Landscape Cartography at high frequency.
 
 ### CQ4 — Who is this for
 
@@ -97,6 +107,19 @@ Default is peer register, direct, substantive critique, minimal hedging. Confirm
 ### CQ10 — Output target
 
 Does the OV produce specific deliverables? (Synthesis essays, decision documents, ship-able artifacts, performance records, etc.) Or is the value mostly in-process (the conversations themselves, with no end deliverable)?
+
+### CQ11 — OV Archetype: finite-horizon or practice?
+
+Look across your answers to CQ1–CQ10. Two archetypes describe how OVs *end*:
+
+- **Finite-horizon OV.** The work has a defined finish line — a published manuscript, a mastered subject, a solved problem, a shipped artifact. The cartridge has a terminal state. Examples: LFW → manuscript published; LLL → subject mastered to teachable level; SOLVE-eX → problem solved; OVE → an OV shipped.
+- **Practice OV.** The work has no terminal arrival. The principal's engagement with the domain *continues* indefinitely. The cartridge has cycles and engagements but no "graduated." Examples: PLC (Political Landscape Cartography) — political capital accumulates and is spent across a career; there is no "graduated from politics." Likely future practice OVs: longevity health, relationship cultivation, financial stewardship, leadership development.
+
+Which archetype fits this OV? If unsure, the heuristic: *if you can name a specific artifact or outcome that signals "done," it's finite-horizon. If "done" is defined by the principal's evolving situation (retirement, role change, life-stage), it's practice.*
+
+The archetype shapes **Q6 in SCHEMA-DESIGN** (`04-SCHEMA-DESIGN.md`) — finite-horizon OVs answer Q6 with a terminal-artifact spec; practice OVs answer Q6 with a three-layer mastery signal. It also shapes the cartridge lifecycle: finite-horizon OVs have terminal-close; practice OVs have engagement-close while the practice continues across engagements.
+
+Log the answer as `ove_OV_Archetype: finite_horizon | practice` in the manifest. The choice is locked in `_design-decisions.md` once confirmed.
 
 Once you have answers, proceed.
 
@@ -157,7 +180,7 @@ Order:
 9. **`OPERATOR-GUIDE.md`** — must contain § "Engine vs your work" (Convention 8 four-zone explanation) and § "Updates and troubleshooting" (Convention 7 update workflow with stash-pop conflict guidance)
 10. **`CONTRIBUTING.md`** — must contain § "Content zones" enumerating all four zones with concrete path patterns and at least one example per zone (Convention 8)
 11. **`UPDATE-PROMPT.md`** — copy `_templates/TEMPLATE-UPDATE-PROMPT.md` into the new OV's root and fill in the OV's name throughout (Convention 7). The prompt must (a) reference the OV by its concrete name, (b) reference the four-zone boundary, (c) instruct the AI to stop and confirm before destructive commands.
-12. `LICENSE.md`, `VERSION.md`, `CHANGELOG.md`
+12. `LICENSE.md` (three template paths — `_templates/TEMPLATE-LICENSE-CCBY40.md` for open default, [choosealicense.com](https://choosealicense.com) for MIT/Apache, or `_templates/TEMPLATE-LICENSE-restrictive.md` for proprietary OVs; the restrictive template triggers a CONTRIBUTING.md flag requiring IP-attorney review before public release per `07-SHIPPING-CHECKLIST.md` Phase 4 Path C), `VERSION.md`, `CHANGELOG.md`
 13. **`.gitignore`** — must contain the Operator-Private Zone patterns documented in CONTRIBUTING § "Content zones"; each pattern has an inline comment explaining what it excludes and why (Convention 8)
 14. At least one worked-example cartridge for the new OV
 
@@ -206,6 +229,7 @@ Before considering the OV ready to ship:
 3. **Designing for an OV when a smaller artifact would do.** If CQ6 (multi-session evidence) comes back weak, say so. Sometimes the right answer is "this should be a Custom GPT" or "this should be a few well-crafted prompts." Don't OV everything.
 4. **Schema-by-template.** Cloning an existing OV's schema without re-running Q1–Q13 produces a generic schema that fits nothing well.
 5. **Fabricating tools/frameworks the user references.** F2 in the failure-modes catalog. If you don't know whether something is real, ask.
+5a. **Source-grounding skipped.** F13 in the failure-modes catalog. If the OV cites external sources, capture them structurally during CQ3 and don't draft until every cite's canonical source has been located and read. The v1.0 build of Political Landscape Cartography hit this failure mode at high frequency; v2.0 makes the gate structural.
 6. **Inferring the user's name from username or path.** F3 in the failure-modes catalog. Use placeholders until they tell you.
 7. **Drafting artifacts before schema is locked.** Order matters. Drafts done early get thrown away.
 8. **Engine bleed into cartridge content.** Engine stays subject-agnostic. Domain content goes in the cartridge.

@@ -56,8 +56,9 @@ Begin.
 
 ## When this file is the wrong tool
 
-- **Major version transitions** (e.g., v2.0 ships while you're at v1.2). The CHANGELOG.md entry for the major version will include explicit migration instructions that may go beyond this prompt's scope. Read the CHANGELOG entry first, then ask the AI to apply that specific migration rather than the generic update flow.
-- **You're at a folder that needs renaming first.** If the latest release announces a major.minor folder transition (e.g., `Operating-Volume-Engineering-v1.2 → Operating-Volume-Engineering-v1.3`) the rename happens at the filesystem level before `git pull`. Do that manually first, then run this prompt.
+- **Major version transitions** — including the **v1.x → v2.0 transition shipped 2026-06-13**. The CHANGELOG.md entry for v2.0.0 includes explicit notes on what's breaking (Q6 framing now forks by archetype; manifest schema gains `ove_OV_Archetype` + three `ove_Audience_*` fields for v2.0-designed OVs; SHIP-PREP gains Phase 3.7 / 3.8 / 3.9 hard-stops). Read the CHANGELOG entry's "v2.0 is breaking" paragraph **before** running the standard update flow.
+  - **v1.x-built OVs do not need migration.** OVs have no runtime dependency on OVE — they stand alone once shipped. v2.0's changes affect how the *next* OV gets built; existing OVs grandfather as-shipped. Operators currently mid-design under v1.x can choose to (a) finish the current OV under v1.x conventions (recommended), or (b) restart the design under v2.0 conventions.
+- **You're at a folder that needs renaming first.** If the latest release announces a major.minor folder transition (e.g., `Operating-Volume-Engineering-v1.2 → Operating-Volume-Engineering-v2.0`) the rename happens at the filesystem level before `git pull`. Do that manually first, then run this prompt.
 - **You're forking to customize OVE's engine.** This prompt assumes you're a downstream operator pulling upstream releases. If you're forking to customize OVE itself (adding conventions, extending the validator, restructuring the engine), you want to do that work in a branch and contribute back per OPERATOR-GUIDE.md § "Contributing back upstream," not this update flow.
 
 ## Relationship to other docs
