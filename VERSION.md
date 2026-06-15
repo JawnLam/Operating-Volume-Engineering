@@ -3,30 +3,31 @@ Item_Prototype: Fleeting
 Item_ID: ove-version
 Title: "Operating-Volume-Engineering — Version"
 Date_Added: 2026-06-01
-Date_Modified: 2026-06-13
+Date_Modified: 2026-06-15
 Needs_Processing: false
-ove_Version: "2.1.0"
+ove_Version: "2.2.0"
 schema_version: "2.0"
 schema_status: "STABLE"
-release_date: 2026-06-13
-release_phase: "Minor release — PLC-Retrospective worked example (canonical practice-archetype demonstration; the sixth worked-example cartridge); C7 validator fix for design-cartridge Artifacts/_Prototypes/ nesting; VALIDATION-CHECKLIST.md prose fallbacks for C11/C12/C13. Additive over v2.0.0; no breaking changes."
+release_date: 2026-06-15
+release_phase: "Minor release — Convention 10 (Standalone Sufficiency Posture): every OV designed via OVE declares a posture against a vendored 47-requirement substrate; two master tests (Displacement + Absorption) and 10 anti-requirement traps elevated as load-bearing in 02-DESIGN-PRINCIPLES; new validator check C14; SHIP-PREP Phase 3.10. Worked-example retrofits: Negotiation-Preparation + SOLVE-eX-Retrospective ship full posture; LFW, LLL, Relationship-Cultivation, PLC-Retrospective opt-out via posture-deferred.yaml (horizon 2026-12-01). Additive over v2.1.0; no breaking changes."
 ---
 
 # Operating-Volume-Engineering — Version
 
-This is Operating-Volume-Engineering **v2.1.0** — first minor release after the v2.0.0 major. Additive over v2.0.0: a new worked-example cartridge for the practice archetype (PLC-Retrospective), a C7 validator fix for OVE design-cartridge layout, and markdown-only prose fallbacks for the v2.0 validator additions. No breaking changes; v2.0-built artifacts continue to work as-is.
+This is Operating-Volume-Engineering **v2.2.0** — minor release introducing **Convention 10 — Standalone Sufficiency Posture**, the OVE-side enforcement mechanism for the test "would a general LLM be better for this work than this OV?" The convention vendors a field-agnostic 47-requirement substrate, requires every new OV to declare a posture against it, ships a new validator check (C14), elevates the two master tests (Displacement + Absorption) and the 10 anti-requirement traps as load-bearing canon in `02-DESIGN-PRINCIPLES`, and adds a new SHIP-PREP hard-gate (Phase 3.10). Two worked examples are retrofitted (Negotiation-Preparation, SOLVE-eX-Retrospective); four others carry a bounded deferral marker (horizon 2026-12-01) per dogfood scope.
 
 ## Version identifiers
 
 | Identifier              | Value         | Notes                                                                  |
 |-------------------------|---------------|------------------------------------------------------------------------|
-| **Software**            | v2.1.0        | Minor release — PLC-Retrospective worked example, C7 design-cartridge nesting fix, VALIDATION-CHECKLIST prose fallbacks |
+| **Software**            | v2.2.0        | Minor release — Convention 10 (Standalone Sufficiency Posture), validator C14, SHIP-PREP Phase 3.10, master tests + anti-requirement traps elevated, 2 worked-example retrofits + 4 deferred markers |
 | **Design schema**       | v2.0          | Unchanged from v2.0.0 — `ove_OV_Archetype`, `ove_Audience_Target_Reader`, `ove_Audience_Business_Context`, `ove_Audience_Prose_Register` |
-| **Design engine**       | v2.0          | Unchanged from v2.0.0 — Q6 forks by archetype; Q14 audience register; CQ11 archetype declaration; CQ3 structured source inventory; Step 4.5 gate |
-| **Templates**           | v2.0          | Unchanged from v2.0.0 — three new templates added in v2.0 |
-| **Validator**           | v2.1          | C7 patched to also check `<cartridge>/Artifacts/_Prototypes/` for OVE design-cartridge layouts. C11/C12/C13 unchanged from v2.0. |
-| **Worked examples**     | v2.1          | Six examples — five v1.x finite-horizon retrospectives/fresh + PLC-Retrospective (v2.1, canonical Q6b practice-archetype demonstration) |
-| **Release date**        | 2026-06-13    |                                                                        |
+| **Design engine**       | v2.2          | v2.2: Convention 10 added to `_meta/CONVENTIONS.md`; master tests + anti-requirement traps elevated in `02-DESIGN-PRINCIPLES.md`; OV-as-specialized-AI-agent paragraph in `01-WHAT-IS-AN-OV.md`; POSTURE-DECLARATION activity in `03-DESIGN-PROTOCOL.md`; Q15 in `04-SCHEMA-DESIGN.md`; REQ-B1/B2/B3 cross-link in `06-STATE-PERSISTENCE.md`; Phase 3.10 in `07-SHIPPING-CHECKLIST.md`; CQ12 in `BOOTSTRAP-NEW-OV.md` |
+| **Templates**           | v2.2          | v2.2: four new templates — `TEMPLATE-standalone-sufficiency-posture.md`, `TEMPLATE-posture-yaml.yaml`, `TEMPLATE-vetting-rubric-filled.md`, `TEMPLATE-posture-deferred.yaml` |
+| **Substrate**           | v2.2 (rev 1.2) | v2.2: vendored 47-requirement Standalone Sufficiency substrate at `_design-engine/_meta/standalone-sufficiency/` (Loyalty & Retention spec rev 1.2; commerce-neutral OVE surface) |
+| **Validator**           | v2.2          | v2.2: C14 (Standalone Sufficiency Posture) added; dispatcher range `range(1, 15)`; prose-mode mirror in `VALIDATION-CHECKLIST.md` |
+| **Worked examples**     | v2.2          | Six examples — Negotiation-Preparation and SOLVE-eX-Retrospective retrofit with full posture; LFW, LLL, Relationship-Cultivation, PLC-Retrospective carry `posture-deferred.yaml` (horizon 2026-12-01, scheduled v2.3.0 retrofit) |
+| **Release date**        | 2026-06-15    |                                                                        |
 
 ## Schema policy
 

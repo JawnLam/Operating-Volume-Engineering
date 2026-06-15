@@ -220,6 +220,64 @@ ove_Audience_Business_Context: "<context of use>"
 ove_Audience_Prose_Register: "<voice description>"
 ```
 
+### Q15 — Domain stakes & moat commitments (Convention 10)
+
+*Added v2.2.0.* Q15 is the formal version of the POSTURE-DECLARATION activity (see `03-DESIGN-PROTOCOL.md`). It captures the two load-bearing inputs Convention 10 requires for every OV: the domain-stakes flag (which determines whether the 8 TG conditional gates apply) and the moat commitments (which un-absorbable claim(s) the OV's schema will support).
+
+The canonical 47-requirement list lives at `_design-engine/_meta/standalone-sufficiency/requirements.yaml`. The operator should have it open while answering Q15 — the question is "which of these requirements will this OV's schema make real?" not "do you think this is good?"
+
+#### Q15a — Domain stakes
+
+> *Is this OV operating in a regulated or high-stakes domain?*
+
+A domain is **high-stakes** if any of the following are true. Mark `domain_stakes: high` in `_meta/posture.yaml` if so; the 8 TG conditional gates (REQ-I1 through REQ-I5 calibration/escalation/auditability; REQ-K1 through REQ-K3 data governance/compliance) then become mandatory.
+
+- The OV outputs guidance the user may rely on for decisions with irreversible consequences (financial, medical, legal, safety, regulatory exposure).
+- The OV touches data subject to compliance regimes (HIPAA, FERPA, financial-services rules, EU AI Act high-risk categories, attorney-client privilege).
+- The OV's failure mode includes harm to third parties, not just inconvenience to the operator.
+- The OV produces artifacts that may be presented as authoritative to regulators, boards, or auditors.
+
+A domain is **low-stakes** when failure is bounded to the operator's own time/effort. Personal productivity OVs, methodology corpora for self-study, internal-team brainstorm aids, and similar are typically `low`. Mark `n-a` on each TG gate when domain is low; the OV does not need to (and arguably should not) carry the TG ceremony for stakes that don't justify it.
+
+#### Q15b — Moat commitments
+
+> *Which moat items (REQ-E4, REQ-M1, REQ-M2, REQ-M3, REQ-M4) will this OV's schema support? Pick ≥1, and for each, name the schema feature that will make it real.*
+
+This is the most important question in Q15 because it pulls Convention 10 into the schema itself — the schema must support the moat commitments, or the commitments are wishes. The 5 moat items:
+
+| REQ-ID | Title | What "supports this in the schema" usually looks like |
+|---|---|---|
+| **REQ-E4** | Scenario & Counterfactual Simulation | A Prototype or state structure that holds the user's actual data + a methodology field defining the simulation contract (inputs, outputs, methodology version). |
+| **REQ-M1** | Data Flywheel | A schema field marking which artifacts contribute anonymized outcome data; a cartridge-level outcome-record format the engine can aggregate without breaking privacy. |
+| **REQ-M2** | Legitimate Switching Cost | A cartridge backbone whose state files become the operator's system of record for the domain — substantive enough that leaving the OV means leaving real, accumulated value. |
+| **REQ-M3** | Absorption Resistance | The schema's distinctive feature must rest on proprietary data, real integration, or accountability — NOT on promptable behavior. Name the feature that the platform cannot ship natively even if it wanted to. |
+| **REQ-M4** | Cohort & Network Effects | A schema field or cartridge contract that enables privacy-preserving aggregation across operators (gated cohort benchmarks, peer-progress signals). Domain-gated — not appropriate for confidential or adversarial domains. |
+
+Pick the moat items honestly. Single-moat commitment is acceptable. Committing to a moat the schema cannot actually support is worse than not committing — Convention 10's C14 validator will let it slip past today, but the operator will discover the gap when they try to make the claim externally.
+
+#### Q15c — T0 hard gates flagged as design-challenging (optional)
+
+> *Among the 5 T0 hard gates (REQ-A1, A2, A3, B1, H4), are any anticipated to be design-challenging for this OV?*
+
+Optional but useful. Naming a T0 gate as "challenging" at Q15 time means SCHEMA-DESIGN's remaining questions will pay extra attention to it. Example: a low-budget personal OV may anticipate REQ-A1 (Capability Parity) as challenging because the operator can't afford to add per-domain RAG indexing; SCHEMA-DESIGN can then design Q1 (knowledge shape) to lean on the LLM's general knowledge rather than try to build a corpus the operator can't sustain.
+
+#### How the answer flows into `_meta/posture.yaml`
+
+Q15's answer seeds the OV's `_meta/posture.yaml` source-of-truth file:
+
+```yaml
+domain_stakes: low   # Q15a
+moat_commitments:    # Q15b — at least one entry
+  - req_id: REQ-M2
+    schema_feature: "<concrete schema feature pointer>"
+  # - req_id: REQ-E4
+  #   schema_feature: "..."
+```
+
+The remaining per-requirement dispositions in `posture.yaml` get filled in during ARTIFACT-DRAFT and finalized at SHIP-PREP Phase 3.10 (Standalone Sufficiency readiness). Q15 commits to the posture's load-bearing frame; the dispositions follow.
+
+> **Cross-references.** Convention 10 in `_design-engine/_meta/CONVENTIONS.md` defines the artifact cascade. The substrate's `requirements.yaml` is the canonical REQ-ID list. POSTURE-DECLARATION in `03-DESIGN-PROTOCOL.md` is the lighter pre-schema activity that seeds Q15. SHIP-PREP Phase 3.10 in `07-SHIPPING-CHECKLIST.md` is the gate that enforces the posture at ship time. Validator C14 checks the artifact at any time.
+
 ## Materializing the `_Prototypes/` folder
 
 Once Q9 (cartridge analog) and Q12 (Prototype list) are answered, the Prototypes are *named*. Convention 6 (see `_meta/CONVENTIONS.md`) requires that they are also *defined* — one canonical `_Prototypes/<NAMESPACE>_<TypeName>.md` file per Prototype, structured per `_templates/TEMPLATE-Prototype.md`.

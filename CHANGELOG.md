@@ -3,13 +3,92 @@ Item_Prototype: Fleeting
 Item_ID: ove-changelog
 Title: "Operating-Volume-Engineering — Changelog"
 Date_Added: 2026-06-01
-Date_Modified: 2026-06-06
+Date_Modified: 2026-06-15
 Needs_Processing: false
 ---
 
 # Changelog
 
 All notable changes to Operating-Volume-Engineering are documented in this file. Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); versioning follows [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+## [2.2.0] — 2026-06-15
+
+Minor release introducing **Convention 10 — Standalone Sufficiency Posture**: the OVE-side enforcement mechanism for the test "would a general LLM be better for this work than this OV?" The convention vendors a field-agnostic 47-requirement substrate, requires every new OV to declare a posture against it, ships a new validator check (C14), elevates two master tests + ten anti-requirement traps as load-bearing canon, and adds a new SHIP-PREP hard-gate (Phase 3.10). Additive over v2.1.0; no breaking changes.
+
+### Added — Convention 10 — Standalone Sufficiency Posture
+
+Every OV designed via OVE post-v2.2.0 declares a posture against the field-agnostic 47-requirement substrate at `_design-engine/_meta/standalone-sufficiency/`. The substrate's two master tests (Displacement, Absorption) and 10 anti-requirement traps (persona-only OVs, clever-prompt OVs, "smarter-Claude" OVs, epistemic-closure-as-moat, raw-memory-as-permanent-distinction, unqualified privacy claims, being-cheaper, etc.) are now load-bearing canon in `02-DESIGN-PRINCIPLES.md`'s top section. The convention is **commerce-neutral** in OVE's surface — the test applies whether the OV is commercialized or not.
+
+Three required artifacts per OV (root-level):
+
+- `standalone-sufficiency-posture.md` — operator-facing one-pager with tier coverage, T0 dispositions, TG applicability + dispositions, moat commitments, verdict band.
+- `_meta/posture.yaml` — source-of-truth registry; per-requirement disposition (met / partial / n-a / deferred), evidence pointer, domain-stakes flag, moat commitments with schema-feature pointers.
+- `_meta/vetting-rubric-filled.md` — generated 0–3 scorecard with weighted total (max 558), gating-rule veto outcome, verdict band.
+
+Plus an optional `posture-deferred.yaml` opt-out marker for retrofitting pre-existing OVs.
+
+### Added — Substrate at `_design-engine/_meta/standalone-sufficiency/`
+
+Six vendored files (the upstream Loyalty & Retention Requirements spec, rev 1.2):
+
+- `requirements.yaml` — single source of truth, 47 reqs across 13 categories
+- `render.py` — generator script (PyYAML)
+- `specialized-agent-requirements.md` — narrative master
+- `build-standard.md` — binary-gate view (generated)
+- `vetting-rubric.md` — weighted-scorecard view (generated)
+- `requirements-registry.csv` — flat dump (generated)
+- `README.md` — OVE-specific consumption notes + documented substrate-vs-OVE-surface terminology seam
+
+The substrate retains its original commercial framing ("Loyalty & Retention," "customer," REQ-J4's price-objection wording) because OVE does not modify upstream content. OVE's surface translates to neutral equivalents ("Standalone Sufficiency," "user," generic value-attribution) — seam documented in `_design-engine/_meta/standalone-sufficiency/README.md` and `_design-engine/_meta/CONVENTIONS.md` Convention 10.
+
+### Added — Templates (four new in `_design-engine/_templates/`)
+
+- `TEMPLATE-standalone-sufficiency-posture.md`
+- `TEMPLATE-posture-yaml.yaml`
+- `TEMPLATE-vetting-rubric-filled.md`
+- `TEMPLATE-posture-deferred.yaml`
+
+### Added — Engine prose elevation
+
+- `02-DESIGN-PRINCIPLES.md` — new top section "The two master tests" (Displacement, Absorption) and new section "Anti-requirements OVE refuses to enable" (10 named traps with neutral framing).
+- `01-WHAT-IS-AN-OV.md` — new section "An OV is a specialized AI agent (Convention 10 framing)" — explicitly commerce-neutral.
+- `03-DESIGN-PROTOCOL.md` — new universal session activity **POSTURE-DECLARATION** (between INTERVIEW and SCHEMA-DESIGN); new Decision Algorithm Step 2.5.
+- `04-SCHEMA-DESIGN.md` — new **Q15 — Domain stakes & moat commitments**.
+- `06-STATE-PERSISTENCE.md` — new top section explicitly mapping REQ-B1 (T0)/B2/B3 (T2) to state-persistence design.
+- `07-SHIPPING-CHECKLIST.md` — new **Phase 3.10 — Standalone Sufficiency readiness** (hard gate, 6 verification steps).
+- `BOOTSTRAP-NEW-OV.md` — new **CQ12 — Standalone Sufficiency posture commitments** (early version of Q15).
+
+### Added — Validator C14 (Convention 10)
+
+`_design-engine/_meta/validate.py`:
+
+- New `check_C14_standalone_sufficiency_posture(root, cartridges)` function (per-cartridge, ~300 LOC).
+- Module-level constants `T0_REQ_IDS`, `TG_REQ_IDS`, `MOAT_REQ_IDS` mirror substrate definitions.
+- Regex-based YAML parsing (validator is pure stdlib; no PyYAML dep). Tolerates both verbose and inline-dict disposition forms in `posture.yaml`.
+- Opt-out via `posture-deferred.yaml` short-circuits to info-level finding when `deferred_until` is in the future.
+- Dispatcher updated to `range(1, 15)`.
+
+Prose-mode mirror added to `_design-engine/_meta/VALIDATION-CHECKLIST.md` (new "C14 — Standalone Sufficiency posture (Convention 10)" section).
+
+### Retrofit — Two worked examples ship full posture
+
+- `Negotiation-Preparation/` — `domain_stakes: high`. 5/5 T0 + 8/8 TG met. 2 moat commitments (REQ-E4 wargame simulation + REQ-M2 negotiation library as system of record). Weighted 494/558 (88.5%) → Defensible specialist.
+- `SOLVE-eX-Retrospective/` — `domain_stakes: high`. 5/5 T0 + 8/8 TG met. 3 moat commitments (REQ-E4 + REQ-M2 + REQ-M3 absorption resistance). Weighted 503/558 (90.1%) → Defensible specialist.
+
+### Deferred — Four worked examples opt out with bounded horizon
+
+`Long-Form-Writing/`, `LifeLong-Learning-Retrospective/`, `Relationship-Cultivation/`, `Political-Landscape-Cartography-Retrospective/` each ship `posture-deferred.yaml` with `deferred_until: 2026-12-01`. v2.2.0 dogfood scope was limited to the two potentially high-stakes worked examples; the remaining four retrofit at v2.3.0 (or extend the horizon with documented reason). C14 returns info-level for deferred OVs, not fail, until the horizon date.
+
+### Changed — Section/phase numbering callouts
+
+- `03-DESIGN-PROTOCOL.md`: activities table renamed from "six" to "seven universal session activities" (POSTURE-DECLARATION added between INTERVIEW and SCHEMA-DESIGN). SCHEMA-DESIGN row updated to reference Q1–Q15 (was Q1–Q8) and SHIP-PREP row references Phase 3.10.
+- `04-SCHEMA-DESIGN.md`: Q15 added; the cross-reference table at the bottom of Q15 names Phase 3.10 as the enforcement gate.
+
+### Compatibility
+
+v2.0-built and v2.1-built OVs continue to function as-is. New OVs designed under v2.2.0 must satisfy Convention 10 at SHIP-PREP Phase 3.10. Pre-existing OVs that have not retrofitted may add a `posture-deferred.yaml` opt-out marker with a horizon date to suppress C14 fails temporarily.
+
+---
 
 ## [2.1.0] — 2026-06-13
 

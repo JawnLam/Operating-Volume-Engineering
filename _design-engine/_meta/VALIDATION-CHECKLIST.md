@@ -230,11 +230,106 @@ grep -qiE 'destructive|confirm|approve|stop and ask' UPDATE-PROMPT.md && echo "O
 
 Missing file is a `fail`. Content sanity gaps are `warn`-level (operators may legitimately customize the prompt to a different shape).
 
+## C14 — Standalone Sufficiency posture (Convention 10)
+
+For each cartridge (each OV designed via OVE), check Convention 10 compliance. This mirrors `check_C14_standalone_sufficiency_posture()` in `validate.py`.
+
+### Step 1 — Opt-out marker (skip rest of C14 if present)
+
+```bash
+# Per cartridge, check for opt-out marker first
+ls <Cartridge>/posture-deferred.yaml
+```
+
+If `posture-deferred.yaml` exists:
+
+- [ ] Open it and confirm `deferred_until: "YYYY-MM-DD"` is present
+- [ ] Confirm `rationale:` is non-empty (`warn` if missing)
+- [ ] Confirm `responsible_party:` is non-empty (`warn` if missing)
+- [ ] Confirm `deferred_until` is in the future (`warn` if past — escalate to operator)
+
+If all four are clean: this cartridge is **deferred-with-rationale**; C14 status = `info`. Skip to next cartridge.
+
+### Step 2 — Full posture artifacts must exist
+
+If no `posture-deferred.yaml`, the cartridge must ship the full Convention 10 cascade:
+
+```bash
+ls <Cartridge>/standalone-sufficiency-posture.md
+ls <Cartridge>/_meta/posture.yaml
+ls <Cartridge>/_meta/vetting-rubric-filled.md
+```
+
+- [ ] `standalone-sufficiency-posture.md` present at OV root — `fail` if missing
+- [ ] `_meta/posture.yaml` present — `fail` if missing
+- [ ] `_meta/vetting-rubric-filled.md` present — `fail` if missing
+
+### Step 3 — `domain_stakes` is declared
+
+```bash
+grep -E '^domain_stakes:' <Cartridge>/_meta/posture.yaml
+```
+
+- [ ] Value is `low` OR `high` — anything else (or missing) is `fail`
+
+### Step 4 — All 5 T0 hard gates ship as `met`
+
+The five T0 hard gates: **REQ-A1, REQ-A2, REQ-A3, REQ-B1, REQ-H4**. None may ship as `partial` or `deferred` without a `waiver_reason` (and the waiver must be reviewable in `_design-decisions.md`).
+
+For each REQ-ID, find its disposition in `_meta/posture.yaml`:
+
+```bash
+# For verbose form
+grep -A 3 'REQ-A1:' <Cartridge>/_meta/posture.yaml | grep 'disposition'
+
+# For compact inline-dict form
+grep 'REQ-A1:' <Cartridge>/_meta/posture.yaml
+```
+
+- [ ] `REQ-A1` (Capability Parity) = `met` — `fail` otherwise
+- [ ] `REQ-A2` (Graceful Scope Boundaries) = `met` — `fail` otherwise
+- [ ] `REQ-A3` (No Artificial Lobotomy) = `met` — `fail` otherwise
+- [ ] `REQ-B1` (Persistent User Model) = `met` — `fail` otherwise
+- [ ] `REQ-H4` (Time-to-First-Value Activation) = `met` — `fail` otherwise
+
+### Step 5 — 8 TG conditional gates per declared stakes
+
+If `domain_stakes: high`, the 8 TG conditional gates are mandatory: **REQ-I1, REQ-I2, REQ-I3, REQ-I4, REQ-I5, REQ-K1, REQ-K2, REQ-K3**. If `domain_stakes: low`, the 8 gates default to `n-a` (no justification required).
+
+- [ ] If high: all 8 dispositions = `met` — `fail` otherwise
+- [ ] If low: 8 dispositions = `n-a` (or `met` if the OV chose to clear them anyway)
+
+### Step 6 — ≥1 moat commitment with concrete `schema_feature`
+
+The 5 moat items: **REQ-E4, REQ-M1, REQ-M2, REQ-M3, REQ-M4**. At least one must be in `posture.yaml` under `moat_commitments` with a non-empty `schema_feature`. A commitment without a schema feature is a wish, not a moat.
+
+```bash
+grep -A 5 'moat_commitments:' <Cartridge>/_meta/posture.yaml
+```
+
+- [ ] At least one entry under `moat_commitments` — `warn` if none
+- [ ] That entry's `req_id` is one of E4/M1/M2/M3/M4 — `warn` if not
+- [ ] That entry's `schema_feature` is a non-empty string pointer — `warn` if empty
+
+### Step 7 — Vetting rubric verdict populated
+
+Open `_meta/vetting-rubric-filled.md` and confirm:
+
+- [ ] Weighted score + percentage are populated (not `<N>` placeholders) — `fail` if placeholders remain
+- [ ] Verdict band is one of *Defensible specialist*, *Viable*, *At risk* — `fail` if missing
+
+### Outcome
+
+- All Step 2–7 checks pass → C14 = `pass`
+- Any Step 4 or 5 disposition missing/wrong → C14 = `fail`
+- Step 6 issues only → C14 = `warn`
+- `posture-deferred.yaml` present with valid future date → C14 = `info` (no further checks)
+
 ---
 
 ## Overall outcome
 
-- [ ] All C1–C13 checks pass, or every warning is explicitly waived by the operator with a written rationale
+- [ ] All C1–C14 checks pass, or every warning is explicitly waived by the operator with a written rationale
 - [ ] No `fail`-class finding remains unresolved
 
 If `validate.py` is available, run it as well; this prose walkthrough is the fallback, not the canonical check.

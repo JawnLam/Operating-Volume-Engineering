@@ -336,6 +336,80 @@ Validator check C13 (vocabulary audit log) requires `_vocabulary-audit-log.md` d
 
 **If any of these is no, return to ARTIFACT-DRAFT or REVIEW to resolve. Phase 7 is locked until this gate is clean.**
 
+## Phase 3.10 — Standalone Sufficiency readiness (HARD STOP)
+
+**This phase is a hard ship gate. Convention 10 is enforced here.** No proceeding to Phase 4 until this returns clean. Like Phase 3 (personal-data scrub), this phase is non-advisory — if any sub-step fails, the OV does not ship until it's resolved.
+
+The OV is being checked against the field-agnostic 47-requirement substrate at `_design-engine/_meta/standalone-sufficiency/`. The substrate's two master tests (Displacement, Absorption) are the criteria; Convention 10 in `_design-engine/_meta/CONVENTIONS.md` is the enforcement contract. The OV's `_meta/posture.yaml` was seeded at Q15 (SCHEMA-DESIGN) and the dispositions were filled during ARTIFACT-DRAFT — this phase verifies the result.
+
+### Step 1 — Regenerate posture-derived artifacts
+
+`standalone-sufficiency-posture.md` (operator-facing one-pager) and `_meta/vetting-rubric-filled.md` (0–3 scorecard) are derived from `_meta/posture.yaml`. Regenerate them from the current `posture.yaml`:
+
+- If the OV ships a render script for posture artifacts, run it.
+- If posture artifacts are hand-rolled, sweep both files against the current `posture.yaml` and update any stale dispositions / scores / verdict bands. Both files must reflect the current source of truth.
+
+Verify:
+
+- [ ] `standalone-sufficiency-posture.md` exists at the OV root
+- [ ] `_meta/posture.yaml` exists at the OV root and is YAML-valid (`python3 -c "import yaml; yaml.safe_load(open('<OV>/_meta/posture.yaml'))"`)
+- [ ] `_meta/vetting-rubric-filled.md` exists at the OV root
+- [ ] Universal Core fields (Convention 1) present in each artifact's frontmatter
+
+### Step 2 — Validate C14 against the OV root
+
+Run the C14 check (Standalone Sufficiency Posture) in `_design-engine/_meta/validate.py`:
+
+```bash
+python3 _design-engine/_meta/validate.py --root <OV-root> --skip C1,C2,C3,C4,C5,C6,C7,C8,C9,C10,C11,C12,C13
+```
+
+(The skip list runs only C14; remove the skip flag once the OV is ready for the full sweep.)
+
+- [ ] C14 exits 0 (pass) or 1 (warn-only). **Any C14 fail blocks ship.**
+
+### Step 3 — Verify all 5 T0 hard gates = `met`
+
+The five T0 gates are non-negotiable. None may ship as `partial` or `deferred` without an explicit `waiver_reason` field documenting why (and the waiver must be reviewable — "we'll get to it later" is not a waiver).
+
+Open `_meta/posture.yaml` and confirm:
+
+- [ ] `REQ-A1` (Capability Parity) — disposition `met` with evidence pointer
+- [ ] `REQ-A2` (Graceful Scope Boundaries) — disposition `met` with evidence pointer
+- [ ] `REQ-A3` (No Artificial Lobotomy) — disposition `met` with evidence pointer
+- [ ] `REQ-B1` (Persistent User Model) — disposition `met` with evidence pointer (typically into chapter 06's state-persistence decisions)
+- [ ] `REQ-H4` (Time-to-First-Value Activation) — disposition `met` with evidence pointer (the engineered first-win mechanism)
+
+### Step 4 — Verify 8 TG conditional gates per declared `domain_stakes`
+
+If `domain_stakes: high`, all 8 TG gates (REQ-I1 through REQ-I5; REQ-K1 through REQ-K3) must ship as `met`. If `domain_stakes: low`, the 8 gates may be `n-a` with no justification needed (low stakes don't justify TG ceremony).
+
+- [ ] `domain_stakes` flag set in `posture.yaml` (`low` or `high`)
+- [ ] If high: all 8 TG dispositions = `met` with evidence pointers
+- [ ] If low: 8 TG dispositions = `n-a` (or `met` if the OV chose to clear them anyway)
+
+### Step 5 — Verify ≥1 moat commitment with concrete schema-feature pointer
+
+At least one of REQ-E4, REQ-M1, REQ-M2, REQ-M3, or REQ-M4 must be committed in `posture.yaml` under `moat_commitments`, with a non-empty `schema_feature` pointer naming the concrete schema feature that makes the moat real. A moat commitment without a schema pointer is a wish, not a moat.
+
+- [ ] At least one entry in `moat_commitments` in `posture.yaml`
+- [ ] Each commitment's `schema_feature` points to a real, named schema artifact (a Prototype, a state file structure, a methodology field)
+
+### Step 6 — Confirm vetting-rubric verdict + gating veto
+
+Open `_meta/vetting-rubric-filled.md` and confirm:
+
+- [ ] Weighted score and percentage are populated (not `<N>` placeholders)
+- [ ] Gating-rule veto status is named (`fires` / `does not fire`)
+- [ ] Verdict band is one of: *Defensible specialist*, *Viable*, *At risk*
+- [ ] If verdict is *At risk* with no T0/TG floor violation, return to ARTIFACT-DRAFT to close the gaps before shipping; *At risk* is a ship block unless the operator explicitly documents the choice in `_design-decisions.md` (rare; usually means the OV is a first iteration and the operator accepts a v0.x positioning)
+
+### If any sub-step fails
+
+Return to ARTIFACT-DRAFT to close the gap. **Phase 4 is locked until Phase 3.10 returns clean.**
+
+> **Why this phase exists at the ship boundary.** Convention 10's claims are easy to leave at "we'll get to it" until the final ship moment. Phase 3.10 makes the posture work non-deferrable — the OV does not ship until the substitution-defense story is real, documented, and validator-checked. Without this phase as a hard gate, posture decay is the dominant failure mode (the operator commits at Q15, the dispositions get filled aspirationally during ARTIFACT-DRAFT, and the gap between aspiration and reality goes unflagged into release).
+
 ## Phase 4 — License + attribution
 
 The default for the OV ecosystem is CC-BY 4.0 (matching SOLVE-eX, LifeLong-Learning, OVE itself). Reasonable open alternatives: MIT, Apache-2.0. For OVs where the Methodology Author wants restrictive licensing (proprietary methodology, sensitive substrate per Convention 9, monetized release), use the v2.0 restrictive template. Confirm the choice with the user.

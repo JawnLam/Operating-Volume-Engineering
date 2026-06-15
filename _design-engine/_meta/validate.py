@@ -827,6 +827,279 @@ def check_C13_vocabulary_audit(root):
 
 
 # ---------------------------------------------------------------------------
+# C14 — Standalone Sufficiency posture (Convention 10)
+# ---------------------------------------------------------------------------
+
+# T0 hard gates that must ship as 'met' on every OV (Convention 10).
+T0_REQ_IDS = ["REQ-A1", "REQ-A2", "REQ-A3", "REQ-B1", "REQ-H4"]
+
+# TG conditional gates — mandatory when domain_stakes: high.
+TG_REQ_IDS = [
+    "REQ-I1", "REQ-I2", "REQ-I3", "REQ-I4", "REQ-I5",
+    "REQ-K1", "REQ-K2", "REQ-K3",
+]
+
+# Five moat items — at least one must be committed with a schema_feature.
+MOAT_REQ_IDS = ["REQ-E4", "REQ-M1", "REQ-M2", "REQ-M3", "REQ-M4"]
+
+VALID_DISPOSITIONS = {"met", "partial", "n-a", "deferred"}
+
+
+def _parse_disposition(text, req_id):
+    """Find the disposition for req_id in a posture.yaml text. Returns the
+    disposition string or None. Tolerates both verbose ('REQ-X:\\n  disposition: met')
+    and compact ('REQ-X: { disposition: met, ... }') YAML forms.
+    """
+    # Match REQ-ID followed by anything up to its disposition. Non-greedy to
+    # avoid running into the next REQ-ID. Allow ~400 chars of separation for
+    # the verbose form's evidence/notes lines.
+    pattern = re.compile(
+        re.escape(req_id) + r":\s*(?:\{[^{}]*?disposition:|.*?\n\s*disposition:)\s*([\w-]+)",
+        re.DOTALL,
+    )
+    m = pattern.search(text)
+    if m:
+        return m.group(1).strip().lower()
+    return None
+
+
+def _parse_domain_stakes(text):
+    m = re.search(r'^domain_stakes:\s*"?(\w+)"?', text, re.MULTILINE)
+    return m.group(1).strip().lower() if m else None
+
+
+def _parse_moat_commitments(text):
+    """Return list of dicts with keys 'req_id' and 'schema_feature' (each may be empty)."""
+    # Find moat_commitments: block and grab everything until the next top-level key.
+    m = re.search(r'^moat_commitments:(.*?)(?=^\w|\Z)', text, re.MULTILINE | re.DOTALL)
+    if not m:
+        return []
+    block = m.group(1)
+    commitments = []
+    # Each entry begins with "- req_id:" (allowing leading whitespace).
+    entries = re.findall(
+        r'-\s*req_id:\s*"?([\w-]+)"?(?:.*?schema_feature:\s*"([^"]*)")?',
+        block, re.DOTALL,
+    )
+    for req_id, schema_feature in entries:
+        commitments.append({
+            "req_id": req_id.strip(),
+            "schema_feature": (schema_feature or "").strip(),
+        })
+    return commitments
+
+
+def _parse_deferred(text):
+    """Return (deferred_until_str, rationale, responsible_party) from posture-deferred.yaml."""
+    until = re.search(r'^deferred_until:\s*"?([\d-]+)"?', text, re.MULTILINE)
+    rationale = re.search(r'^rationale:\s*[|>]?\s*\n((?:\s+\S.*\n?)+)', text, re.MULTILINE)
+    if not rationale:
+        rationale = re.search(r'^rationale:\s*"([^"]*)"', text, re.MULTILINE)
+    party = re.search(r'^responsible_party:\s*"?([^"\n]+)"?', text, re.MULTILINE)
+    return (
+        until.group(1) if until else None,
+        rationale.group(1).strip() if rationale else None,
+        party.group(1).strip() if party else None,
+    )
+
+
+def _is_date_past(date_str):
+    """Return True if YYYY-MM-DD string is in the past relative to today.
+    Returns False on parse failure (treats unparseable as not-yet-expired).
+    """
+    if not date_str:
+        return False
+    try:
+        from datetime import date
+        parts = date_str.strip().split("-")
+        if len(parts) != 3:
+            return False
+        target = date(int(parts[0]), int(parts[1]), int(parts[2]))
+        return target < date.today()
+    except Exception:
+        return False
+
+
+def check_C14_standalone_sufficiency_posture(root, cartridges):
+    """Convention 10 (v2.2.0): each cartridge (OV) ships a Standalone Sufficiency
+    posture — standalone-sufficiency-posture.md at root, _meta/posture.yaml at
+    root (source of truth), _meta/vetting-rubric-filled.md at root (filled
+    scorecard). All 5 T0 hard gates must be 'met'; if domain_stakes is 'high',
+    all 8 TG gates must be 'met'; at least one of the 5 moat items must be
+    committed with a non-empty schema_feature.
+
+    OVs may opt out via posture-deferred.yaml at root (with deferred_until,
+    rationale, responsible_party). Deferred OVs warn (not fail) until the
+    horizon date elapses, then warn escalates to surfacing.
+    """
+    findings = []
+
+    for cart in cartridges:
+        posture_md = cart / "standalone-sufficiency-posture.md"
+        posture_yaml = cart / "_meta" / "posture.yaml"
+        rubric = cart / "_meta" / "vetting-rubric-filled.md"
+        deferred = cart / "posture-deferred.yaml"
+
+        # Opt-out path: posture-deferred.yaml present.
+        if deferred.exists():
+            try:
+                dtext = deferred.read_text(encoding="utf-8")
+            except Exception as e:
+                findings.append(Finding(
+                    "C14-posture", "warn", deferred,
+                    message=f"posture-deferred.yaml present but unreadable: {e}"
+                ))
+                continue
+            until, rationale, party = _parse_deferred(dtext)
+            if not until:
+                findings.append(Finding(
+                    "C14-posture", "fail", deferred,
+                    message="posture-deferred.yaml is missing required 'deferred_until' field."
+                ))
+                continue
+            if not rationale:
+                findings.append(Finding(
+                    "C14-posture", "warn", deferred,
+                    message="posture-deferred.yaml has no 'rationale' field — please document why."
+                ))
+            if not party:
+                findings.append(Finding(
+                    "C14-posture", "warn", deferred,
+                    message="posture-deferred.yaml has no 'responsible_party' field."
+                ))
+            if _is_date_past(until):
+                findings.append(Finding(
+                    "C14-posture", "warn", deferred,
+                    message=(f"posture-deferred.yaml deferred_until={until} is in the past — "
+                             "retrofit the posture now or extend the horizon with documented reason.")
+                ))
+            else:
+                findings.append(Finding(
+                    "C14-posture", "info", cart,
+                    message=(f"Standalone Sufficiency posture deferred until {until}. "
+                             "Convention 10 C14 check skipped per opt-out marker.")
+                ))
+            continue  # Skip the rest of the C14 checks for this cartridge.
+
+        # Full-posture path: all three artifacts must exist.
+        if not posture_md.exists():
+            findings.append(Finding(
+                "C14-posture", "fail", cart,
+                message=("Convention 10 violation: standalone-sufficiency-posture.md is missing "
+                         "at the OV root. Either ship the posture artifact or add posture-deferred.yaml "
+                         "with deferred_until + rationale.")
+            ))
+            continue
+
+        if not posture_yaml.exists():
+            findings.append(Finding(
+                "C14-posture", "fail", cart,
+                message=("Convention 10 violation: _meta/posture.yaml (source of truth) is missing. "
+                         "The posture markdown cannot be verified without it.")
+            ))
+            continue
+
+        try:
+            ptext = posture_yaml.read_text(encoding="utf-8")
+        except Exception as e:
+            findings.append(Finding(
+                "C14-posture", "fail", posture_yaml,
+                message=f"could not read posture.yaml: {e}"
+            ))
+            continue
+
+        # domain_stakes flag.
+        stakes = _parse_domain_stakes(ptext)
+        if stakes is None:
+            findings.append(Finding(
+                "C14-posture", "fail", posture_yaml,
+                message="posture.yaml is missing 'domain_stakes' (must be 'low' or 'high')."
+            ))
+            continue
+        if stakes not in ("low", "high"):
+            findings.append(Finding(
+                "C14-posture", "fail", posture_yaml,
+                message=f"posture.yaml domain_stakes='{stakes}' is not 'low' or 'high'."
+            ))
+            continue
+
+        # T0 hard gates: all 5 must be 'met'.
+        for req in T0_REQ_IDS:
+            disp = _parse_disposition(ptext, req)
+            if disp is None:
+                findings.append(Finding(
+                    "C14-posture", "fail", posture_yaml,
+                    message=f"T0 hard gate {req} has no disposition in posture.yaml."
+                ))
+            elif disp not in VALID_DISPOSITIONS:
+                findings.append(Finding(
+                    "C14-posture", "fail", posture_yaml,
+                    message=f"T0 hard gate {req} has invalid disposition '{disp}'."
+                ))
+            elif disp != "met":
+                # Allow partial/deferred only with explicit waiver field; we don't parse the
+                # waiver shape (free text), so any non-'met' T0 fails C14 to force operator
+                # to explicitly justify it elsewhere (e.g., _design-decisions.md).
+                findings.append(Finding(
+                    "C14-posture", "fail", posture_yaml,
+                    message=(f"T0 hard gate {req} disposition='{disp}' — T0 gates must ship as 'met' "
+                             "(no exceptions without explicit waiver_reason).")
+                ))
+
+        # TG conditional gates: required if domain_stakes high.
+        if stakes == "high":
+            for req in TG_REQ_IDS:
+                disp = _parse_disposition(ptext, req)
+                if disp is None:
+                    findings.append(Finding(
+                        "C14-posture", "fail", posture_yaml,
+                        message=(f"TG conditional gate {req} has no disposition; required because "
+                                 "domain_stakes: high.")
+                    ))
+                elif disp not in VALID_DISPOSITIONS:
+                    findings.append(Finding(
+                        "C14-posture", "fail", posture_yaml,
+                        message=f"TG conditional gate {req} has invalid disposition '{disp}'."
+                    ))
+                elif disp != "met":
+                    findings.append(Finding(
+                        "C14-posture", "fail", posture_yaml,
+                        message=(f"TG conditional gate {req} disposition='{disp}' — TG gates must "
+                                 "ship as 'met' when domain_stakes: high.")
+                    ))
+
+        # Moat commitments: at least one with non-empty schema_feature.
+        commitments = _parse_moat_commitments(ptext)
+        valid_moats = [
+            c for c in commitments
+            if c["req_id"] in MOAT_REQ_IDS and c["schema_feature"]
+        ]
+        if not commitments:
+            findings.append(Finding(
+                "C14-posture", "warn", posture_yaml,
+                message=("No moat commitments declared. Convention 10 requires ≥1 moat item "
+                         "(REQ-E4/M1/M2/M3/M4) with a concrete schema_feature pointer.")
+            ))
+        elif not valid_moats:
+            findings.append(Finding(
+                "C14-posture", "warn", posture_yaml,
+                message=("Moat commitments are present but none has both a valid moat REQ-ID "
+                         "AND a non-empty schema_feature. A commitment without a schema feature "
+                         "is a wish, not a moat.")
+            ))
+
+        # Vetting rubric filled artifact.
+        if not rubric.exists():
+            findings.append(Finding(
+                "C14-posture", "fail", cart,
+                message=("Convention 10 violation: _meta/vetting-rubric-filled.md is missing. "
+                         "The filled 0-3 scorecard with verdict band must ship.")
+            ))
+
+    return findings
+
+
+# ---------------------------------------------------------------------------
 # Driver
 # ---------------------------------------------------------------------------
 
@@ -859,6 +1132,8 @@ def run(root, checks):
         findings.extend(check_C12_citation_audit(root))
     if "C13" in checks:
         findings.extend(check_C13_vocabulary_audit(root))
+    if "C14" in checks:
+        findings.extend(check_C14_standalone_sufficiency_posture(root, cartridges))
     return findings, cartridges
 
 
@@ -888,7 +1163,7 @@ def main(argv=None):
         print(f"Validating OVE at: {root}")
 
     skip = {c.strip() for c in args.skip.split(",") if c.strip()}
-    checks = {f"C{i}" for i in range(1, 14)} - skip
+    checks = {f"C{i}" for i in range(1, 15)} - skip
 
     findings, cartridges = run(root, sorted(checks))
 

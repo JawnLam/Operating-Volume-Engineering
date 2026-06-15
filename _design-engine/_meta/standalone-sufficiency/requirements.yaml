@@ -1,0 +1,284 @@
+meta:
+  title: "Specialized AI Agent — Loyalty & Retention Requirements"
+  revision: "1.2"
+  source_of_truth: true
+  note: >
+    This registry is the single source. The build standard and vetting rubric
+    are generated from it. Never hand-edit the rendered views — edit here and
+    regenerate.
+  weights_by_tier:   # default weight a requirement inherits from its tier (overridable per-req)
+    T0: 5
+    TG: 5
+    T2: 4
+    T1: 3
+  scoring:
+    scale:
+      0: "Absent — no evidence the requirement is met."
+      1: "Partial — gestured at, but weak or inconsistent."
+      2: "Adequate — present and reliable."
+      3: "Strong — a clear, differentiating implementation."
+    gate_min: 2          # a gate scoring below this vetoes the whole assessment
+  verdict_bands:
+    - {min: 0.80, label: "Defensible specialist — earns loyalty over a general LLM."}
+    - {min: 0.60, label: "Viable — real differentiation, but close the gaps before claiming the moat."}
+    - {min: 0.00, label: "At risk — thin wrapper territory; a savvy user will default to the general model."}
+
+tiers:
+  T0: "Parity — if absent, the customer instantly defaults to the general model. Hard ship-gate."
+  T1: "Differentiator — the active reason to choose the specialist over the default."
+  T2: "Retention/Moat — the reason to stay, and the reason value cannot be absorbed."
+  TG: "Trust-Gated — required to enter a high-stakes or regulated domain at all. Conditional gate."
+
+categories:
+  - id: A
+    name: "Foundational Parity & Scope Integrity"
+    tagline: "If the specialist feels dumber or more caged than the general model, no other feature matters."
+    requirements:
+      - {id: REQ-A1, title: "Capability Parity", tier: T0, journey: Trial, gate: hard, moat: false,
+         statement: "The agent SHALL be at least as capable and fluent as a frontier general model on any task that overlaps both.",
+         neutralizes: "The specialist is just a worse, narrower Claude.",
+         acceptance: "Blind A/B on overlapping tasks: specialist rated >= general model on usefulness."}
+      - {id: REQ-A2, title: "Graceful Scope Boundaries", tier: T0, journey: Trial, gate: hard, moat: false,
+         statement: "The agent SHALL handle adjacent or out-of-scope requests gracefully — answering competently or redirecting transparently — never dead-ending in a refusal wall.",
+         neutralizes: "It can't do the other ten things I also need, so I'll just keep one tab for everything.",
+         acceptance: "Out-of-scope probes yield useful handling, not brittle failure."}
+      - {id: REQ-A3, title: "No Artificial Lobotomy", tier: T0, journey: Trial, gate: hard, moat: false,
+         statement: "The agent SHALL add only constraints that serve the user; it SHALL NOT strip useful general capability to force a workflow.",
+         neutralizes: "It won't just answer my question — it makes me jump through hoops.",
+         acceptance: "The user can still obtain a direct answer on demand."}
+
+  - id: B
+    name: "Memory & Statefulness"
+    tagline: "The single biggest structural gap between a service and a chat window."
+    requirements:
+      - {id: REQ-B1, title: "Persistent User Model", tier: T0, journey: Trial, gate: hard, moat: false,
+         statement: "The agent SHALL retain a persistent user model (profile, constraints, goals, history) across sessions without re-priming.",
+         neutralizes: "I have to re-explain everything every time.",
+         acceptance: "Zero re-entry of previously supplied facts across sessions."}
+      - {id: REQ-B2, title: "Longitudinal Continuity", tier: T2, journey: Retention, gate: none, moat: false,
+         statement: "The agent SHALL reference and build upon prior interactions, drafts, and decisions.",
+         neutralizes: "A general chat loses the thread.",
+         acceptance: "The agent invokes specific prior-session artifacts unprompted."}
+      - {id: REQ-B3, title: "Compounding Context Value", tier: T2, journey: Retention, gate: none, moat: false,
+         statement: "Accumulated context SHALL make output measurably better over time — state must appreciate.",
+         neutralizes: "Switching away is free; nothing is lost.",
+         acceptance: "Output quality/tailoring improves as a function of usage history."}
+
+  - id: C
+    name: "Workflow Orchestration & Guided Process"
+    tagline: "Sells the knowledge of how to extract value, not the value itself. Kills the prompting deficit."
+    requirements:
+      - {id: REQ-C1, title: "Expert Interactive Intake", tier: T1, journey: Selection, gate: none, moat: false,
+         statement: "The agent SHALL drive a structured expert intake — using interactive surfaces (forms, selectors, guided steps) rather than a bare prompt box — so the user need not know what to ask.",
+         neutralizes: "I don't know how to prompt for genuinely good advice.",
+         acceptance: "A novice reaches expert-grade output without writing an expert prompt."}
+      - {id: REQ-C2, title: "Multi-Step Task Chaining", tier: T1, journey: Selection, gate: none, moat: false,
+         statement: "The agent SHALL chain and execute multi-step processes end-to-end from a single initiation.",
+         neutralizes: "I'd have to run each step manually myself.",
+         acceptance: "A multi-stage job completes without per-step hand-holding."}
+      - {id: REQ-C3, title: "Process State & Resumability", tier: T1, journey: Selection, gate: none, moat: false,
+         statement: "The agent SHALL track where the user is in a longer journey and resume correctly.",
+         neutralizes: "A chat has no concept of where we are.",
+         acceptance: "The agent reports current stage and the next action."}
+      - {id: REQ-C4, title: "Opinionated Default Path", tier: T1, journey: Selection, gate: none, moat: false,
+         statement: "The agent SHALL offer an opinionated default path, eliminating the blank page.",
+         neutralizes: "I'm staring at an empty box not knowing where to start.",
+         acceptance: "The user always has a clear, recommended next step."}
+
+  - id: D
+    name: "Proprietary Knowledge & Grounding"
+    tagline: "Anchors the reasoning engine to data the general model never saw and cannot guess."
+    requirements:
+      - {id: REQ-D1, title: "Curated Authoritative Corpus (RAG)", tier: T1, journey: Selection, gate: none, moat: false,
+         statement: "The agent SHALL ground answers in a curated, authoritative corpus (RAG), not internet averages.",
+         neutralizes: "The general model already knows the public stuff.",
+         acceptance: "Material answers derive from non-public or curated sources."}
+      - {id: REQ-D2, title: "Recency / Freshness", tier: T1, journey: Selection, gate: none, moat: false,
+         statement: "The agent SHALL maintain domain data current to a known date, refreshed on a stated cadence.",
+         neutralizes: "An LLM's training is stale.",
+         acceptance: "The agent holds post-cutoff domain facts the base model lacks."}
+      - {id: REQ-D3, title: "Source Attribution & Verifiability", tier: T1, journey: Selection, gate: none, moat: false,
+         statement: "The agent SHALL make claims traceable to authoritative sources.",
+         neutralizes: "I can't trust a confident guess.",
+         acceptance: "Material claims carry verifiable citations."}
+      - {id: REQ-D4, title: "Anti-Hallucination Grounding", tier: T1, journey: Selection, gate: none, moat: false,
+         statement: "The agent SHALL abstain or flag uncertainty outside its grounded knowledge rather than fabricate.",
+         neutralizes: "It'll just hallucinate in a high-stakes spot.",
+         acceptance: "Ungrounded queries return calibrated uncertainty, not invention."}
+
+  - id: E
+    name: "Integration, Action & Simulation"
+    tagline: "The verb matters more than the noun. Advice is commoditized; doing — and forecasting — the thing is not."
+    requirements:
+      - {id: REQ-E1, title: "Systems-of-Record Connectivity", tier: T1, journey: Selection, gate: none, moat: false,
+         statement: "The agent SHALL connect to the user's real systems of record and read/write actual data.",
+         neutralizes: "The general model is a sealed box.",
+         acceptance: "The agent performs a real read/write in an external system."}
+      - {id: REQ-E2, title: "Action Over Advice", tier: T1, journey: Selection, gate: none, moat: false,
+         statement: "The agent SHALL complete tasks, not merely describe them.",
+         neutralizes: "ChatGPT gives me a wall of text I still have to action.",
+         acceptance: "A real-world side effect is produced, not just text."}
+      - {id: REQ-E3, title: "Closed-Loop Tool Feedback", tier: T1, journey: Selection, gate: none, moat: false,
+         statement: "The agent SHALL ingest the results of its own actions and adapt.",
+         neutralizes: "Its advice is static and one-shot.",
+         acceptance: "The agent adjusts based on outcome data it retrieved."}
+      - {id: REQ-E4, title: "Scenario & Counterfactual Simulation", tier: T1, journey: Selection, gate: none, moat: true,
+         statement: "The agent SHALL run methodology-bounded, quantified what-if and counterfactual simulations against the user's actual data, returning a forecasted impact rather than generic pros and cons.",
+         neutralizes: "It can only hand-wave at what-if-I-did-X-instead.",
+         acceptance: "A scenario yields a quantified, user-specific forecast traceable to the stated methodology."}
+
+  - id: F
+    name: "Structured Deliverables & Artifacts"
+    tagline: "A coach produces a roadmap and a scorecard. A chatbot produces text you must assemble yourself."
+    requirements:
+      - {id: REQ-F1, title: "Finished Domain Artifacts", tier: T1, journey: Selection, gate: none, moat: false,
+         statement: "The agent SHALL produce finished, domain-standard deliverables (plans, reports, scorecards, dashboards).",
+         neutralizes: "I get prose I still have to turn into the actual thing.",
+         acceptance: "Output is a usable artifact in the field's expected format."}
+      - {id: REQ-F2, title: "Format Consistency", tier: T1, journey: Selection, gate: none, moat: false,
+         statement: "Deliverables SHALL follow a reliable, consistent, professional template every time.",
+         neutralizes: "A general LLM's formatting is inconsistent.",
+         acceptance: "Outputs are reproducibly structured."}
+      - {id: REQ-F3, title: "Export & Portability", tier: T1, journey: Selection, gate: none, moat: false,
+         statement: "Artifacts SHALL be exportable in usable, portable formats.",
+         neutralizes: "The output is trapped in a chat window.",
+         acceptance: "Export to PDF/CSV/etc. functions on demand."}
+
+  - id: G
+    name: "Personalization & Adaptive Tailoring"
+    tagline: "Generic advice is the tell of a wrapper. Constrained, situation-specific advice is the product."
+    requirements:
+      - {id: REQ-G1, title: "Situation-Specific Tailoring", tier: T2, journey: Retention, gate: none, moat: false,
+         statement: "The agent SHALL constrain all output to the user's real situation (budget, constraints, context, history).",
+         neutralizes: "It gives generic advice that ignores my specifics.",
+         acceptance: "Output automatically reflects the user's known constraints."}
+      - {id: REQ-G2, title: "Outcome-Driven Adaptation", tier: T2, journey: Retention, gate: none, moat: false,
+         statement: "The agent SHALL adapt recommendations based on what has and hasn't worked for this user.",
+         neutralizes: "Static advice that never learns.",
+         acceptance: "Recommendations shift after logged outcomes."}
+      - {id: REQ-G3, title: "Preference & Style Learning", tier: T2, journey: Retention, gate: none, moat: false,
+         statement: "The agent SHALL learn and honor the user's preferences, depth, and cadence without re-asking.",
+         neutralizes: "I have to re-specify how I want things every time.",
+         acceptance: "Learned preferences are applied without re-prompting."}
+
+  - id: H
+    name: "Proactivity & Lifecycle Management"
+    tagline: "A general LLM only acts when you open it. A service drives the cadence."
+    requirements:
+      - {id: REQ-H1, title: "Proactive Cadence", tier: T2, journey: Retention, gate: none, moat: false,
+         statement: "The agent SHALL initiate check-ins, reminders, and nudges aligned to the user's journey.",
+         neutralizes: "It only responds when I remember to ask.",
+         acceptance: "The agent reaches out at the right moments unprompted."}
+      - {id: REQ-H2, title: "Anticipation", tier: T2, journey: Retention, gate: none, moat: false,
+         statement: "The agent SHALL surface relevant issues and opportunities before the user asks.",
+         neutralizes: "It's purely reactive.",
+         acceptance: "The agent flags pertinent items proactively."}
+      - {id: REQ-H3, title: "Deadline & Milestone Awareness", tier: T2, journey: Retention, gate: none, moat: false,
+         statement: "The agent SHALL track time-bound domain milestones and deadlines.",
+         neutralizes: "I have to manage the whole timeline myself.",
+         acceptance: "The agent enforces and reports against deadlines."}
+      - {id: REQ-H4, title: "Time-to-First-Value Activation", tier: T0, journey: Trial, gate: hard, moat: false,
+         statement: "The agent SHALL engineer a tangible, personalized first win within the opening session and the first week — by design, not by chance.",
+         neutralizes: "I'll try it, see nothing a free model can't do, and churn in week one.",
+         acceptance: "A measurable activation event lands within 7 days for a defined majority of new users."}
+
+  - id: I
+    name: "Trust, Safety, Accountability & Calibration"
+    tagline: "In high-stakes domains, a confident wrong answer is worse than no answer."
+    requirements:
+      - {id: REQ-I1, title: "Calibrated Confidence", tier: TG, journey: "Trust gate", gate: conditional, moat: false,
+         statement: "The agent SHALL communicate calibrated confidence and flag risk, avoiding confident wrongness.",
+         neutralizes: "An LLM is confidently wrong, and I can't tell when.",
+         acceptance: "Uncertainty is signaled and proportionate to the stakes."}
+      - {id: REQ-I2, title: "Guardrails & Domain Constraints", tier: TG, journey: "Trust gate", gate: conditional, moat: false,
+         statement: "The agent SHALL enforce domain guardrails and a defensible point of view, refusing unsafe or non-compliant guidance.",
+         neutralizes: "Free advice could be dangerous or flat wrong.",
+         acceptance: "Known-bad inputs are caught and constrained."}
+      - {id: REQ-I3, title: "Human Escalation", tier: TG, journey: "Trust gate", gate: conditional, moat: false,
+         statement: "The agent SHALL recognize its limits and escalate to a human or expert when warranted.",
+         neutralizes: "Who do I turn to when the AI is out of its depth?",
+         acceptance: "Escalation triggers fire at appropriate thresholds."}
+      - {id: REQ-I4, title: "Auditability & Explainability", tier: TG, journey: "Trust gate", gate: conditional, moat: false,
+         statement: "The agent SHALL be auditable and explainable, producing a reasoning/source trail.",
+         neutralizes: "It's a black box I can't defend to a regulator or board.",
+         acceptance: "A decision trail exists for material outputs."}
+      - {id: REQ-I5, title: "Accountable Point of View", tier: TG, journey: "Trust gate", gate: conditional, moat: false,
+         statement: "A named entity or methodology SHALL stand accountably behind the output.",
+         neutralizes: "Nobody is accountable for an LLM's guess.",
+         acceptance: "Outputs carry a consistent, attributable point of view."}
+
+  - id: J
+    name: "Outcome Orientation & Measurement"
+    tagline: "A general model answers questions. A coach owns the result with you — and proves it."
+    requirements:
+      - {id: REQ-J1, title: "Goal Definition", tier: T2, journey: Retention, gate: none, moat: false,
+         statement: "The agent SHALL establish the user's measurable objective at the outset.",
+         neutralizes: "It's an aimless conversation.",
+         acceptance: "A tracked goal exists for each user."}
+      - {id: REQ-J2, title: "Progress Tracking", tier: T2, journey: Retention, gate: none, moat: false,
+         statement: "The agent SHALL measure and report progress toward that objective over time.",
+         neutralizes: "I have no sense of whether I'm getting anywhere.",
+         acceptance: "A visible progress metric is maintained."}
+      - {id: REQ-J3, title: "Outcome Ownership", tier: T2, journey: Retention, gate: none, moat: false,
+         statement: "The agent SHALL frame itself as accountable to the outcome, not merely the response.",
+         neutralizes: "It answers, but it doesn't own anything.",
+         acceptance: "Success is defined by user outcome, not response quality alone."}
+      - {id: REQ-J4, title: "Value Attribution / ROI Surfacing", tier: T2, journey: Retention, gate: none, moat: false,
+         statement: "The agent SHALL quantify and surface its own contribution — hours saved, errors caught, decisions accelerated, dollar impact — on a recurring cadence, reframing the subscription from expense to ROI.",
+         neutralizes: "Why pay $100 when ChatGPT is $20?",
+         acceptance: "A periodic, user-specific value report ties measurable impact to the agent's own actions."}
+
+  - id: K
+    name: "Data Governance, Privacy & Ownership"
+    tagline: "Privacy is only a differentiator if it genuinely exceeds what the base provider already offers."
+    requirements:
+      - {id: REQ-K1, title: "Data Handling Exceeding Base Provider", tier: TG, journey: "Trust gate", gate: conditional, moat: false,
+         statement: "The agent SHALL offer data-handling guarantees that demonstrably exceed the base provider's defaults — otherwise this is not claimed as a differentiator.",
+         neutralizes: "My data is just as safe typing into ChatGPT directly.",
+         acceptance: "Documented handling is stricter or clearer than the base API default."}
+      - {id: REQ-K2, title: "User Data Ownership & Portability", tier: TG, journey: "Trust gate", gate: conditional, moat: false,
+         statement: "The user SHALL own their data and be able to export or delete it on demand.",
+         neutralizes: "I'm afraid of getting locked in.",
+         acceptance: "Export and deletion function on request."}
+      - {id: REQ-K3, title: "Domain Compliance Posture", tier: TG, journey: "Trust gate", gate: conditional, moat: false,
+         statement: "The agent SHALL meet the regulatory bar of its domain (e.g., HIPAA, FERPA, financial, legal) where applicable.",
+         neutralizes: "Can I even legally use a general LLM for this?",
+         acceptance: "Relevant compliance attestations exist and hold."}
+
+  - id: L
+    name: "Reliability, Consistency & Methodological Integrity"
+    tagline: "A general model is brilliant but variable. A professional tool has a quality floor."
+    requirements:
+      - {id: REQ-L1, title: "Reproducibility / Quality Floor", tier: T2, journey: Retention, gate: none, moat: false,
+         statement: "The agent SHALL deliver consistent-quality output for equivalent inputs — a guaranteed quality floor.",
+         neutralizes: "Sometimes the general model is great, sometimes useless.",
+         acceptance: "Repeated runs stay within an acceptable tolerance band."}
+      - {id: REQ-L2, title: "Methodological Consistency", tier: T2, journey: Retention, gate: none, moat: false,
+         statement: "The agent SHALL apply its named house methodology consistently, not ad hoc.",
+         neutralizes: "I get generic, eclectic answers with no through-line.",
+         acceptance: "Outputs trace to the stated framework/methodology."}
+      - {id: REQ-L3, title: "Versioned Methodology", tier: T2, journey: Retention, gate: none, moat: false,
+         statement: "The methodology SHALL be versioned and deliberately improved, not silently drifting.",
+         neutralizes: "What changed, and why is it different today?",
+         acceptance: "The active methodology version is identifiable."}
+
+  - id: M
+    name: "Compounding Moat & Retention (Durability)"
+    tagline: "The requirements that make value un-absorbable and switching genuinely costly."
+    requirements:
+      - {id: REQ-M1, title: "Data Flywheel", tier: T2, journey: Durability, gate: none, moat: true,
+         statement: "The agent SHALL operate a data flywheel: anonymized outcome data makes it objectively better than any general model for its specific goal.",
+         neutralizes: "The lab will just catch up and match this.",
+         acceptance: "Measurable, niche-specific improvement attributable to usage data."}
+      - {id: REQ-M2, title: "Legitimate Switching Cost", tier: T2, journey: Durability, gate: none, moat: true,
+         statement: "The agent SHALL accumulate state, artifacts, and history such that it becomes the user's system of record.",
+         neutralizes: "Switching is free.",
+         acceptance: "Leaving means forfeiting real accumulated value."}
+      - {id: REQ-M3, title: "Absorption Resistance", tier: T2, journey: Durability, gate: none, moat: true,
+         statement: "The agent's core value SHALL rest on proprietary data, real integration, or accountability — not on promptable behavior the platform can ship natively.",
+         neutralizes: "Won't ChatGPT just add a feature for this?",
+         acceptance: "Core value passes the Absorption Test."}
+      - {id: REQ-M4, title: "Cohort & Network Effects", tier: T2, journey: Durability, gate: none, moat: true,
+         statement: "Where the domain allows, the agent SHALL connect users into a gated cohort on the same methodology — privacy-preserved shared benchmarks, peer progress, and outcomes — so belonging compounds with use.",
+         neutralizes: "A general LLM is a solitary tool; leaving costs me nothing social.",
+         acceptance: "An active cohort exists and supplies benchmarks a solo user cannot self-generate."}

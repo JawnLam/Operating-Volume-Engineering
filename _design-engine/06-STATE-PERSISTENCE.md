@@ -15,6 +15,16 @@ updated: 2026-06-01
 
 > **What gets written when, by whom, with what durability. The state-persistence contract is what makes an OV multi-session-capable. Get it wrong and the AI either loses continuity or overwrites your work.**
 
+## Why this chapter is load-bearing for Convention 10
+
+State persistence design IS how this OV implements the **Memory & Statefulness** category of the Standalone Sufficiency substrate (`_design-engine/_meta/standalone-sufficiency/requirements.yaml`, Category B). Three of the 47 requirements map directly to the decisions in this chapter:
+
+- **REQ-B1 — Persistent User Model** (T0 hard gate, weight 5). The agent SHALL retain a persistent user model (profile, constraints, goals, history) across sessions without re-priming. This is non-negotiable; if the state-persistence design fails to make this real, the OV cannot ship.
+- **REQ-B2 — Longitudinal Continuity** (T2). The agent SHALL reference and build upon prior interactions, drafts, and decisions. Mode A append-only logs + Mode B overwrite-with-history are the two patterns that realize this.
+- **REQ-B3 — Compounding Context Value** (T2). Accumulated context SHALL make output measurably better over time — state must appreciate. This is the durability claim that turns Mode B from a recordkeeping pattern into a moat. REQ-M2 (Legitimate Switching Cost) often rests on B3 being designed in.
+
+When designing the OV's state model below, design *toward* these three requirements explicitly. The Memory & Statefulness category is the single biggest structural gap between a service and a chat window — Convention 10's framing — and this chapter is where OVE closes it. The OV's `_meta/posture.yaml` must mark REQ-B1 as `met` with an evidence pointer into this chapter's decisions (typically: name the state file Mode and the bootstrap re-read protocol that satisfies B1).
+
 ## The five durability modes
 
 Every file in an OV has one of these modes. Choose deliberately.
