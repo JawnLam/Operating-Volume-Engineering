@@ -67,6 +67,18 @@ OV sits at #16 — larger than a skill, deeper than a Custom GPT or Project, sma
 
 The names of these components vary per OV. In `LifeLong-Learning`, the engine is `_teaching-engine/` and a cartridge represents a *subject being studied*. In `SOLVE-eX`, the engine is `00-Instructions/` and the cartridge analog is a *case file*. In OVE itself, the engine is `_design-engine/` and a cartridge represents *an OV being designed*. The pattern is invariant; the names adapt.
 
+## An OV is a specialized AI agent (Convention 10 framing)
+
+In market-facing terms, every OV is a **specialized AI agent**: a system that holds focused expertise in a domain and delivers it through state, workflow, action, and accountability that a raw chat session structurally cannot provide. The structural pieces above (bootstrap protocol, engine, cartridges, state files) are the delivery system around the expertise; the expertise is the entry ticket, not the differentiator.
+
+This framing matters because every OV must defeat one question — whether its user is a paying customer, an internal-team operator, a personal-use operator, or a methodology principal:
+
+> *"Would a general LLM be better for this work than this OV?"*
+
+A `No` answer is **earned**, not asserted. The two master tests in `02-DESIGN-PRINCIPLES.md` (Displacement + Absorption) are the criteria; **Convention 10 — Standalone Sufficiency Posture** (`_design-engine/_meta/CONVENTIONS.md`) is the enforcement mechanism. Every OV designed via OVE declares a posture against the 47-requirement substrate at `_design-engine/_meta/standalone-sufficiency/` and ships three artifacts (`standalone-sufficiency-posture.md`, `_meta/posture.yaml`, `_meta/vetting-rubric-filled.md`) at the OV root. The validator (`C14` in `_design-engine/_meta/validate.py`) checks the declaration at ship time.
+
+The test applies whether the OV is paid for or not. Many OVs are not commercialized (internal tools, personal systems, methodology corpora) — and the test still applies because the substitution risk is real regardless of monetization: if a general LLM would serve the user better, the OV has no reason to exist.
+
 ## What an OV is NOT
 
 - **Not a Custom GPT.** Custom GPTs lock to OpenAI and are configuration, not corpus.

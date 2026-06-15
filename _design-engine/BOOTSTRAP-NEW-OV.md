@@ -121,6 +121,41 @@ The archetype shapes **Q6 in SCHEMA-DESIGN** (`04-SCHEMA-DESIGN.md`) — finite-
 
 Log the answer as `ove_OV_Archetype: finite_horizon | practice` in the manifest. The choice is locked in `_design-decisions.md` once confirmed.
 
+### CQ12 — Standalone Sufficiency posture commitments (Convention 10)
+
+*Added v2.2.0.* Every OV designed via OVE declares a posture against the field-agnostic 47-requirement substrate at `_design-engine/_meta/standalone-sufficiency/`. CQ12 is the early version of Q15 (`04-SCHEMA-DESIGN.md`) — captured at INTERVIEW time so SCHEMA-DESIGN can be informed by the commitments, not retrofit around them. The full per-requirement disposition walk happens later (during ARTIFACT-DRAFT, finalized at SHIP-PREP Phase 3.10). At CQ12, capture only two load-bearing inputs:
+
+**Q12a — Domain stakes:**
+
+> *Is this OV operating in a regulated or high-stakes domain (financial advice, medical, legal, safety, irreversible decisions)? Or is failure bounded to the operator's own time/effort?*
+
+A `high` answer means the 8 TG conditional gates (REQ-I1 through REQ-I5 calibration/escalation/auditability; REQ-K1 through REQ-K3 data governance/compliance) will be mandatory at ship. A `low` answer means TG gates default to `n-a`. The OV's `_meta/posture.yaml` will record `domain_stakes: low | high`.
+
+**Q12b — Moat target:**
+
+> *Which moat item (REQ-E4 scenario simulation, REQ-M1 data flywheel, REQ-M2 switching cost, REQ-M3 absorption resistance, REQ-M4 cohort effects) will this OV's schema make real? Pick at least one, and name the schema feature you anticipate will support it.*
+
+This commitment shapes SCHEMA-DESIGN — the moat is what the OV's schema must be designed to support. Without a moat commitment at INTERVIEW time, the design tends to drift toward "smart wrapper" territory and the gap surfaces only at SHIP-PREP Phase 3.10 (too late to fix without significant rework).
+
+**Why ask now.** CQ12 triggers the Convention 10 artifact cascade analogously to how the namespace prefix at design start triggers Conventions 1–6. The artifacts that follow:
+
+- `_meta/posture.yaml` seeded from CQ12 answers (full per-requirement dispositions filled later)
+- `standalone-sufficiency-posture.md` at OV root (rendered from `posture.yaml`)
+- `_meta/vetting-rubric-filled.md` at OV root (filled 0–3 scorecard with verdict band)
+- Validator C14 enforces these at SHIP-PREP Phase 3.10
+
+If the operator is not ready to commit at CQ12, that's a signal — either INTERVIEW is incomplete (the operator doesn't yet know enough about the domain to choose a moat) or the OV idea may be a wrapper rather than a real OV (no moat is plausible because no proprietary state, integration, or accountability is available). In either case, don't proceed past CQ12 with placeholder commitments. Convention 10 enforces this at SHIP-PREP; CQ12 makes it visible at design start.
+
+Log the answers as:
+
+```yaml
+# Seeds _meta/posture.yaml
+domain_stakes: low | high
+moat_commitments:
+  - req_id: REQ-M2  # or E4, M1, M3, M4
+    schema_feature: "<anticipated feature; can be refined during SCHEMA-DESIGN>"
+```
+
 Once you have answers, proceed.
 
 ## Step-by-step execution

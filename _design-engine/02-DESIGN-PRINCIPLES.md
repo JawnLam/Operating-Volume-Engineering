@@ -15,6 +15,32 @@ updated: 2026-06-01
 
 > **The non-negotiable principles that govern every OV design engagement. If a proposed design violates one of these, flag it and discuss before proceeding.**
 
+## The two master tests
+
+Before any design decision is recorded as a principle, a Convention, a schema choice, or a shipped artifact, it must survive **both** of these tests. These sit upstream of P1–P13: they decide whether the design has any reason to exist at all. The tests are the spec the substrate at `_design-engine/_meta/standalone-sufficiency/` encodes in field-agnostic form; they are summarized here because every OVE engagement applies them.
+
+### The Displacement Test
+
+> *Can a competent user reproduce this capability in under ten minutes with a good prompt in a general-purpose LLM?*
+
+If **yes**, the design isn't a product — it's a prompt. A persona, a tone, a clever system prompt, raw domain knowledge in a wrapper, "fine-tuned on domain text" with no state or action — all fail this test. They are lead magnets, not OVs.
+
+### The Absorption Test
+
+> *Will the underlying platform (OpenAI, Anthropic, Google) plausibly ship this natively within ~12 months?*
+
+If **yes**, the design may be table stakes but it is **not a durable distinction**. Basic memory, simple connectors, persona-prompting, marginally nicer formatting — these are being absorbed by the platforms quarter over quarter. Durable value rests on proprietary data, real integration, accountability, or compounding outcomes the platform will never build for your specific niche.
+
+### The standing question for any proposed feature
+
+> *Does this remove friction, own an outcome, or compound state in a way a ten-minute prompt cannot replicate AND the platform will not absorb within a year?*
+>
+> **If no, it is not a requirement — it is marketing.**
+
+Convention 10 (Standalone Sufficiency Posture) in `_design-engine/_meta/CONVENTIONS.md` enforces these tests on every OV designed via OVE through 47 requirements across 13 categories. The principles below (P1–P13) are the constructive principles OVE applies *given that the tests have been passed*.
+
+> **Commerce-neutral framing.** The substrate retains its original commercial language ("loyalty," "retention," "customer"). OVE's surface uses neutral framing ("Standalone Sufficiency," "user," "durability") because many OVs are not commercialized. The test applies whether the user is a paying customer or a personal/team operator. See `_design-engine/_meta/standalone-sufficiency/README.md` for the terminology seam.
+
 ## P1 — Substrate-agnostic
 
 An OV must run on any capable AI: Claude (Sonnet/Opus class), GPT-4 class and above, Gemini 2.x and above, future models. The OV must not depend on:
@@ -137,3 +163,53 @@ If a session ends without these, the session is not complete. Tell the user, do 
 Once an OV is shipped (a v1.0 release), its schema is frozen. Patch-level updates can fix typos, add templates, add worked examples. Schema changes (new required fields, renamed fields, removed fields) require a major version bump with a migration path.
 
 This applies to OVE itself: the v1.0 cartridge backbone (`_ov-manifest.md`, `_design-state.md`, `_design-decisions.md`, `_schema-draft.md`) is frozen. Adding new optional fields = v1.x. Anything that breaks existing cartridges = v2.0.
+
+## Anti-requirements OVE refuses to enable
+
+These are designs that *feel* like reasons to choose a specialized OV over a general LLM but fail the Displacement Test or the Absorption Test (or both). They are not principles — they are named **design traps**. OVE will not enable an OV whose load-bearing value rests on any of them. If a proposed OV is structurally one of these, flag it and reframe before proceeding to schema design.
+
+The list mirrors §17 of the substrate at `_design-engine/_meta/standalone-sufficiency/specialized-agent-requirements.md`, translated to OVE's neutral surface terms. The substrate is the canonical source; this list is the operative subset OVE enforces at design time.
+
+### Trap 1 — Raw domain expertise alone
+
+*"It knows this domain better than a general model."* — Fails Displacement. The general model has the public knowledge; the rest is retrievable in a ten-minute prompt. Domain expertise is the entry ticket, not the differentiator. If the OV's only claim is "we know this field," the user is correct to walk.
+
+### Trap 2 — A persona or brand voice
+
+*"It speaks like a senior practitioner in this field."* — Fails Displacement. Reproducible with a one-paragraph system prompt. Buys a launch, not durability.
+
+### Trap 3 — A clever prompt
+
+*"Our master prompt makes a general model produce expert output."* — Fails Displacement by definition. This IS the thing the user can copy in ten minutes. Give it away as a lead magnet to sell the real product.
+
+### Trap 4 — "Fine-tuned on domain text" with no state, action, or grounding
+
+*"It's trained on our corpus."* — Fails Absorption. A better answer to a single question is still a sealed chat. Without persistent state, real integration, or accountability, the platform absorbs this quarterly.
+
+### Trap 5 — Marginally nicer writing or formatting
+
+*"The output looks more professional than ChatGPT's."* — Fails both tests. Inside the platform's variance; being absorbed natively.
+
+### Trap 6 — Being cheaper
+
+*"We charge less than the general-LLM subscription."* — Not a test failure exactly, but a structural commitment to a race to the bottom. Price competes; it does not retain. (For non-commercial OVs this trap reads as "we promise the OV will be lighter on the user's time" — same failure shape: a comparison-on-cost is not a comparison-on-value.)
+
+### Trap 7 — "Smarter-Claude" framing
+
+*"It's like Claude but better at X."* — Fails both tests. Implicitly admits the only differentiator is incremental capability the platform is racing to match. OVs are not "better LLMs" — they are delivery systems around expertise. If the marketing reads "smarter Claude," the design has confused engine quality for product value.
+
+### Trap 8 — Epistemic closure as a moat
+
+*"Our agent won't engage outside its sanctioned domain — that's how we ensure quality."* — Fails Displacement. Hard-refusing benign adjacent requests lowers requisite variety and drives users back to the general tab. Scope discipline belongs at the level of *authoritative sign-off* (won't issue authoritative answers outside competence — Convention 10's REQ-D4 / REQ-I3 / REQ-L2), not at the level of *all benign questions*. The OV must absorb lasagna-recipe questions gracefully even if its domain is sovereign debt restructuring.
+
+### Trap 9 — Raw memory treated as a permanent distinction
+
+*"Our agent remembers everything across sessions."* — Fails Absorption. Persistent memory is real value, but it is being absorbed natively by the platforms. Counts as table stakes (REQ-B1, T0), not durability. OVs claim memory as a hard gate (parity), never as a moat.
+
+### Trap 10 — Privacy as an unqualified differentiator
+
+*"Your data is safer with us."* — Fails Absorption unless the OV demonstrably exceeds the base provider's defaults. The platforms already offer no-training, isolation tiers, and enterprise controls. "We respect your privacy" is not a moat; "our data handling is provably stricter than Anthropic's enterprise tier in these documented ways" is — see Convention 10's REQ-K1.
+
+---
+
+When OVE encounters an OV proposal that rests on any of these traps as its load-bearing value, the design must be reframed (or, occasionally, the operator must be told this is not what OVE is for). The constructive principles below (P1–P13) assume the proposal has already cleared the two master tests and avoided the ten traps.

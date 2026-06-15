@@ -1,0 +1,212 @@
+# Specialized AI Agent — Loyalty & Retention Requirements — Build Standard (rev 1.2)
+
+> Generated from `requirements.yaml`. Do not hand-edit — change the registry and regenerate.
+
+Each line is a binary gate. Check it only when the acceptance condition is demonstrably met in the product, not merely planned.
+
+**Ship logic**
+
+- **All 5 hard gates (T0) MUST pass to ship.** A single failure means the agent is displaceable by a general LLM on day one.
+- **All 8 conditional gates (TG) MUST pass in any high-stakes or regulated domain.** Mark N/A only with explicit justification.
+- **Differentiators (T1, 15) and Retention/Moat (T2, 19) are tracked as coverage**, not veto. Target: 100% of T2 moat items before claiming durability.
+
+## 🔒 Hard Ship-Gates (T0) — all must pass
+
+- [ ] **REQ-A1 — Capability Parity**  ·  _A_  ·  weight 5
+    - SHALL: The agent SHALL be at least as capable and fluent as a frontier general model on any task that overlaps both.
+    - GATE (pass when): Blind A/B on overlapping tasks: specialist rated >= general model on usefulness.
+    - Kills: "The specialist is just a worse, narrower Claude."
+- [ ] **REQ-A2 — Graceful Scope Boundaries**  ·  _A_  ·  weight 5
+    - SHALL: The agent SHALL handle adjacent or out-of-scope requests gracefully — answering competently or redirecting transparently — never dead-ending in a refusal wall.
+    - GATE (pass when): Out-of-scope probes yield useful handling, not brittle failure.
+    - Kills: "It can't do the other ten things I also need, so I'll just keep one tab for everything."
+- [ ] **REQ-A3 — No Artificial Lobotomy**  ·  _A_  ·  weight 5
+    - SHALL: The agent SHALL add only constraints that serve the user; it SHALL NOT strip useful general capability to force a workflow.
+    - GATE (pass when): The user can still obtain a direct answer on demand.
+    - Kills: "It won't just answer my question — it makes me jump through hoops."
+- [ ] **REQ-B1 — Persistent User Model**  ·  _B_  ·  weight 5
+    - SHALL: The agent SHALL retain a persistent user model (profile, constraints, goals, history) across sessions without re-priming.
+    - GATE (pass when): Zero re-entry of previously supplied facts across sessions.
+    - Kills: "I have to re-explain everything every time."
+- [ ] **REQ-H4 — Time-to-First-Value Activation**  ·  _H_  ·  weight 5
+    - SHALL: The agent SHALL engineer a tangible, personalized first win within the opening session and the first week — by design, not by chance.
+    - GATE (pass when): A measurable activation event lands within 7 days for a defined majority of new users.
+    - Kills: "I'll try it, see nothing a free model can't do, and churn in week one."
+
+## ⚖️ Conditional Gates (TG) — must pass in high-stakes / regulated domains
+
+- [ ] **REQ-I1 — Calibrated Confidence**  ·  _I_  ·  weight 5
+    - SHALL: The agent SHALL communicate calibrated confidence and flag risk, avoiding confident wrongness.
+    - GATE (pass when): Uncertainty is signaled and proportionate to the stakes.
+    - Kills: "An LLM is confidently wrong, and I can't tell when."
+- [ ] **REQ-I2 — Guardrails & Domain Constraints**  ·  _I_  ·  weight 5
+    - SHALL: The agent SHALL enforce domain guardrails and a defensible point of view, refusing unsafe or non-compliant guidance.
+    - GATE (pass when): Known-bad inputs are caught and constrained.
+    - Kills: "Free advice could be dangerous or flat wrong."
+- [ ] **REQ-I3 — Human Escalation**  ·  _I_  ·  weight 5
+    - SHALL: The agent SHALL recognize its limits and escalate to a human or expert when warranted.
+    - GATE (pass when): Escalation triggers fire at appropriate thresholds.
+    - Kills: "Who do I turn to when the AI is out of its depth?"
+- [ ] **REQ-I4 — Auditability & Explainability**  ·  _I_  ·  weight 5
+    - SHALL: The agent SHALL be auditable and explainable, producing a reasoning/source trail.
+    - GATE (pass when): A decision trail exists for material outputs.
+    - Kills: "It's a black box I can't defend to a regulator or board."
+- [ ] **REQ-I5 — Accountable Point of View**  ·  _I_  ·  weight 5
+    - SHALL: A named entity or methodology SHALL stand accountably behind the output.
+    - GATE (pass when): Outputs carry a consistent, attributable point of view.
+    - Kills: "Nobody is accountable for an LLM's guess."
+- [ ] **REQ-K1 — Data Handling Exceeding Base Provider**  ·  _K_  ·  weight 5
+    - SHALL: The agent SHALL offer data-handling guarantees that demonstrably exceed the base provider's defaults — otherwise this is not claimed as a differentiator.
+    - GATE (pass when): Documented handling is stricter or clearer than the base API default.
+    - Kills: "My data is just as safe typing into ChatGPT directly."
+- [ ] **REQ-K2 — User Data Ownership & Portability**  ·  _K_  ·  weight 5
+    - SHALL: The user SHALL own their data and be able to export or delete it on demand.
+    - GATE (pass when): Export and deletion function on request.
+    - Kills: "I'm afraid of getting locked in."
+- [ ] **REQ-K3 — Domain Compliance Posture**  ·  _K_  ·  weight 5
+    - SHALL: The agent SHALL meet the regulatory bar of its domain (e.g., HIPAA, FERPA, financial, legal) where applicable.
+    - GATE (pass when): Relevant compliance attestations exist and hold.
+    - Kills: "Can I even legally use a general LLM for this?"
+
+## ➕ Differentiators (T1) — coverage target 100%
+
+- [ ] **REQ-C1 — Expert Interactive Intake**  ·  _C_  ·  weight 3
+    - SHALL: The agent SHALL drive a structured expert intake — using interactive surfaces (forms, selectors, guided steps) rather than a bare prompt box — so the user need not know what to ask.
+    - GATE (pass when): A novice reaches expert-grade output without writing an expert prompt.
+    - Kills: "I don't know how to prompt for genuinely good advice."
+- [ ] **REQ-C2 — Multi-Step Task Chaining**  ·  _C_  ·  weight 3
+    - SHALL: The agent SHALL chain and execute multi-step processes end-to-end from a single initiation.
+    - GATE (pass when): A multi-stage job completes without per-step hand-holding.
+    - Kills: "I'd have to run each step manually myself."
+- [ ] **REQ-C3 — Process State & Resumability**  ·  _C_  ·  weight 3
+    - SHALL: The agent SHALL track where the user is in a longer journey and resume correctly.
+    - GATE (pass when): The agent reports current stage and the next action.
+    - Kills: "A chat has no concept of where we are."
+- [ ] **REQ-C4 — Opinionated Default Path**  ·  _C_  ·  weight 3
+    - SHALL: The agent SHALL offer an opinionated default path, eliminating the blank page.
+    - GATE (pass when): The user always has a clear, recommended next step.
+    - Kills: "I'm staring at an empty box not knowing where to start."
+- [ ] **REQ-D1 — Curated Authoritative Corpus (RAG)**  ·  _D_  ·  weight 3
+    - SHALL: The agent SHALL ground answers in a curated, authoritative corpus (RAG), not internet averages.
+    - GATE (pass when): Material answers derive from non-public or curated sources.
+    - Kills: "The general model already knows the public stuff."
+- [ ] **REQ-D2 — Recency / Freshness**  ·  _D_  ·  weight 3
+    - SHALL: The agent SHALL maintain domain data current to a known date, refreshed on a stated cadence.
+    - GATE (pass when): The agent holds post-cutoff domain facts the base model lacks.
+    - Kills: "An LLM's training is stale."
+- [ ] **REQ-D3 — Source Attribution & Verifiability**  ·  _D_  ·  weight 3
+    - SHALL: The agent SHALL make claims traceable to authoritative sources.
+    - GATE (pass when): Material claims carry verifiable citations.
+    - Kills: "I can't trust a confident guess."
+- [ ] **REQ-D4 — Anti-Hallucination Grounding**  ·  _D_  ·  weight 3
+    - SHALL: The agent SHALL abstain or flag uncertainty outside its grounded knowledge rather than fabricate.
+    - GATE (pass when): Ungrounded queries return calibrated uncertainty, not invention.
+    - Kills: "It'll just hallucinate in a high-stakes spot."
+- [ ] **REQ-E1 — Systems-of-Record Connectivity**  ·  _E_  ·  weight 3
+    - SHALL: The agent SHALL connect to the user's real systems of record and read/write actual data.
+    - GATE (pass when): The agent performs a real read/write in an external system.
+    - Kills: "The general model is a sealed box."
+- [ ] **REQ-E2 — Action Over Advice**  ·  _E_  ·  weight 3
+    - SHALL: The agent SHALL complete tasks, not merely describe them.
+    - GATE (pass when): A real-world side effect is produced, not just text.
+    - Kills: "ChatGPT gives me a wall of text I still have to action."
+- [ ] **REQ-E3 — Closed-Loop Tool Feedback**  ·  _E_  ·  weight 3
+    - SHALL: The agent SHALL ingest the results of its own actions and adapt.
+    - GATE (pass when): The agent adjusts based on outcome data it retrieved.
+    - Kills: "Its advice is static and one-shot."
+- [ ] **REQ-E4 — Scenario & Counterfactual Simulation**  ·  _E_  ·  weight 3  ·  🛡 moat
+    - SHALL: The agent SHALL run methodology-bounded, quantified what-if and counterfactual simulations against the user's actual data, returning a forecasted impact rather than generic pros and cons.
+    - GATE (pass when): A scenario yields a quantified, user-specific forecast traceable to the stated methodology.
+    - Kills: "It can only hand-wave at what-if-I-did-X-instead."
+- [ ] **REQ-F1 — Finished Domain Artifacts**  ·  _F_  ·  weight 3
+    - SHALL: The agent SHALL produce finished, domain-standard deliverables (plans, reports, scorecards, dashboards).
+    - GATE (pass when): Output is a usable artifact in the field's expected format.
+    - Kills: "I get prose I still have to turn into the actual thing."
+- [ ] **REQ-F2 — Format Consistency**  ·  _F_  ·  weight 3
+    - SHALL: Deliverables SHALL follow a reliable, consistent, professional template every time.
+    - GATE (pass when): Outputs are reproducibly structured.
+    - Kills: "A general LLM's formatting is inconsistent."
+- [ ] **REQ-F3 — Export & Portability**  ·  _F_  ·  weight 3
+    - SHALL: Artifacts SHALL be exportable in usable, portable formats.
+    - GATE (pass when): Export to PDF/CSV/etc. functions on demand.
+    - Kills: "The output is trapped in a chat window."
+
+## 🏰 Retention & Moat (T2) — coverage target 100%, moat items first
+
+- [ ] **REQ-B2 — Longitudinal Continuity**  ·  _B_  ·  weight 4
+    - SHALL: The agent SHALL reference and build upon prior interactions, drafts, and decisions.
+    - GATE (pass when): The agent invokes specific prior-session artifacts unprompted.
+    - Kills: "A general chat loses the thread."
+- [ ] **REQ-B3 — Compounding Context Value**  ·  _B_  ·  weight 4
+    - SHALL: Accumulated context SHALL make output measurably better over time — state must appreciate.
+    - GATE (pass when): Output quality/tailoring improves as a function of usage history.
+    - Kills: "Switching away is free; nothing is lost."
+- [ ] **REQ-G1 — Situation-Specific Tailoring**  ·  _G_  ·  weight 4
+    - SHALL: The agent SHALL constrain all output to the user's real situation (budget, constraints, context, history).
+    - GATE (pass when): Output automatically reflects the user's known constraints.
+    - Kills: "It gives generic advice that ignores my specifics."
+- [ ] **REQ-G2 — Outcome-Driven Adaptation**  ·  _G_  ·  weight 4
+    - SHALL: The agent SHALL adapt recommendations based on what has and hasn't worked for this user.
+    - GATE (pass when): Recommendations shift after logged outcomes.
+    - Kills: "Static advice that never learns."
+- [ ] **REQ-G3 — Preference & Style Learning**  ·  _G_  ·  weight 4
+    - SHALL: The agent SHALL learn and honor the user's preferences, depth, and cadence without re-asking.
+    - GATE (pass when): Learned preferences are applied without re-prompting.
+    - Kills: "I have to re-specify how I want things every time."
+- [ ] **REQ-H1 — Proactive Cadence**  ·  _H_  ·  weight 4
+    - SHALL: The agent SHALL initiate check-ins, reminders, and nudges aligned to the user's journey.
+    - GATE (pass when): The agent reaches out at the right moments unprompted.
+    - Kills: "It only responds when I remember to ask."
+- [ ] **REQ-H2 — Anticipation**  ·  _H_  ·  weight 4
+    - SHALL: The agent SHALL surface relevant issues and opportunities before the user asks.
+    - GATE (pass when): The agent flags pertinent items proactively.
+    - Kills: "It's purely reactive."
+- [ ] **REQ-H3 — Deadline & Milestone Awareness**  ·  _H_  ·  weight 4
+    - SHALL: The agent SHALL track time-bound domain milestones and deadlines.
+    - GATE (pass when): The agent enforces and reports against deadlines.
+    - Kills: "I have to manage the whole timeline myself."
+- [ ] **REQ-J1 — Goal Definition**  ·  _J_  ·  weight 4
+    - SHALL: The agent SHALL establish the user's measurable objective at the outset.
+    - GATE (pass when): A tracked goal exists for each user.
+    - Kills: "It's an aimless conversation."
+- [ ] **REQ-J2 — Progress Tracking**  ·  _J_  ·  weight 4
+    - SHALL: The agent SHALL measure and report progress toward that objective over time.
+    - GATE (pass when): A visible progress metric is maintained.
+    - Kills: "I have no sense of whether I'm getting anywhere."
+- [ ] **REQ-J3 — Outcome Ownership**  ·  _J_  ·  weight 4
+    - SHALL: The agent SHALL frame itself as accountable to the outcome, not merely the response.
+    - GATE (pass when): Success is defined by user outcome, not response quality alone.
+    - Kills: "It answers, but it doesn't own anything."
+- [ ] **REQ-J4 — Value Attribution / ROI Surfacing**  ·  _J_  ·  weight 4
+    - SHALL: The agent SHALL quantify and surface its own contribution — hours saved, errors caught, decisions accelerated, dollar impact — on a recurring cadence, reframing the subscription from expense to ROI.
+    - GATE (pass when): A periodic, user-specific value report ties measurable impact to the agent's own actions.
+    - Kills: "Why pay $100 when ChatGPT is $20?"
+- [ ] **REQ-L1 — Reproducibility / Quality Floor**  ·  _L_  ·  weight 4
+    - SHALL: The agent SHALL deliver consistent-quality output for equivalent inputs — a guaranteed quality floor.
+    - GATE (pass when): Repeated runs stay within an acceptable tolerance band.
+    - Kills: "Sometimes the general model is great, sometimes useless."
+- [ ] **REQ-L2 — Methodological Consistency**  ·  _L_  ·  weight 4
+    - SHALL: The agent SHALL apply its named house methodology consistently, not ad hoc.
+    - GATE (pass when): Outputs trace to the stated framework/methodology.
+    - Kills: "I get generic, eclectic answers with no through-line."
+- [ ] **REQ-L3 — Versioned Methodology**  ·  _L_  ·  weight 4
+    - SHALL: The methodology SHALL be versioned and deliberately improved, not silently drifting.
+    - GATE (pass when): The active methodology version is identifiable.
+    - Kills: "What changed, and why is it different today?"
+- [ ] **REQ-M1 — Data Flywheel**  ·  _M_  ·  weight 4  ·  🛡 moat
+    - SHALL: The agent SHALL operate a data flywheel: anonymized outcome data makes it objectively better than any general model for its specific goal.
+    - GATE (pass when): Measurable, niche-specific improvement attributable to usage data.
+    - Kills: "The lab will just catch up and match this."
+- [ ] **REQ-M2 — Legitimate Switching Cost**  ·  _M_  ·  weight 4  ·  🛡 moat
+    - SHALL: The agent SHALL accumulate state, artifacts, and history such that it becomes the user's system of record.
+    - GATE (pass when): Leaving means forfeiting real accumulated value.
+    - Kills: "Switching is free."
+- [ ] **REQ-M3 — Absorption Resistance**  ·  _M_  ·  weight 4  ·  🛡 moat
+    - SHALL: The agent's core value SHALL rest on proprietary data, real integration, or accountability — not on promptable behavior the platform can ship natively.
+    - GATE (pass when): Core value passes the Absorption Test.
+    - Kills: "Won't ChatGPT just add a feature for this?"
+- [ ] **REQ-M4 — Cohort & Network Effects**  ·  _M_  ·  weight 4  ·  🛡 moat
+    - SHALL: Where the domain allows, the agent SHALL connect users into a gated cohort on the same methodology — privacy-preserved shared benchmarks, peer progress, and outcomes — so belonging compounds with use.
+    - GATE (pass when): An active cohort exists and supplies benchmarks a solo user cannot self-generate.
+    - Kills: "A general LLM is a solitary tool; leaving costs me nothing social."
+

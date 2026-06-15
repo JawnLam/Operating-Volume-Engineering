@@ -1,0 +1,25 @@
+# Standalone Sufficiency Posture — DEFERRED marker (Convention 10 opt-out)
+# OV: Political-Landscape-Cartography — posture retrofit deferred to v2.3.0 of OVE.
+
+Item_Prototype: Fleeting
+Item_ID: plc-posture-deferred
+Title: "Political-Landscape-Cartography — Standalone Sufficiency Posture (Deferred)"
+Date_Added: 2026-06-14
+Date_Modified: 2026-06-14
+Needs_Processing: false
+
+ov_name: "Political-Landscape-Cartography"
+ov_slug: "plc"
+
+deferred_until: "2026-12-01"
+
+rationale: |
+  v2.2.0 dogfood scope for Convention 10 was limited to the two potentially
+  high-stakes worked examples (Negotiation-Preparation, SOLVE-eX-Retrospective)
+  to validate the Convention end-to-end on real OV substrate before retrofitting
+  the lower-stakes examples. This OV's full posture retrofit is scheduled for
+  v2.3.0. The deferral is bounded (horizon 2026-12-01); C14 validator warns
+  rather than fails during the deferral window. After 2026-12-01, the warn
+  escalates and the OV must either retrofit or document an extended horizon.
+
+responsible_party: "OVE engine maintainer"

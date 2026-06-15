@@ -299,6 +299,68 @@ Both physical exclusion and gitignore are required because either alone is britt
 
 The v1.0 build of Political Landscape Cartography needed to ship public-facing methodology while keeping its Methodology Author's 294-page dissertation private. The pattern (physical exclusion + gitignore + placeholder + post-push 404 verification) was invented during that build's SHIP-PREP phase. v2.0 formalizes the pattern as a numbered Convention so future OVs that cite sensitive source material can apply it out of the box rather than inventing it on the fly. The convention also documents the academic-archive friction (operators legitimately archiving cited work for published scholarly research need a carve-out from delete-or-destroy obligations in restrictive LICENSEs) and the self-coaching loophole (a principal coaching themselves is NOT personal evaluation under a restrictive license).
 
+## Convention 10 — Standalone Sufficiency Posture
+
+*Added v2.2.0.* In market-facing terms, an OV is a specialized AI agent. The objection any specialized agent must defeat is structural: *"Would a general LLM be better for this work?"* Convention 10 codifies the operative test — the **two master tests** elevated as load-bearing in `02-DESIGN-PRINCIPLES.md`'s top section — and requires every OV designed via OVE to declare a posture against the field-agnostic 47-requirement substrate at `_design-engine/_meta/standalone-sufficiency/`.
+
+### When this applies
+
+Every OV designed via OVE. No exceptions. The Convention applies whether the OV is commercial (sold to paying customers), internal (a team tool), personal (a single operator's system), or methodology corpora — the test "would the user (whoever they are) prefer a general LLM?" doesn't depend on monetization.
+
+### The pattern
+
+Every OV ships **three artifacts at the OV root** (the operator-facing posture + the source-of-truth registry + the filled scorecard), plus an optional **fourth artifact** for deferral. The 47-requirement substrate itself is NOT duplicated in every OV — it's referenced by REQ-ID from the engine's `_meta/standalone-sufficiency/`.
+
+```
+<OV root>/
+├── standalone-sufficiency-posture.md      ← operator-facing one-pager (Convention 10 artifact 1)
+├── _meta/
+│   ├── posture.yaml                       ← source-of-truth registry (Convention 10 artifact 2)
+│   └── vetting-rubric-filled.md           ← 0–3 scorecard with verdict (Convention 10 artifact 3)
+└── posture-deferred.yaml                  ← OPTIONAL: opt-out marker (Convention 10 artifact 4)
+```
+
+The operator declares two things in `posture.yaml`: (a) `domain_stakes: low | high`, which determines whether the 8 TG conditional gates apply; (b) ≥1 moat-item commitment (one of REQ-E4, REQ-M1, REQ-M2, REQ-M3, REQ-M4) with a concrete schema-feature pointer. Per-requirement dispositions then follow (`met` / `partial` / `n-a` / `deferred`) with evidence pointers.
+
+### Required artifacts per OV (Convention 10)
+
+| Artifact | Location | Role |
+|---|---|---|
+| `standalone-sufficiency-posture.md` | OV root | Operator-facing one-pager. Tier coverage summary, T0 dispositions, TG applicability + dispositions, moat commitments with schema-feature pointers, verdict band. Drawn from `_design-engine/_templates/TEMPLATE-standalone-sufficiency-posture.md`. |
+| `_meta/posture.yaml` | OV root | Source of truth. `ov_name`, `domain_stakes`, per-requirement `disposition` / `evidence` / `notes`, `moat_commitments`. Drawn from `_design-engine/_templates/TEMPLATE-posture-yaml.yaml`. |
+| `_meta/vetting-rubric-filled.md` | OV root | Generated 0–3 scorecard rendering `posture.yaml` through the substrate's `vetting-rubric.md` template. Max weighted score = 558. Includes gating-rule veto outcome + verdict band. Drawn from `_design-engine/_templates/TEMPLATE-vetting-rubric-filled.md`. |
+| `posture-deferred.yaml` (optional) | OV root | Opt-out marker for OVs whose posture work is deliberately deferred. Required fields: `deferred_until` (horizon date), `rationale`, `responsible_party`. Drawn from `_design-engine/_templates/TEMPLATE-posture-deferred.yaml`. With this file, C14 warns (not fails) until the horizon date. New OVs designed via OVE post-v2.2.0 may NOT use this marker — it exists only for retrofitting pre-existing OVs. |
+
+### Substrate vs OVE-surface terminology seam (LOAD-BEARING)
+
+The substrate at `_design-engine/_meta/standalone-sufficiency/` retains the upstream spec's **commercial framing** ("Loyalty & Retention," "customer," REQ-J4's "$100 vs $20" price-objection wording) because OVE does not modify vendored content. **OVE's surface — this Convention, the engine prose, the per-OV artifact names, the validator messages, the templates — uses neutral framing throughout** because many OVs are not commercialized:
+
+| Source spec (commercial) | OVE surface (neutral) |
+|---|---|
+| "Loyalty & Retention" | "Standalone Sufficiency" |
+| "Loyalty driver" | "Sufficiency driver" |
+| "Customer" / "subscriber" | "User" / "operator" |
+| "Retention" (as Tier T2's label) | "Durability" |
+| REQ-J4 "Why pay $100 when ChatGPT is $20?" | "Value attribution: is this delivering value vs a general LLM?" |
+
+See `_design-engine/_meta/standalone-sufficiency/README.md` for the seam in full. When wiring substrate concepts into OVE artifacts, always translate to the neutral OVE-surface terms.
+
+### Validator coverage (C14 — Standalone Sufficiency Posture)
+
+The optional `validate.py` includes a check (C14) that enforces the Convention at ship time. **C14 outcomes:**
+
+| Outcome | Conditions |
+|---|---|
+| **pass** | `standalone-sufficiency-posture.md` exists at OV root; `_meta/posture.yaml` exists + schema-conformant; all 5 T0 dispositions present + = `met`; if `domain_stakes: high`, all 8 TG dispositions present + = `met`; ≥1 moat commitment with non-empty `schema_feature`; OR `posture-deferred.yaml` exists with valid future `deferred_until` date. |
+| **fail** | `standalone-sufficiency-posture.md` missing AND no `posture-deferred.yaml`. Any T0 disposition missing or = `partial`/`deferred` without `waiver_reason`. If `domain_stakes: high`, any TG disposition missing. |
+| **warn** | Zero moat items committed. T1 coverage <80% with no `_design-decisions.md` rationale. `posture-deferred.yaml` present but `deferred_until` past today's date. T2 coverage <80% with no rationale. |
+
+### Why this matters
+
+The two master tests (Displacement + Absorption) live in `02-DESIGN-PRINCIPLES.md` as load-bearing canon: any proposed feature must clear them, and the §17 anti-requirement traps (persona-only OVs, clever-prompt OVs, "smarter-Claude" OVs, epistemic-closure-as-moat, raw-memory-as-permanent-distinction, unqualified privacy claims) are explicitly disowned as OVE design traps. The principles set the design ceiling; Convention 10 enforces the ship floor.
+
+Without Convention 10, the principles are advisory. With it, every shipped OV carries a declared, validator-checked record of which T0 hard gates pass, which TG conditional gates apply per declared domain stakes, which moat items are committed, and what the OV's verdict band is. The vetting rubric (`_meta/vetting-rubric-filled.md`) gives the operator a single page they can show a stakeholder when asked *"why use this OV instead of Claude?"* — and the answer rests on the substrate, not a sales pitch.
+
 ## How to apply during a new-OV design
 
 The AI walking `BOOTSTRAP-NEW-OV.md` asks the operator one question early:
@@ -348,8 +410,12 @@ After ARTIFACT-DRAFT and during REVIEW, the AI checks every drafted file for:
 - [ ] `CONTRIBUTING.md` § "Content zones" declares all four zones with at least one concrete example per zone (Convention 8)
 - [ ] `.gitignore` exists and contains the Operator-Private Zone patterns documented in CONTRIBUTING (Convention 8)
 - [ ] `README.md` § "What is in this folder" identifies the zones or links to the CONTRIBUTING declaration (Convention 8)
+- [ ] `standalone-sufficiency-posture.md` exists at OV root with all 5 T0 hard-gate dispositions populated (Convention 10)
+- [ ] `_meta/posture.yaml` exists at OV root, is schema-conformant, and the `domain_stakes` flag is set to `low` or `high` (Convention 10)
+- [ ] If `domain_stakes: high`: all 8 TG conditional-gate dispositions are present in `posture.yaml` (Convention 10)
+- [ ] At least one moat item (`REQ-E4`, `REQ-M1`, `REQ-M2`, `REQ-M3`, or `REQ-M4`) is committed in `posture.yaml` with a concrete `schema_feature` pointer — or the absence is justified in `_design-decisions.md` (Convention 10)
 
-These checks are also covered by the optional `validate.py` (`C1` backbone presence, `C2` frontmatter presence, `C3` placeholder leakage — the wider scrub, `C7` Prototype coverage, `C8` zone-boundary documentation, `C9` gitignore sanity, `C10` UPDATE-PROMPT sanity) and by walking `VALIDATION-CHECKLIST.md` for markdown-only environments.
+These checks are also covered by the optional `validate.py` (`C1` backbone presence, `C2` frontmatter presence, `C3` placeholder leakage — the wider scrub, `C7` Prototype coverage, `C8` zone-boundary documentation, `C9` gitignore sanity, `C10` UPDATE-PROMPT sanity, `C14` Standalone Sufficiency posture) and by walking `VALIDATION-CHECKLIST.md` for markdown-only environments.
 
 ## Related references
 

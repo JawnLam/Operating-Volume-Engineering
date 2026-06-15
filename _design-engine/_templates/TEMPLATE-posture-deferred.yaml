@@ -1,0 +1,49 @@
+# Standalone Sufficiency Posture — DEFERRED marker (Convention 10 opt-out)
+#
+# Place this file at the OV root to mark an OV as posture-deferred. C14
+# validator treats deferred OVs as a warn (not a fail) until deferred_until
+# elapses, then escalates to fail.
+#
+# Use this marker only when the OV has not yet been retrofitted with a
+# Convention 10 posture but the OV is otherwise considered shipped. New OVs
+# designed via OVE post-v2.2.0 should NOT use this marker — they must ship
+# with a full posture per Convention 10.
+#
+# Universal core fields (Convention 1) appear at top.
+
+Item_Prototype: Fleeting
+Item_ID: <ov-slug>-posture-deferred
+Title: "<OV Name> — Standalone Sufficiency Posture (Deferred)"
+Date_Added: YYYY-MM-DD
+Date_Modified: YYYY-MM-DD
+Needs_Processing: false
+
+# --- OV identification ---
+ov_name: "<OV Name>"
+ov_slug: "<ov-slug>"
+
+# --- Deferral horizon ---
+# After this date, C14 escalates from warn to fail. Pick a horizon that
+# matches the OV's planned retrofit version.
+deferred_until: "YYYY-MM-DD"
+
+# --- Rationale (REQUIRED) ---
+# Explain why this OV's posture work is being deferred. The C14 validator
+# surfaces this rationale in its warn message so the deferral is visible.
+rationale: |
+  <Explain the deferral. Example:
+   "v2.2.0 dogfood scope limited to potentially high-stakes OVs
+   (Negotiation-Preparation, SOLVE-eX-Retrospective). Retrofit
+   scheduled for v2.3.0.">
+
+# --- Responsible party (REQUIRED) ---
+# Who owns the eventual retrofit?
+responsible_party: "<OVE engine maintainer | operator name | team>"
+
+# --- Optional: planned moat commitment ---
+# If the operator already has a sense of which moat item this OV will
+# commit to when posture work is done, name it here. Not required, but
+# captures intent so the retrofit doesn't start from zero.
+planned_moat_commitments:
+  # - req_id: REQ-M2
+  #   schema_feature: "<feature / prototype name pointer>"

@@ -31,16 +31,19 @@ updated: 2026-06-01
 
 Steps 1, 6, 7, 8, 9 are non-negotiable. Step 5 varies by activity.
 
-## The six universal session activities
+## The seven universal session activities
 
 | Code | Activity | Right default when |
 |------|----------|---------------------|
 | **INTERVIEW** | Socratic clarifying questions about the domain, the user, the intended use | Cartridge is new OR interview is documented as unfinished |
-| **SCHEMA-DESIGN** | Walk through Q1–Q8 from `04-SCHEMA-DESIGN.md` to design the new OV's schema | Domain is clear; schema is not yet locked |
+| **POSTURE-DECLARATION** | Operator commits to Convention 10's three load-bearing posture inputs: (a) `domain_stakes: low \| high` flag in `_meta/posture.yaml`, (b) at least one moat-item target (REQ-E4, M1, M2, M3, or M4) with the schema feature that will make it real, (c) any T0 hard-gates flagged as design-challenging early so SCHEMA-DESIGN accounts for them | INTERVIEW complete; SCHEMA-DESIGN not yet started; `_meta/posture.yaml` does not exist or has placeholder values |
+| **SCHEMA-DESIGN** | Walk through Q1–Q15 from `04-SCHEMA-DESIGN.md` to design the new OV's schema (Q15 is the formal version of POSTURE-DECLARATION's commitments) | Domain is clear; posture declared; schema is not yet locked |
 | **CARTRIDGE-SHAPE** | Decide what a cartridge represents in the new OV, what its backbone files are, what its state-persistence model is | Schema is locked; cartridge analog undecided |
 | **ARTIFACT-DRAFT** | Draft a specific shipping file (`AI-BOOTSTRAP`, `README`, an engine file, a template) inside `Artifacts/` | Schema + cartridge shape locked; missing artifacts |
 | **REVIEW** | Critique an existing draft against the design principles in `02-DESIGN-PRINCIPLES.md` | An artifact has a draft but no review pass |
-| **SHIP-PREP** | Walk the checklist in `07-SHIPPING-CHECKLIST.md` (scrubbing, license, README, GitHub) | All artifacts drafted |
+| **SHIP-PREP** | Walk the checklist in `07-SHIPPING-CHECKLIST.md` (scrubbing, license, README, GitHub, Phase 3.10 Standalone Sufficiency readiness) | All artifacts drafted |
+
+> **POSTURE-DECLARATION is new in v2.2.0.** It separates the posture-commitment step (operator commits to stakes + moat target + schema-challenging T0 flags) from SCHEMA-DESIGN's full Q1–Q15 walk. The commitments seed `_meta/posture.yaml` before schema design proceeds, so the schema work can be informed by which moat item the OV is committing to and which T0 gates need design attention. Without this separation, posture work tends to be retrofitted at SHIP-PREP — too late to shape the schema. See Convention 10 in `_design-engine/_meta/CONVENTIONS.md`.
 
 ## Decision algorithm
 
@@ -56,9 +59,14 @@ Evaluate in order. First condition that fires determines the default proposal.
 - **If** `_ov-manifest.md` is missing required sections (domain, user goals, intended use, prior-art references, **OV archetype** per CQ11) → propose **INTERVIEW**
 - **If** `ove_OV_Archetype` is empty in the manifest → INTERVIEW is incomplete (CQ11 unanswered); proposed activity remains **INTERVIEW** until archetype is declared. The archetype gates Q6 in SCHEMA-DESIGN; SCHEMA-DESIGN cannot proceed past Q5 without it.
 
+### Step 2.5 — Posture not declared (Convention 10)
+
+- **If** `_meta/posture.yaml` does not exist OR exists but `domain_stakes` is unset (or placeholder), `moat_commitments` is empty, and Convention 10 has not been formally walked → propose **POSTURE-DECLARATION**.
+- POSTURE-DECLARATION must complete (a seeded `_meta/posture.yaml` with declared `domain_stakes` + ≥1 `moat_commitments` entry) before SCHEMA-DESIGN proceeds. Q15 in `04-SCHEMA-DESIGN.md` is the formal version of the same commitments; the activity exists separately because the commitments are load-bearing for Q1–Q8 schema choices (the moat target shapes the schema; the domain-stakes flag shapes which TG gates the schema must support).
+
 ### Step 3 — Schema not locked
 
-- **If** `_schema-draft.md` doesn't yet answer Q1–Q8 from `04-SCHEMA-DESIGN.md` → propose **SCHEMA-DESIGN**
+- **If** `_schema-draft.md` doesn't yet answer Q1–Q15 from `04-SCHEMA-DESIGN.md` → propose **SCHEMA-DESIGN**
 
 ### Step 4 — Cartridge shape undecided
 
