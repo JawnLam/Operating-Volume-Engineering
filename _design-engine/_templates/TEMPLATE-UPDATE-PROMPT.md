@@ -1,7 +1,7 @@
 ---
-Item_Prototype: Fleeting
+type: Fleeting
 Item_ID: <ov-slug>-update-prompt
-Title: "<OV-Name> — AI-Assisted Update Prompt"
+title: "<OV-Name> — AI-Assisted Update Prompt"
 Date_Added: YYYY-MM-DD
 Date_Modified: YYYY-MM-DD
 Needs_Processing: false

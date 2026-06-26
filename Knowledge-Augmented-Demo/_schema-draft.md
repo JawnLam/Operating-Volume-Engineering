@@ -1,7 +1,8 @@
 ---
-Item_Prototype: OVE_Schema_Draft
+type: OVE_Schema_Draft
+timestamp: "2026-06-25T00:00:00Z"
 Item_ID: "kaov-demo-schema-draft"
-Title: "Knowledge-Augmented-Demo — Schema Draft"
+title: "Knowledge-Augmented-Demo — Schema Draft"
 Date_Added: 2026-06-25
 Date_Modified: 2026-06-25
 Needs_Processing: false

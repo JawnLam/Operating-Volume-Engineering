@@ -1,7 +1,8 @@
 ---
-Item_Prototype: Fleeting
+type: Fleeting
+timestamp: "2026-06-25T00:00:00Z"
 Item_ID: ove-changelog
-Title: "Operating-Volume-Engineering — Changelog"
+title: "Operating-Volume-Engineering — Changelog"
 Date_Added: 2026-06-01
 Date_Modified: 2026-06-25
 Needs_Processing: false
@@ -10,6 +11,22 @@ Needs_Processing: false
 # Changelog
 
 All notable changes to Operating-Volume-Engineering are documented in this file. Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); versioning follows [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+## [2.4.0] — 2026-06-26
+
+Minor release bringing OVE into **Google OKF v0.1 conformance** — the OVE half of the coordinated OKF release (vault Master_Schema v1.23.0 was Phase 1).
+
+### Changed — Convention 1 Universal Core adopts OKF field names (the keystone)
+
+`Item_Prototype`→`type` (OKF's single required field — the discriminator), `Title`→`title`, `Tags`→`tags`; values unchanged. Added `timestamp` (ISO 8601, derived `<Date_Modified>T00:00:00Z`) and optional `description`/`resource`. `Date_Modified` kept and time-synced with `timestamp`. **This is what makes every OV designed via OVE emit OKF-compliant items by default** — the original objective of the OKF initiative. Convention 2 gains a documented lowercase-exception for the six OKF interop fields.
+
+### Changed — Convention 6 folder `_Prototypes/` → `_types/`
+
+Vocabulary consistency with the `type` discriminator. Every OV ships its own `_types/` folder; the validator `C7` and all engine docs reference `_types/`. The OVE corpus's own `_Prototypes/` dirs were `git mv`'d to `_types/`.
+
+### Changed — OVE corpus migrated
+
+93 notes + 24 prototype files migrated to the OKF field names (frontmatter + worked-example blocks). A pre-existing engine `type:` field (doc categorization: `design-engine`/`ov-posture`) was renamed `doc_type:` to avoid colliding with the OKF discriminator. `validate.py` keys on `type`/`_types`. Hugo excluded and untouched (none present).
 
 ## [2.3.0] — 2026-06-25
 
@@ -145,21 +162,21 @@ Six cartridge files:
 - `_source-inventory.md` — three sources verified, with the Lam 2018 Pepperdine dissertation flagged `Sensitivity: Ship-by-reference (Convention 9)`. Demonstrates the inventory pattern's full structure: identifier, canonical location, page count, full-vs-excerpt status with the documented "Table-3-only excerpt" historical incident, sensitivity classification, AI-read acknowledgment, verification status.
 - `Sessions/RETROSPECTIVE.md` — one session log; new `ove_Session_Activity: RETROSPECTIVE` value documented.
 
-### Fixed — `_Prototypes/OVE_Source_Inventory.md` backfilled (v2.0.0 omission)
+### Fixed — `_types/OVE_Source_Inventory.md` backfilled (v2.0.0 omission)
 
-The v2.0.0 release added `_design-engine/_templates/TEMPLATE-source-inventory.md` and `TEMPLATE-LICENSE-restrictive.md` + `TEMPLATE-sensitive-source-placeholder.md`. The two LICENSE/placeholder templates correctly use `Item_Prototype: Fleeting`, but the source-inventory template declares a new Prototype (`OVE_Source_Inventory`) that needed a corresponding definition file in `_Prototypes/` per Convention 6. v2.0.0 shipped without that definition file; v2.1.0 backfills it as `_Prototypes/OVE_Source_Inventory.md`. The PLC-Retrospective worked example's `_source-inventory.md` (which uses the new Prototype) now resolves cleanly via C7 Prototype-coverage check.
+The v2.0.0 release added `_design-engine/_templates/TEMPLATE-source-inventory.md` and `TEMPLATE-LICENSE-restrictive.md` + `TEMPLATE-sensitive-source-placeholder.md`. The two LICENSE/placeholder templates correctly use `Item_Prototype: Fleeting`, but the source-inventory template declares a new Prototype (`OVE_Source_Inventory`) that needed a corresponding definition file in `_types/` per Convention 6. v2.0.0 shipped without that definition file; v2.1.0 backfills it as `_types/OVE_Source_Inventory.md`. The PLC-Retrospective worked example's `_source-inventory.md` (which uses the new Prototype) now resolves cleanly via C7 Prototype-coverage check.
 
-### Fixed — C7 walks design-cartridge `Artifacts/_Prototypes/` (v2.0.0 regression)
+### Fixed — C7 walks design-cartridge `Artifacts/_types/` (v2.0.0 regression)
 
-`validate.py`'s `_find_prototype_definition()` now also checks `<cartridge>/Artifacts/_Prototypes/<NAME>.md` in addition to the cartridge-local and OV-root paths. This is the OVE design-cartridge layout per `BOOTSTRAP-NEW-OV.md` Step 1 — a design cartridge nests its in-progress OV under `Artifacts/`, and the new OV's Prototype definitions live there during design.
+`validate.py`'s `_find_prototype_definition()` now also checks `<cartridge>/Artifacts/_types/<NAME>.md` in addition to the cartridge-local and OV-root paths. This is the OVE design-cartridge layout per `BOOTSTRAP-NEW-OV.md` Step 1 — a design cartridge nests its in-progress OV under `Artifacts/`, and the new OV's Prototype definitions live there during design.
 
-Before v2.1.0, C7 only looked in `<cartridge>/_Prototypes/` and `<root>/_Prototypes/`, so it could not find Prototypes for OVE-design-cartridges with content nested under `Artifacts/`. This produced spurious C7 failures when running the validator against an OVE folder containing operator-private design cartridges (e.g., the PLC design cartridge in the operator's canonical OVE folder).
+Before v2.1.0, C7 only looked in `<cartridge>/_types/` and `<root>/_types/`, so it could not find Prototypes for OVE-design-cartridges with content nested under `Artifacts/`. This produced spurious C7 failures when running the validator against an OVE folder containing operator-private design cartridges (e.g., the PLC design cartridge in the operator's canonical OVE folder).
 
 Search order is now:
 
-1. `<cartridge>/_Prototypes/<NAME>.md` (cartridge-local override)
-2. `<cartridge>/Artifacts/_Prototypes/<NAME>.md` (OVE design-cartridge layout — new in v2.1.0)
-3. `<root>/_Prototypes/<NAME>.md` (OV-root canonical home)
+1. `<cartridge>/_types/<NAME>.md` (cartridge-local override)
+2. `<cartridge>/Artifacts/_types/<NAME>.md` (OVE design-cartridge layout — new in v2.1.0)
+3. `<root>/_types/<NAME>.md` (OV-root canonical home)
 
 This is a bug fix, not a behavior change for shipped OVs — finite-horizon worked examples (SOLVE-eX-Retrospective, LFW, etc.) and the new PLC-Retrospective use the cartridge-local pattern (path 1), which was already supported.
 
@@ -355,7 +372,7 @@ Documented in `_design-engine/_meta/CONVENTIONS.md § Convention 7`. OVE itself 
 
 Every OV explicitly declares **four content zones**. The boundary lets `git pull` update the engine without disturbing operator work and lets the operator extend the OV without fearing the next pull.
 
-- **Engine Zone** — release-owned; updated by `git pull` (front-door docs, `_<purpose>-engine/`, `_Prototypes/`, `_USER.md.template`, `.gitignore`)
+- **Engine Zone** — release-owned; updated by `git pull` (front-door docs, `_<purpose>-engine/`, `_types/`, `_USER.md.template`, `.gitignore`)
 - **Operator-Private Zone** — gitignored; never tracked (`_USER.md`, per-cartridge state files, session logs, IDE caches)
 - **Operator-Extension Zone** — operator-created; survives `git pull` (operator's own cartridges parallel to shipped examples)
 - **Shipped Examples Zone** — release-owned; updated by `git pull` (the worked-example cartridges)
@@ -463,7 +480,7 @@ OVE is now a first-class citizen of the conventions it teaches. Concretely:
 
 The word "atom" had been doing two jobs in OVE prose: naming the *type definition* (the schema), and naming the *instance* (the note). This release separates the two:
 
-- **Prototype** — the type definition. A schema-bearing declaration that lives in `_Prototypes/`. There is exactly one Prototype per kind of thing in an OV's namespace. The frontmatter field `Item_Prototype:` points at one.
+- **Prototype** — the type definition. A schema-bearing declaration that lives in `_types/`. There is exactly one Prototype per kind of thing in an OV's namespace. The frontmatter field `Item_Prototype:` points at one.
 - **Item** — the universal noun for *any instance of any Prototype*. A specific cartridge note declaring `Item_Prototype: LFW_Beat` is an Item of the LFW_Beat Prototype. Replaces all generic uses of "atom" across the engine, templates, conventions, validator messages, and the five worked-example cartridges.
 
 Concretely:
@@ -488,34 +505,34 @@ Total vault-side scope: 1 prototype rename, 8 property/enum renames, 197 notes m
 
 OVE itself adopts these conventions: the engine docs use the new vocabulary; the validator's messages name Items and Prototypes; the cartridge files cite them. New OVs designed via OVE inherit the conventions through `CONVENTIONS.md` and the namespace cascade.
 
-### Added — Convention 6: every OV ships its own `_Prototypes/` folder
+### Added — Convention 6: every OV ships its own `_types/` folder
 
 The new convention makes OVs **portable**. Without it, a cartridge note that declares `Item_Prototype: <NAMESPACE>_<TypeName>` is a name pointer with no definition behind it — fine for an operator with a vault-wide central registry, broken for everyone else. Convention 6 fixes that.
 
-- **New file `_design-engine/_meta/CONVENTIONS.md` § Convention 6** — every OV bundles a top-level `_Prototypes/` folder containing one `.md` file per Prototype in its namespace. The folder is the canonical home for Prototype definitions; any vault-wide central registry the operator maintains is a downstream union view, not authority.
+- **New file `_design-engine/_meta/CONVENTIONS.md` § Convention 6** — every OV bundles a top-level `_types/` folder containing one `.md` file per Prototype in its namespace. The folder is the canonical home for Prototype definitions; any vault-wide central registry the operator maintains is a downstream union view, not authority.
 - **New template `_design-engine/_templates/TEMPLATE-Prototype.md`** — the standard structure every Prototype definition follows: Purpose, Required frontmatter, Body structure, Naming, Example Item, Relationships, Notes. Each section is operational (executable by the AI when materializing Prototypes), not descriptive.
-- **`04-SCHEMA-DESIGN.md` new section "Materializing the `_Prototypes/` folder"** — step-by-step guidance the AI follows during ARTIFACT-DRAFT to write one Prototype file per declared Prototype, cross-checked against `_meta/SCHEMA-OF-SCHEMAS.md`.
-- **`BOOTSTRAP-NEW-OV.md` Step 5** — adds `_Prototypes/` materialization between BOOTSTRAP-NEW-CARTRIDGE drafting and template drafting. Names Convention 6 in-prose so the AI sees why the folder is non-optional.
-- **`07-SHIPPING-CHECKLIST.md` new Phase 3.5** — hard-stop gate. Verifies the `_Prototypes/` folder exists, every `Item_Prototype:` value used in any cartridge has a corresponding `.md` file in `_Prototypes/`, and every file conforms to `TEMPLATE-Prototype.md`. Phase 7 (git init) is locked until the gate is clean.
-- **`validate.py` new check C7 — Prototype coverage** — walks every cartridge, collects distinct `Item_Prototype:` values (excluding `Fleeting`), and verifies each resolves to a `<NAMESPACE>_<TypeName>.md` in either the cartridge's local `_Prototypes/` (cartridge-local override) or the OV root's `_Prototypes/` (canonical home). Misses fail with `<file>:<line>` and the missing Prototype name. C5 (dangling wikilinks) now skips any `_Prototypes/` file because Prototype definitions contain placeholder example wikilinks by design.
+- **`04-SCHEMA-DESIGN.md` new section "Materializing the `_types/` folder"** — step-by-step guidance the AI follows during ARTIFACT-DRAFT to write one Prototype file per declared Prototype, cross-checked against `_meta/SCHEMA-OF-SCHEMAS.md`.
+- **`BOOTSTRAP-NEW-OV.md` Step 5** — adds `_types/` materialization between BOOTSTRAP-NEW-CARTRIDGE drafting and template drafting. Names Convention 6 in-prose so the AI sees why the folder is non-optional.
+- **`07-SHIPPING-CHECKLIST.md` new Phase 3.5** — hard-stop gate. Verifies the `_types/` folder exists, every `Item_Prototype:` value used in any cartridge has a corresponding `.md` file in `_types/`, and every file conforms to `TEMPLATE-Prototype.md`. Phase 7 (git init) is locked until the gate is clean.
+- **`validate.py` new check C7 — Prototype coverage** — walks every cartridge, collects distinct `Item_Prototype:` values (excluding `Fleeting`), and verifies each resolves to a `<NAMESPACE>_<TypeName>.md` in either the cartridge's local `_types/` (cartridge-local override) or the OV root's `_types/` (canonical home). Misses fail with `<file>:<line>` and the missing Prototype name. C5 (dangling wikilinks) now skips any `_types/` file because Prototype definitions contain placeholder example wikilinks by design.
 
-### Added — OVE ships its own `_Prototypes/` folder
+### Added — OVE ships its own `_types/` folder
 
-OVE itself follows Convention 6. The OV root now contains `_Prototypes/` with five files corresponding to the OVE namespace's Prototypes:
+OVE itself follows Convention 6. The OV root now contains `_types/` with five files corresponding to the OVE namespace's Prototypes:
 
-- `_Prototypes/OVE_OV_Manifest.md`
-- `_Prototypes/OVE_Design_State.md`
-- `_Prototypes/OVE_Design_Decisions.md`
-- `_Prototypes/OVE_Schema_Draft.md`
-- `_Prototypes/OVE_Session.md`
+- `_types/OVE_OV_Manifest.md`
+- `_types/OVE_Design_State.md`
+- `_types/OVE_Design_Decisions.md`
+- `_types/OVE_Schema_Draft.md`
+- `_types/OVE_Session.md`
 
-Verbatim mirrors of the corresponding entries in the user's vault Infrastructure `_Prototypes/`. Anyone cloning OVE without that vault Infrastructure now gets the Prototype definitions out of the box.
+Verbatim mirrors of the corresponding entries in the user's vault Infrastructure `_types/`. Anyone cloning OVE without that vault Infrastructure now gets the Prototype definitions out of the box.
 
 ### Added — worked-example cartridges ship verbatim Prototype mirrors where vault Prototypes exist
 
-- **`Long-Form-Writing/_Prototypes/`** — 9 LFW_* files (LFW_Beat, LFW_Chapter, LFW_Character_Bible, LFW_Motif, LFW_Note, LFW_Reader, LFW_Scene, LFW_Session, LFW_Source) copied verbatim from the user's vault Infrastructure.
-- **`LifeLong-Learning-Retrospective/_Prototypes/`** — 9 LLL_* files (LLL_Unit, LLL_Curriculum, LLL_Quiz, LLL_Session, LLL_SR_Log, LLL_State, LLL_Subject_Manifest, LLL_Synthesis, LLL_Thinker) copied verbatim, with LLL_Unit reflecting the post-rename name.
-- **Negotiation-Preparation, Relationship-Cultivation, SOLVE-eX-Retrospective** — no `_Prototypes/` folder. These cartridges show OVE in active design phase with no shipped vault Prototypes for their target OVs. Per the operator's "mirror verbatim" rule, no fabrication: the folder is absent rather than populated with illustrative placeholders.
+- **`Long-Form-Writing/_types/`** — 9 LFW_* files (LFW_Beat, LFW_Chapter, LFW_Character_Bible, LFW_Motif, LFW_Note, LFW_Reader, LFW_Scene, LFW_Session, LFW_Source) copied verbatim from the user's vault Infrastructure.
+- **`LifeLong-Learning-Retrospective/_types/`** — 9 LLL_* files (LLL_Unit, LLL_Curriculum, LLL_Quiz, LLL_Session, LLL_SR_Log, LLL_State, LLL_Subject_Manifest, LLL_Synthesis, LLL_Thinker) copied verbatim, with LLL_Unit reflecting the post-rename name.
+- **Negotiation-Preparation, Relationship-Cultivation, SOLVE-eX-Retrospective** — no `_types/` folder. These cartridges show OVE in active design phase with no shipped vault Prototypes for their target OVs. Per the operator's "mirror verbatim" rule, no fabrication: the folder is absent rather than populated with illustrative placeholders.
 
 ### Notes
 

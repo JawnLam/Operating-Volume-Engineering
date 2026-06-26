@@ -1,7 +1,8 @@
 ---
-Item_Prototype: OVE_Design_State
+type: OVE_Design_State
+timestamp: "2026-06-01T00:00:00Z"
 Item_ID: "long-form-writing-state"
-Title: "Long-Form-Writing — Design State"
+title: "Long-Form-Writing — Design State"
 Date_Added: 2026-06-01
 Date_Modified: 2026-06-01
 Needs_Processing: false

@@ -1,7 +1,7 @@
 ---
-Item_Prototype: Fleeting
+type: Fleeting
 Item_ID: "<ov-slug>-license"
-Title: "<OV Name> — License (Restrictive)"
+title: "<OV Name> — License (Restrictive)"
 Date_Added:
 Date_Modified:
 Needs_Processing: false

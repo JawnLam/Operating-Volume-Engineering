@@ -1,7 +1,8 @@
 ---
-Item_Prototype: OVE_Schema_Draft
+type: OVE_Schema_Draft
+timestamp: "2026-06-13T00:00:00Z"
 Item_ID: "plc-retrospective-schema-draft"
-Title: "Political-Landscape-Cartography — Retrospective Schema Draft"
+title: "Political-Landscape-Cartography — Retrospective Schema Draft"
 Date_Added: 2026-06-13
 Date_Modified: 2026-06-13
 Needs_Processing: false
@@ -183,7 +184,7 @@ PLC namespace declares 16 Prototypes:
 - `PLC_Tactic`, `PLC_Strategy`, `PLC_Theorist`, `PLC_Move` (Catalogue + dissertation)
 - `PLC_Pattern_Stakeholder_Archetype`, `PLC_Pattern_Change_Initiator_Posture`, `PLC_Pattern_Opposition_Posture`, `PLC_Pattern_Arc_Dynamic`, `PLC_Pattern_Power_Dynamic_Theme`, `PLC_Pattern_Ethical_Dilemma` (pattern atoms — 6 families totaling 72 atoms)
 
-Each Prototype shipped with its own `_Prototypes/PLC_<TypeName>.md` per Convention 6.
+Each Prototype shipped with its own `_types/PLC_<TypeName>.md` per Convention 6.
 
 ### Relationship vocabulary
 
@@ -200,7 +201,7 @@ Political-Landscape-Cartography/
 │   ├── _meta/ (SCHEMA-OF-SCHEMAS, FAILURE-MODES)
 │   ├── _templates/ (per-Prototype templates)
 │   └── _yaml/ (scaffolding YAML)
-├── _Prototypes/ (16 files per Convention 6)
+├── _types/ (16 files per Convention 6)
 ├── _PATTERNS/ (6 family folders, 72 pattern atoms)
 ├── _frameworks/
 │   ├── ADAPT.md, OPC-Assessment.md, 4R.md, 4R-coaching-script.md, ...

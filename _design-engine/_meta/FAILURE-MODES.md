@@ -1,11 +1,12 @@
 ---
-Item_Prototype: Fleeting
+type: Fleeting
+timestamp: "2026-06-06T00:00:00Z"
 Item_ID: ove-meta-failure-modes
-Title: "OVE Meta — Failure Modes"
+title: "OVE Meta — Failure Modes"
 Date_Added: 2026-06-01
 Date_Modified: 2026-06-06
 Needs_Processing: false
-type: design-engine
+doc_type: design-engine
 role: failure-catalog
 scope: subject-agnostic
 updated: 2026-06-01

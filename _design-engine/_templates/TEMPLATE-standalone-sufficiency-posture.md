@@ -1,11 +1,11 @@
 ---
-Item_Prototype: Fleeting
+type: Fleeting
 Item_ID: <ov-slug>-standalone-sufficiency-posture
-Title: "<OV Name> — Standalone Sufficiency Posture (Convention 10)"
+title: "<OV Name> — Standalone Sufficiency Posture (Convention 10)"
 Date_Added: YYYY-MM-DD
 Date_Modified: YYYY-MM-DD
 Needs_Processing: false
-type: ov-posture
+doc_type: ov-posture
 role: standalone-sufficiency-statement
 scope: ov-specific
 ove_OV_Name: "<OV Name>"

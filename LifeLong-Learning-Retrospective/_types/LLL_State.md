@@ -1,7 +1,7 @@
 ---
 Item_ID: "UUID-OR-SLUG"
-Item_Prototype: LLL_State
-Title: "State"
+type: LLL_State
+title: "State"
 lll_Subject: ""
 lll_Current_Phase: 1
 lll_Current_Phase_Name: ""

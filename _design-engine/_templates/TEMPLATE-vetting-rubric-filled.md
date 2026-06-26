@@ -1,11 +1,11 @@
 ---
-Item_Prototype: Fleeting
+type: Fleeting
 Item_ID: <ov-slug>-vetting-rubric-filled
-Title: "<OV Name> — Vetting Rubric (filled, Convention 10)"
+title: "<OV Name> — Vetting Rubric (filled, Convention 10)"
 Date_Added: YYYY-MM-DD
 Date_Modified: YYYY-MM-DD
 Needs_Processing: false
-type: ov-posture
+doc_type: ov-posture
 role: vetting-rubric-filled
 scope: ov-specific
 ove_OV_Name: "<OV Name>"

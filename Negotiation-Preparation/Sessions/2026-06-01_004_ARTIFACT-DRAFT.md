@@ -1,7 +1,8 @@
 ---
-Item_Prototype: OVE_Session
+type: OVE_Session
+timestamp: "2026-06-01T00:00:00Z"
 Item_ID: "negotiation-prep-session-004"
-Title: "Negotiation-Preparation — Session 004 — ARTIFACT-DRAFT"
+title: "Negotiation-Preparation — Session 004 — ARTIFACT-DRAFT"
 Date_Added: 2026-06-01
 Date_Modified: 2026-06-01
 Needs_Processing: false

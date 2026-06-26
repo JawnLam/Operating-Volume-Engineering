@@ -1,11 +1,12 @@
 ---
-Item_Prototype: Fleeting
+type: Fleeting
+timestamp: "2026-06-06T00:00:00Z"
 Item_ID: ove-engine-01-what-is-an-ov
-Title: "OVE Engine — 01 What Is an OV"
+title: "OVE Engine — 01 What Is an OV"
 Date_Added: 2026-06-01
 Date_Modified: 2026-06-06
 Needs_Processing: false
-type: design-engine
+doc_type: design-engine
 role: concept-definition
 scope: subject-agnostic
 updated: 2026-06-01

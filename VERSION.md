@@ -1,11 +1,12 @@
 ---
-Item_Prototype: Fleeting
+type: Fleeting
+timestamp: "2026-06-25T00:00:00Z"
 Item_ID: ove-version
-Title: "Operating-Volume-Engineering — Version"
+title: "Operating-Volume-Engineering — Version"
 Date_Added: 2026-06-01
 Date_Modified: 2026-06-25
 Needs_Processing: false
-ove_Version: "2.3.0"
+ove_Version: "2.4.0"
 schema_version: "2.0"
 schema_status: "STABLE"
 release_date: 2026-06-25
@@ -14,7 +15,11 @@ release_phase: "Minor release — Convention 11 (Knowledge-Augmented OVs): every
 
 # Operating-Volume-Engineering — Version
 
-This is Operating-Volume-Engineering **v2.3.0** — minor release introducing **Convention 11 — Knowledge-Augmented OVs**, integrating Google Cloud's **Open Knowledge Format (OKF) v0.1** as an optional, read-only **data plane**. Every OV now declares `ove_Knowledge_Source`; the default is `self_contained` (all knowledge baked into the corpus, the v2.0 F13 pipeline). An OV may instead be `knowledge_augmented` (a KAOV): it mounts one or more **vendored** OKF bundles under `_knowledge/` and retrieves from them at session runtime under the bridge protocol in the new engine chapter `08-KNOWLEDGE-RETRIEVAL.md` (progressive disclosure, workspace isolation, OKF-conformant explicit sourcing, boot-time re-verification). The release adds the `KNOWLEDGE-MOUNT` lifecycle activity, failure mode `F14`, validator checks `C15`/`C16`, and a dogfood worked example (`Knowledge-Augmented-Demo`). Because mounts are vendored, a KAOV remains a self-contained corpus. The change is **additive** over v2.2.0 — `ove_Knowledge_Source` defaults to `self_contained`, so existing OVs validate and behave unchanged.
+This is Operating-Volume-Engineering **v2.4.0** — minor release bringing the engine into **Google OKF v0.1 conformance**. **Convention 1's Universal Core is renamed to OKF-native field names** (`Item_Prototype`→`type`, `Title`→`title`, `Tags`→`tags`; added `timestamp` derived from `Date_Modified`, plus optional `description`/`resource`), mirroring vault Master_Schema v1.23.0 — **so every OV designed via OVE now emits OKF-compliant items by default.** Convention 6's per-OV folder is renamed `_Prototypes/`→`_types/` (vocabulary consistency with the `type` discriminator); the validator (`C7`) and all engine docs follow. `Date_Modified` is kept and time-synced with `timestamp`. Hugo (`hugo_*`) remains excluded and untouched. The OVE corpus itself (93 notes + 24 prototypes) was migrated; `validate.py` updated to key on `type`/`_types`. This is the OVE half of the coordinated OKF release (vault done in schema v1.23.0; LFW/LLL/SOLVE-eX/PLC migrate in parallel).
+
+### Prior: v2.3.0
+
+v2.3.0 was a minor release introducing **Convention 11 — Knowledge-Augmented OVs**, integrating Google Cloud's **Open Knowledge Format (OKF) v0.1** as an optional, read-only **data plane**. Every OV now declares `ove_Knowledge_Source`; the default is `self_contained` (all knowledge baked into the corpus, the v2.0 F13 pipeline). An OV may instead be `knowledge_augmented` (a KAOV): it mounts one or more **vendored** OKF bundles under `_knowledge/` and retrieves from them at session runtime under the bridge protocol in the new engine chapter `08-KNOWLEDGE-RETRIEVAL.md` (progressive disclosure, workspace isolation, OKF-conformant explicit sourcing, boot-time re-verification). The release adds the `KNOWLEDGE-MOUNT` lifecycle activity, failure mode `F14`, validator checks `C15`/`C16`, and a dogfood worked example (`Knowledge-Augmented-Demo`). Because mounts are vendored, a KAOV remains a self-contained corpus. The change is **additive** over v2.2.0 — `ove_Knowledge_Source` defaults to `self_contained`, so existing OVs validate and behave unchanged.
 
 ## Version identifiers
 

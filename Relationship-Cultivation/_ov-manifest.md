@@ -1,7 +1,8 @@
 ---
-Item_Prototype: OVE_OV_Manifest
+type: OVE_OV_Manifest
+timestamp: "2026-06-01T00:00:00Z"
 Item_ID: "relationship-cultivation-manifest"
-Title: "Relationship-Cultivation — Fresh Worked Example (Lighter)"
+title: "Relationship-Cultivation — Fresh Worked Example (Lighter)"
 Date_Added: 2026-06-01
 Date_Modified: 2026-06-01
 Needs_Processing: false

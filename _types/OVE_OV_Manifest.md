@@ -1,7 +1,7 @@
 ---
 Item_ID: "UUID-OR-SLUG"
-Item_Prototype: OVE_OV_Manifest
-Title: "<OV Name> — Design Cartridge Manifest"
+type: OVE_OV_Manifest
+title: "<OV Name> — Design Cartridge Manifest"
 ove_OV_Name: ""
 ove_OV_Slug: ""
 ove_Design_Phase: interview

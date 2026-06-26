@@ -1,7 +1,8 @@
 ---
-Item_Prototype: Fleeting
+type: Fleeting
+timestamp: "2026-06-06T00:00:00Z"
 Item_ID: ove-operator-guide
-Title: "Operating-Volume-Engineering — Operator Guide"
+title: "Operating-Volume-Engineering — Operator Guide"
 Date_Added: 2026-06-01
 Date_Modified: 2026-06-06
 Needs_Processing: false
@@ -121,7 +122,7 @@ Your installed OVE folder has four content zones. Knowing which is which prevent
 |------|-------|
 | `README.md`, `INSTALL.md`, `OPERATOR-GUIDE.md`, `CONTRIBUTING.md`, `LICENSE.md`, `VERSION.md`, `CHANGELOG.md` | Front-door docs |
 | `_design-engine/` | The full design protocol — engine chapters, templates, meta |
-| `_Prototypes/` | OVE's own Prototype definitions (Convention 6) |
+| `_types/` | OVE's own Prototype definitions (Convention 6) |
 | `_USER.md.template` | The template, not your filled-in `_USER.md` |
 | `.gitignore` | Engine-zone file; its patterns define your Operator-Private Zone |
 

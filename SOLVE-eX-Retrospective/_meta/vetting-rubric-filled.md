@@ -1,11 +1,12 @@
 ---
-Item_Prototype: Fleeting
+type: Fleeting
+timestamp: "2026-06-14T00:00:00Z"
 Item_ID: solve-ex-vetting-rubric-filled
-Title: "SOLVE-eX — Vetting Rubric (filled, Convention 10)"
+title: "SOLVE-eX — Vetting Rubric (filled, Convention 10)"
 Date_Added: 2026-06-14
 Date_Modified: 2026-06-14
 Needs_Processing: false
-type: ov-posture
+doc_type: ov-posture
 role: vetting-rubric-filled
 scope: ov-specific
 ove_OV_Name: "SOLVE-eX"

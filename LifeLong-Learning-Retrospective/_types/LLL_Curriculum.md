@@ -1,7 +1,7 @@
 ---
 Item_ID: "UUID-OR-SLUG"
-Item_Prototype: LLL_Curriculum
-Title: "Curriculum"
+type: LLL_Curriculum
+title: "Curriculum"
 lll_Subject: ""
 lll_Phases_Total: 
 lll_Current_Phase: 1

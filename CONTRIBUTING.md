@@ -1,7 +1,8 @@
 ---
-Item_Prototype: Fleeting
+type: Fleeting
+timestamp: "2026-06-06T00:00:00Z"
 Item_ID: ove-contributing
-Title: "Operating-Volume-Engineering — Contributing"
+title: "Operating-Volume-Engineering — Contributing"
 Date_Added: 2026-06-01
 Date_Modified: 2026-06-06
 Needs_Processing: false
@@ -84,7 +85,7 @@ Every file in this repo belongs to one of four zones. Knowing which zone a file 
 |--------------|-------|
 | `README.md`, `AI-BOOTSTRAP.md`, `INSTALL.md`, `OPERATOR-GUIDE.md`, `CONTRIBUTING.md`, `LICENSE.md`, `VERSION.md`, `CHANGELOG.md` | Front-door docs |
 | `_design-engine/**` | Engine prose, templates, meta, validator |
-| `_Prototypes/**` | Convention 6 — OVE's own Prototype definitions |
+| `_types/**` | Convention 6 — OVE's own Prototype definitions |
 | `_USER.md.template` | Template only; the populated `_USER.md` is operator-private |
 | `.gitignore` | This file defines the Operator-Private patterns below |
 

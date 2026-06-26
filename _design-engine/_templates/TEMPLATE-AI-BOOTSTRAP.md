@@ -1,7 +1,8 @@
 ---
-Item_Prototype: Fleeting
+type: Fleeting
+timestamp: "2026-06-06T00:00:00Z"
 Item_ID: ove-template-ai-bootstrap
-Title: "OVE Template — AI Bootstrap (for new OV)"
+title: "OVE Template — AI Bootstrap (for new OV)"
 Date_Added: 2026-06-01
 Date_Modified: 2026-06-06
 Needs_Processing: false

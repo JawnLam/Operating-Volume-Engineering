@@ -1,7 +1,7 @@
 ---
 Item_ID: "UUID-OR-SLUG"
-Item_Prototype: LLL_Thinker
-Title: "Thinker Name"
+type: LLL_Thinker
+title: "Thinker Name"
 crm_DoB: 
 crm_DoD: 
 crm_Online_Profile_URL: ""

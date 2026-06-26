@@ -1,7 +1,8 @@
 ---
-Item_Prototype: OVE_Design_Decisions
+type: OVE_Design_Decisions
+timestamp: "2026-06-01T00:00:00Z"
 Item_ID: "solve-ex-retrospective-decisions"
-Title: "SOLVE-eX — Retrospective Decisions Log"
+title: "SOLVE-eX — Retrospective Decisions Log"
 Date_Added: 2026-06-01
 Date_Modified: 2026-06-01
 Needs_Processing: false

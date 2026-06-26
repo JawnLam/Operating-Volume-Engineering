@@ -1,7 +1,8 @@
 ---
-Item_Prototype: OVE_OV_Manifest
+type: OVE_OV_Manifest
+timestamp: "2026-06-01T00:00:00Z"
 Item_ID: "solve-ex-retrospective-manifest"
-Title: "SOLVE-eX — Retrospective Design Analysis"
+title: "SOLVE-eX — Retrospective Design Analysis"
 Date_Added: 2026-06-01
 Date_Modified: 2026-06-01
 Needs_Processing: false

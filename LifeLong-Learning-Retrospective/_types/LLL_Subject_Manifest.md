@@ -1,7 +1,7 @@
 ---
 Item_ID: "UUID-OR-SLUG"
-Item_Prototype: LLL_Subject_Manifest
-Title: "Subject Name"
+type: LLL_Subject_Manifest
+title: "Subject Name"
 lll_Subject: ""
 lll_Subject_Slug: ""
 lll_Domain_Shape: []

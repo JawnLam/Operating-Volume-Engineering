@@ -1,11 +1,12 @@
 ---
-Item_Prototype: Fleeting
+type: Fleeting
+timestamp: "2026-06-25T00:00:00Z"
 Item_ID: ove-engine-08-knowledge-retrieval
-Title: "OVE Engine — 08 Knowledge Retrieval (the OKF bridge)"
+title: "OVE Engine — 08 Knowledge Retrieval (the OKF bridge)"
 Date_Added: 2026-06-25
 Date_Modified: 2026-06-25
 Needs_Processing: false
-type: design-engine
+doc_type: design-engine
 role: knowledge-retrieval
 scope: subject-agnostic
 updated: 2026-06-25

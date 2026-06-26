@@ -1,7 +1,8 @@
 ---
-Item_Prototype: OVE_Session
+type: OVE_Session
+timestamp: "2026-06-01T00:00:00Z"
 Item_ID: "solve-ex-retrospective-session-001"
-Title: "SOLVE-eX — Session 001 — Retrospective Analysis"
+title: "SOLVE-eX — Session 001 — Retrospective Analysis"
 Date_Added: 2026-06-01
 Date_Modified: 2026-06-01
 Needs_Processing: false

@@ -1,11 +1,12 @@
 ---
-Item_Prototype: Fleeting
+type: Fleeting
+timestamp: "2026-06-06T00:00:00Z"
 Item_ID: ove-engine-07-shipping-checklist
-Title: "OVE Engine — 07 Shipping Checklist"
+title: "OVE Engine — 07 Shipping Checklist"
 Date_Added: 2026-06-01
 Date_Modified: 2026-06-06
 Needs_Processing: false
-type: design-engine
+doc_type: design-engine
 role: shipping-checklist
 scope: subject-agnostic
 updated: 2026-06-01
@@ -129,18 +130,18 @@ Only `info`-class findings (e.g., C4 skipped because no `_USER.md`) and explicit
 
 **If any of these is no, return to scrub work. Phase 7 is locked until this gate is clean.**
 
-## Phase 3.5 — `_Prototypes/` coverage gate (HARD STOP)
+## Phase 3.5 — `_types/` coverage gate (HARD STOP)
 
-Convention 6 (`_meta/CONVENTIONS.md`) requires every OV to ship its own `_Prototypes/` folder containing one `.md` file per Prototype declared in the OV's namespace. Without this, every cartridge note's `Item_Prototype:` reference is a dangling pointer for anyone without a vault-wide central registry.
+Convention 6 (`_meta/CONVENTIONS.md`) requires every OV to ship its own `_types/` folder containing one `.md` file per Prototype declared in the OV's namespace. Without this, every cartridge note's `type:` reference is a dangling pointer for anyone without a vault-wide central registry.
 
 ### Walk the Prototype list
 
-- [ ] `<New-OV>/_Prototypes/` folder exists at the OV root
-- [ ] Every Prototype declared in `_<purpose>-engine/_meta/SCHEMA-OF-SCHEMAS.md` (under `prototypes:` or equivalent) has a corresponding `<NAMESPACE>_<TypeName>.md` file in `_Prototypes/`
-- [ ] Every `Item_Prototype: <NAMESPACE>_<TypeName>` value used anywhere in the OV's cartridges has a corresponding `<NAMESPACE>_<TypeName>.md` file in `_Prototypes/`
+- [ ] `<New-OV>/_types/` folder exists at the OV root
+- [ ] Every Prototype declared in `_<purpose>-engine/_meta/SCHEMA-OF-SCHEMAS.md` (under `prototypes:` or equivalent) has a corresponding `<NAMESPACE>_<TypeName>.md` file in `_types/`
+- [ ] Every `type: <NAMESPACE>_<TypeName>` value used anywhere in the OV's cartridges has a corresponding `<NAMESPACE>_<TypeName>.md` file in `_types/`
 - [ ] Each Prototype file conforms to `_design-engine/_templates/TEMPLATE-Prototype.md` (Purpose, Required frontmatter, Body structure, Naming, Example, Relationships sections present)
 - [ ] Each Prototype file's required frontmatter matches the property declarations in `_meta/SCHEMA-OF-SCHEMAS.md`
-- [ ] The Fleeting Prototype is *not* duplicated in `_Prototypes/` — it's a vault-universal Prototype, not OV-specific
+- [ ] The Fleeting Prototype is *not* duplicated in `_types/` — it's a vault-universal Prototype, not OV-specific
 
 ### Run the gate
 
@@ -150,26 +151,26 @@ If `validate.py` is in use:
 python3 _design-engine/_meta/validate.py
 ```
 
-Check 7 (C7 — Prototype coverage) walks every cartridge and confirms every distinct `Item_Prototype:` value resolves to a file in `_Prototypes/`. Missing files fail with `<file>:<line>` and the missing Prototype name.
+Check 7 (C7 — Prototype coverage) walks every cartridge and confirms every distinct `type:` value resolves to a file in `_types/`. Missing files fail with `<file>:<line>` and the missing Prototype name.
 
 If running markdown-only:
 
 ```bash
-# List every Item_Prototype value used in any cartridge
-grep -rh '^Item_Prototype:' <Cartridge>/*.md <Cartridge>/**/*.md 2>/dev/null | \
+# List every type value used in any cartridge
+grep -rh '^type:' <Cartridge>/*.md <Cartridge>/**/*.md 2>/dev/null | \
   sort -u | \
   grep -v 'Fleeting'
 ```
 
-For each value listed, confirm a matching file exists in `_Prototypes/`.
+For each value listed, confirm a matching file exists in `_types/`.
 
 ### Acceptance — all must be true
 
-- [ ] Every cartridge `Item_Prototype:` value (excluding `Fleeting`) has a definition file in `_Prototypes/`
+- [ ] Every cartridge `type:` value (excluding `Fleeting`) has a definition file in `_types/`
 - [ ] Every definition file conforms to `TEMPLATE-Prototype.md`
 - [ ] No leftover stub Prototypes (placeholder text not replaced with domain-specific content)
 
-**If any of these is no, return to ARTIFACT-DRAFT to materialize the missing Prototype definitions per `04-SCHEMA-DESIGN.md` § "Materializing the `_Prototypes/` folder". Phase 7 is locked until this gate is clean.**
+**If any of these is no, return to ARTIFACT-DRAFT to materialize the missing Prototype definitions per `04-SCHEMA-DESIGN.md` § "Materializing the `_types/` folder". Phase 7 is locked until this gate is clean.**
 
 ## Phase 3.6 — Convention 7 / 8 readiness (HARD STOP)
 
@@ -246,7 +247,7 @@ If running markdown-only:
 ```bash
 # Extract all "p.NN" and "§ N.N" cites from shippable content
 grep -rEhn 'p\.\s*[0-9]+|§\s*[0-9]+(\.[0-9]+)+' \
-  <NewOV>/_*-engine <NewOV>/_Prototypes <NewOV>/README.md <NewOV>/OPERATOR-GUIDE.md
+  <NewOV>/_*-engine <NewOV>/_types <NewOV>/README.md <NewOV>/OPERATOR-GUIDE.md
 ```
 
 For each cite, manually verify against `_source-inventory.md` and the canonical source text. Log each verification in `_citation-audit-log.md` as `<cite> | <source> | <verification status>`.
@@ -320,7 +321,7 @@ If the OV does ship one of these as a real artifact, the word is fine — just v
 ```bash
 # Deliverable-promise noun sweep
 grep -rEhin '\b(dashboard|scorecard|report|framework|tool|playbook)\b' \
-  <NewOV>/_*-engine <NewOV>/_Prototypes <NewOV>/README.md <NewOV>/OPERATOR-GUIDE.md <NewOV>/CONTRIBUTING.md
+  <NewOV>/_*-engine <NewOV>/_types <NewOV>/README.md <NewOV>/OPERATOR-GUIDE.md <NewOV>/CONTRIBUTING.md
 
 # Inspect each hit. For each, log to _vocabulary-audit-log.md as:
 #   <file:line> | <word> | <decision: kept-with-justification | replaced-with-<role-word>>

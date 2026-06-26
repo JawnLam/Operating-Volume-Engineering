@@ -1,11 +1,12 @@
 ---
-Item_Prototype: Fleeting
+type: Fleeting
+timestamp: "2026-06-06T00:00:00Z"
 Item_ID: ove-engine-bootstrap-new-ov
-Title: "OVE Engine — Bootstrap New OV"
+title: "OVE Engine — Bootstrap New OV"
 Date_Added: 2026-06-01
 Date_Modified: 2026-06-06
 Needs_Processing: false
-type: design-engine
+doc_type: design-engine
 role: cartridge-bootstrapping-prompt
 scope: subject-agnostic
 updated: 2026-06-01
@@ -48,7 +49,7 @@ Do not proceed without reading these.
 
 ## The conventions you apply by default
 
-Per `_meta/CONVENTIONS.md`, every OV designed via OVE produces files that conform to a small set of universal conventions out of the box. The operator should not need to post-process the output. The conventions cascade from one early decision — the OV's namespace prefix — which is asked during the schema-design questions (`04-SCHEMA-DESIGN.md` § Q0). From the namespace, Prototype names, property names, enum identifiers, `Item_Prototype` values, and the contents of the OV's local `_Prototypes/` folder (Convention 6) all follow.
+Per `_meta/CONVENTIONS.md`, every OV designed via OVE produces files that conform to a small set of universal conventions out of the box. The operator should not need to post-process the output. The conventions cascade from one early decision — the OV's namespace prefix — which is asked during the schema-design questions (`04-SCHEMA-DESIGN.md` § Q0). From the namespace, Prototype names, property names, enum identifiers, `type` values, and the contents of the OV's local `_types/` folder (Convention 6) all follow.
 
 If the operator wants different conventions than the defaults, they tell you during INTERVIEW or SCHEMA-DESIGN. The choice gets logged in `_design-decisions.md`. The default is the convention set in `_meta/CONVENTIONS.md`; override only on explicit operator request.
 
@@ -208,7 +209,7 @@ Order:
 2. Engine `00-START-HERE.md` for the new OV
 3. Other engine chapters (numbered)
 4. BOOTSTRAP-NEW-CARTRIDGE prompt for the new OV
-5. **`_Prototypes/` folder** — one `<NAMESPACE>_<TypeName>.md` file per Prototype declared in the OV's namespace, each conforming to `_templates/TEMPLATE-Prototype.md`. This is Convention 6 (`_meta/CONVENTIONS.md`); without it the new OV's `Item_Prototype:` references are dangling pointers for anyone without a vault-wide central registry. See `04-SCHEMA-DESIGN.md` § "Materializing the `_Prototypes/` folder" for the step-by-step.
+5. **`_types/` folder** — one `<NAMESPACE>_<TypeName>.md` file per Prototype declared in the OV's namespace, each conforming to `_templates/TEMPLATE-Prototype.md`. This is Convention 6 (`_meta/CONVENTIONS.md`); without it the new OV's `type:` references are dangling pointers for anyone without a vault-wide central registry. See `04-SCHEMA-DESIGN.md` § "Materializing the `_types/` folder" for the step-by-step.
 6. Templates
 7. `README.md` — § "What is in this folder" must identify the four content zones or link to CONTRIBUTING § "Content zones" (Convention 8)
 8. **`INSTALL.md`** — must contain the Convention 7 install snippet with the OV's actual GitHub URL filled in; must explain the major.minor folder-naming convention

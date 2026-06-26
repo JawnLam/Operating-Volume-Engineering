@@ -1,7 +1,7 @@
 ---
-Item_Prototype: OVE_Design_Decisions
+type: OVE_Design_Decisions
 Item_ID: "<ov-slug>-decisions"
-Title: "<OV Name> — Design Decisions Log"
+title: "<OV Name> — Design Decisions Log"
 Date_Added:
 Date_Modified:
 Needs_Processing: false

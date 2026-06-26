@@ -1,7 +1,8 @@
 ---
-Item_Prototype: Fleeting
+type: Fleeting
+timestamp: "2026-06-07T00:00:00Z"
 Item_ID: ove-update-prompt
-Title: "Operating-Volume-Engineering — AI-Assisted Update Prompt"
+title: "Operating-Volume-Engineering — AI-Assisted Update Prompt"
 Date_Added: 2026-06-07
 Date_Modified: 2026-06-07
 Needs_Processing: false

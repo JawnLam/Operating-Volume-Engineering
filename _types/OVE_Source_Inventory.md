@@ -1,7 +1,7 @@
 ---
 Item_ID: "UUID-OR-SLUG"
-Item_Prototype: OVE_Source_Inventory
-Title: "<OV Name> — Source Inventory"
+type: OVE_Source_Inventory
+title: "<OV Name> — Source Inventory"
 ove_OV_Name: ""
 ove_Source_Inventory_Status: drafting
 Date_Added:

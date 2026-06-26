@@ -1,11 +1,12 @@
 ---
-Item_Prototype: Fleeting
+type: Fleeting
+timestamp: "2026-06-14T00:00:00Z"
 Item_ID: ove-meta-standalone-sufficiency-readme
-Title: "OVE Meta — Standalone Sufficiency Substrate (Convention 10)"
+title: "OVE Meta — Standalone Sufficiency Substrate (Convention 10)"
 Date_Added: 2026-06-14
 Date_Modified: 2026-06-14
 Needs_Processing: false
-type: design-engine-meta
+doc_type: design-engine-meta
 role: substrate-readme
 scope: subject-agnostic
 updated: 2026-06-14

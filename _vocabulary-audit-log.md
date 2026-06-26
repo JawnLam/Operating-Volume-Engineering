@@ -1,7 +1,8 @@
 ---
-Item_Prototype: Fleeting
+type: Fleeting
+timestamp: "2026-06-13T00:00:00Z"
 Item_ID: ove-vocabulary-audit-log
-Title: "Operating-Volume-Engineering — Vocabulary Audit Log (v2.0)"
+title: "Operating-Volume-Engineering — Vocabulary Audit Log (v2.0)"
 Date_Added: 2026-06-13
 Date_Modified: 2026-06-13
 Needs_Processing: false

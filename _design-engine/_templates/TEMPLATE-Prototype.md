@@ -1,7 +1,7 @@
 ---
-Item_Prototype: Fleeting
+type: Fleeting
 Item_ID: prototype-NAMESPACE-typename
-Title: "<NAMESPACE>_<TypeName> Prototype"
+title: "<NAMESPACE>_<TypeName> Prototype"
 Date_Added: YYYY-MM-DD
 Date_Modified: YYYY-MM-DD
 Needs_Processing: false
@@ -9,7 +9,7 @@ Needs_Processing: false
 
 # `<NAMESPACE>_<TypeName>` — Prototype Definition
 
-> **What this file is.** The canonical definition of the `<NAMESPACE>_<TypeName>` Prototype for the `<OV-NAME>` Operating Volume. Items (instances) in any cartridge that declare `Item_Prototype: <NAMESPACE>_<TypeName>` conform to the contract described below.
+> **What this file is.** The canonical definition of the `<NAMESPACE>_<TypeName>` Prototype for the `<OV-NAME>` Operating Volume. Items (instances) in any cartridge that declare `type: <NAMESPACE>_<TypeName>` conform to the contract described below.
 
 ## Purpose
 
@@ -21,13 +21,13 @@ Example for `COOK_Recipe`:
 
 ## Required frontmatter
 
-These fields MUST be present on every Item that declares `Item_Prototype: <NAMESPACE>_<TypeName>`:
+These fields MUST be present on every Item that declares `type: <NAMESPACE>_<TypeName>`:
 
 ### Universal Core (from CONVENTIONS.md Convention 1)
 
 | Field | Type | Notes |
 |-------|------|-------|
-| `Item_Prototype` | string | Must equal `<NAMESPACE>_<TypeName>` |
+| `type` | string | Must equal `<NAMESPACE>_<TypeName>` |
 | `Item_ID` | string | UUID or slug, unique within the cartridge |
 | `Title` | string | Human-readable display title |
 | `Date_Added` | date | When the Item was created |
@@ -72,9 +72,10 @@ These fields MUST be present on every Item that declares `Item_Prototype: <NAMES
 
 ```markdown
 ---
-Item_Prototype: <NAMESPACE>_<TypeName>
+type: <NAMESPACE>_<TypeName>
+timestamp: "2026-06-06T00:00:00Z"
 Item_ID: <slug>
-Title: "<Concrete example title>"
+title: "<Concrete example title>"
 Date_Added: 2026-06-06
 Date_Modified: 2026-06-06
 Needs_Processing: false

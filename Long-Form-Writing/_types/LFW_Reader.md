@@ -1,7 +1,7 @@
 ---
-Item_Prototype: LFW_Reader
+type: LFW_Reader
 Item_ID: "<lowercase-kebab-slug>"
-Title: "<Reader name — short, descriptive>"
+title: "<Reader name — short, descriptive>"
 lfw_Manuscript: ""
 lfw_Item_Type: reader
 lfw_Status: developing    # developing | active | retired

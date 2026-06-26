@@ -1,7 +1,8 @@
 ---
-Item_Prototype: OVE_Session
+type: OVE_Session
+timestamp: "2026-06-13T00:00:00Z"
 Item_ID: "plc-retrospective-session-001"
-Title: "PLC Retrospective — Session 001 (RETROSPECTIVE activity)"
+title: "PLC Retrospective — Session 001 (RETROSPECTIVE activity)"
 Date_Added: 2026-06-13
 Date_Modified: 2026-06-13
 Needs_Processing: false

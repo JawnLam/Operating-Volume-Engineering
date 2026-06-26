@@ -1,11 +1,12 @@
 ---
-Item_Prototype: Fleeting
+type: Fleeting
+timestamp: "2026-06-06T00:00:00Z"
 Item_ID: ove-meta-conventions
-Title: "OVE Meta — Universal Conventions for OV-Designed Output"
+title: "OVE Meta — Universal Conventions for OV-Designed Output"
 Date_Added: 2026-06-06
 Date_Modified: 2026-06-06
 Needs_Processing: false
-type: design-engine-meta
+doc_type: design-engine-meta
 role: conventions
 scope: subject-agnostic
 updated: 2026-06-06
@@ -21,22 +22,26 @@ A new OV designed by OVE produces files that live alongside the operator's other
 
 These conventions are not platform-specific. They work in any tool that reads YAML frontmatter. They are minimum-friction defaults; an operator who has different conventions can override them per-OV in the schema design.
 
-## Convention 1 — Universal Core fields on every shipped note
+## Convention 1 — Universal Core fields on every shipped note (OKF v0.1 conformant)
 
-Every `.md` file that ships in an OV designed via OVE declares these six fields in YAML frontmatter:
+Every `.md` file that ships in an OV designed via OVE declares these Universal Core fields in YAML frontmatter. **As of v2.4.0 the core is Google OKF v0.1 conformant** — the discriminator is lowercase `type` (OKF's single required field), and `title`/`timestamp`/`tags` use OKF's lowercase names:
 
 ```yaml
 ---
-Item_Prototype: <Prototype_Name>      # See Convention 4
+type: <Prototype_Name>        # OKF REQUIRED discriminator (renamed from Item_Prototype); see Convention 4
 Item_ID: <slug-or-uuid>
-Title: "<Human-readable title>"
+title: "<Human-readable title>"      # OKF (renamed from Title)
+timestamp: <ISO 8601 datetime>       # OKF — e.g. 2026-06-26T00:00:00Z
 Date_Added: YYYY-MM-DD
-Date_Modified: YYYY-MM-DD
+Date_Modified: YYYY-MM-DD             # kept; time-synced with timestamp, each in its own format
 Needs_Processing: false
+# Optional OKF fields when applicable: description (one sentence), resource (canonical asset URI), tags
 ---
 ```
 
-OV-specific properties live below these. `Item_Prototype` is the discriminator that tells humans, queries, and automation which schema the note follows.
+OV-specific properties live below these. **`type`** is the discriminator that tells humans, queries, and automation which schema the note follows — and it is OKF's required field, so every shipped OV note is OKF-conformant by construction. A note without `type` is malformed.
+
+> **Renamed in v2.4.0 for OKF v0.1 conformance** (mirrors vault Master_Schema v1.23.0): `Item_Prototype`→`type`, `Title`→`title`, `Tags`→`tags`; added `timestamp` (derived from `Date_Modified`), and optional `description`/`resource`. `Date_Modified` is kept and stays time-synced with `timestamp`. This is the change that makes every OV designed via OVE emit OKF-compliant items by default. The lowercase OKF field names are a deliberate exception to Convention 2's Title_Snake_Case rule for core keys.
 
 ## Convention 2 — Case conventions for property names
 
@@ -52,15 +57,17 @@ Five rules govern frontmatter property naming. They apply universally to every O
 
 These rules ensure cross-namespace consistency. They are also documented at the top of any published `Master_Schema.yaml` (case rules 1–5).
 
+> **OKF interop exception (v2.4.0).** The six Google OKF v0.1 interop fields — `type`, `title`, `timestamp`, `tags`, `description`, `resource` — are a deliberate **lowercase** exception to the Core-keys `Title_Snake_Case` rule. OKF mandates lowercase field names; matching them is what makes every OV note conformant with the Open Knowledge Format. All other core keys (`Item_ID`, `Date_Added`, `Date_Modified`, `Needs_Processing`, …) keep `Title_Snake_Case`.
+
 ## Convention 3 — One namespace per OV
 
 Every OV chooses a short lowercase namespace prefix at design time (e.g., `cook_` for a cooking OV, `negotiation_` for a negotiation-prep OV). All OV-specific frontmatter properties carry that prefix.
 
 Per Convention 2, the prefix is `lowercase_snake_case` and the body after the prefix is `Title_Snake_Case`. The namespace + Title_Snake_Case body pattern is what makes a property name belong to a particular OV.
 
-## Convention 4 — Every Prototype gets its own `Item_Prototype` value
+## Convention 4 — Every Prototype gets its own `type` value
 
-Every Prototype in the OV is declared with an `Item_Prototype` value, named `<NAMESPACE_UPPER>_<TypeName>`. Every Item in a cartridge carries the value of the Prototype it conforms to. Examples from existing OVs:
+Every Prototype in the OV is declared with a `type` value, named `<NAMESPACE_UPPER>_<TypeName>`. Every Item in a cartridge carries the value of the Prototype it conforms to. Examples from existing OVs:
 
 | OV | Prototype names |
 |----|-----------------|
@@ -68,34 +75,34 @@ Every Prototype in the OV is declared with an `Item_Prototype` value, named `<NA
 | LFW | `LFW_Character_Bible`, `LFW_Motif`, `LFW_Scene`, … |
 | OVE | `OVE_OV_Manifest`, `OVE_Design_State`, `OVE_Session`, … |
 
-For non-Item files (front-door docs, engine prose, meta), use `Item_Prototype: Fleeting`. This is the universal "this is a note but not an instance of any OV-specific Prototype" value.
+For non-Item files (front-door docs, engine prose, meta), use `type: Fleeting`. This is the universal "this is a note but not an instance of any OV-specific Prototype" value.
 
 ## Convention 5 — Schema-of-namespace declaration
 
 The new OV's `_<purpose>-engine/_meta/SCHEMA-OF-SCHEMAS.md` declares its namespace, Prototypes, enum identifiers, and properties in YAML — ready to be lifted into a `Master_Schema.yaml` if the operator maintains one. Even if no `Master_Schema.yaml` exists, the per-OV schema declaration is the canonical source for that OV's structural rules.
 
-## Convention 6 — Each OV ships its own `_Prototypes/` folder
+## Convention 6 — Each OV ships its own `_types/` folder
 
-Every OV bundles a top-level `_Prototypes/` folder containing one `.md` file per Prototype in its namespace. Each file is a self-contained declaration of that Prototype: its frontmatter shape, required body sections, and an example. The structure of each file follows `_design-engine/_templates/TEMPLATE-Prototype.md`.
+Every OV bundles a top-level `_types/` folder containing one `.md` file per Prototype in its namespace. Each file is a self-contained declaration of that Prototype: its frontmatter shape, required body sections, and an example. The structure of each file follows `_design-engine/_templates/TEMPLATE-Prototype.md`.
 
-**This folder is the canonical home for the OV's Prototype definitions.** A reader who clones the OV without any surrounding infrastructure can open `_Prototypes/<NAMESPACE>_<TypeName>.md` and learn what an Item of that Prototype is supposed to look like, what frontmatter fields it carries, and what its body should contain.
+**This folder is the canonical home for the OV's Prototype definitions.** A reader who clones the OV without any surrounding infrastructure can open `_types/<NAMESPACE>_<TypeName>.md` and learn what an Item of that Prototype is supposed to look like, what frontmatter fields it carries, and what its body should contain.
 
-**Why this matters.** Without Convention 6, an OV's Prototypes live only by reference. A cartridge note declares `Item_Prototype: COOK_Recipe` — that's a name pointer. If the reader has no `COOK_Recipe.md` definition available, the name is meaningless. Operators with a vault-wide central registry (e.g., a Master_Schema and an `_Infrastructure/_Prototypes/` folder) get the definition from the central registry, but operators without such infrastructure are stranded. Convention 6 makes the OV portable: the Prototype definitions travel with it.
+**Why this matters.** Without Convention 6, an OV's Prototypes live only by reference. A cartridge note declares `type: COOK_Recipe` — that's a name pointer. If the reader has no `COOK_Recipe.md` definition available, the name is meaningless. Operators with a vault-wide central registry (e.g., a Master_Schema and an `_Infrastructure/_types/` folder) get the definition from the central registry, but operators without such infrastructure are stranded. Convention 6 makes the OV portable: the Prototype definitions travel with it.
 
-**The vault-wide central registry, if any, is a downstream union view.** Operators who run multiple OVs may choose to maintain a central registry that aggregates Prototypes across all of their OVs (the user's `_Infrastructure For All Vaults/_Prototypes/` is one example). That central registry is convenience, not authority — the canonical home of each Prototype is still the OV's local `_Prototypes/` folder. If the two disagree, the OV's local folder wins.
+**The vault-wide central registry, if any, is a downstream union view.** Operators who run multiple OVs may choose to maintain a central registry that aggregates Prototypes across all of their OVs (the user's `_Infrastructure For All Vaults/_types/` is one example). That central registry is convenience, not authority — the canonical home of each Prototype is still the OV's local `_types/` folder. If the two disagree, the OV's local folder wins.
 
 **Concretely:**
 
-- `_Prototypes/COOK_Recipe.md`
-- `_Prototypes/COOK_Technique.md`
-- `_Prototypes/COOK_Ingredient.md`
+- `_types/COOK_Recipe.md`
+- `_types/COOK_Technique.md`
+- `_types/COOK_Ingredient.md`
 - *(one file per Prototype declared in the OV's namespace)*
 
-Non-Item file types (Fleeting, the universal "this is a note but not a recurring Prototype") do not need to be redeclared in the OV's `_Prototypes/` folder — Fleeting is a vault-universal Prototype with no OV-specific behavior.
+Non-Item file types (Fleeting, the universal "this is a note but not a recurring Prototype") do not need to be redeclared in the OV's `_types/` folder — Fleeting is a vault-universal Prototype with no OV-specific behavior.
 
-**Materialization happens during ARTIFACT-DRAFT.** As the AI walks `04-SCHEMA-DESIGN.md` and locks the OV's Prototype list (Q4, Q9, Q12), it materializes one `_Prototypes/<NAMESPACE>_<TypeName>.md` file per Prototype, conforming to `TEMPLATE-Prototype.md`. The shipping checklist gates whether all declared Prototypes have a corresponding file in `_Prototypes/` before the OV ships (`07-SHIPPING-CHECKLIST.md` Phase 3.5).
+**Materialization happens during ARTIFACT-DRAFT.** As the AI walks `04-SCHEMA-DESIGN.md` and locks the OV's Prototype list (Q4, Q9, Q12), it materializes one `_types/<NAMESPACE>_<TypeName>.md` file per Prototype, conforming to `TEMPLATE-Prototype.md`. The shipping checklist gates whether all declared Prototypes have a corresponding file in `_types/` before the OV ships (`07-SHIPPING-CHECKLIST.md` Phase 3.5).
 
-**Validator coverage.** The optional `validate.py` includes a check (C7 — Prototype coverage) that scans every cartridge for `Item_Prototype:` values and confirms each has a matching `<NAMESPACE>_<TypeName>.md` in either the OV root's `_Prototypes/` or, if present, an enclosing cartridge's `_Prototypes/`. Missing files fail with a precise file:line pointer.
+**Validator coverage.** The optional `validate.py` includes a check (C7 — Prototype coverage) that scans every cartridge for `type:` values and confirms each has a matching `<NAMESPACE>_<TypeName>.md` in either the OV root's `_types/` or, if present, an enclosing cartridge's `_types/`. Missing files fail with a precise file:line pointer.
 
 ## Convention 7 — Install-and-update pattern
 
@@ -177,7 +184,7 @@ The files that the OV's release ships. Updates from `git pull` are non-destructi
 
 - Front-door docs: `README.md`, `INSTALL.md`, `OPERATOR-GUIDE.md`, `CONTRIBUTING.md`, `LICENSE.md`, `VERSION.md`, `CHANGELOG.md`, optional `MIGRATION-NOTES.md`
 - The OV's engine folder: `_<purpose>-engine/` (e.g., `_writing-engine/`, `_teaching-engine/`, `_design-engine/`)
-- `_Prototypes/` (Convention 6)
+- `_types/` (Convention 6)
 - `_USER.md.template` (the template, not a populated `_USER.md`)
 - `.gitignore` (engine-zone file; its *patterns* define the Operator-Private Zone)
 
@@ -445,9 +452,9 @@ From that single answer, everything else follows:
 - Prototype names: `COOK_<TypeName>`
 - Property names: `cook_<Title_Snake_Case_Body>`
 - Enum identifiers under `enums:`: `cook_<lowercase_plural>`
-- `Item_Prototype` values on each Item: `COOK_<TypeName>`
-- `Item_Prototype: Fleeting` on non-Item files
-- `_Prototypes/` folder at the OV root with one `COOK_<TypeName>.md` per Prototype, each following `_design-engine/_templates/TEMPLATE-Prototype.md`
+- `type` values on each Item: `COOK_<TypeName>`
+- `type: Fleeting` on non-Item files
+- `_types/` folder at the OV root with one `COOK_<TypeName>.md` per Prototype, each following `_design-engine/_templates/TEMPLATE-Prototype.md`
 - `INSTALL.md` with the canonical install snippet (Convention 7) wired to the OV's actual GitHub URL
 - `OPERATOR-GUIDE.md` § "Updates" with the canonical update-workflow snippet (Convention 7)
 - `UPDATE-PROMPT.md` at the OV root drawn from `_design-engine/_templates/TEMPLATE-UPDATE-PROMPT.md` with the OV's name filled in (Convention 7)
@@ -471,11 +478,11 @@ After ARTIFACT-DRAFT and during REVIEW, the AI checks every drafted file for:
 - [ ] Property bodies in Title_Snake_Case (Convention 2)
 - [ ] Acronyms fully capitalized (Convention 2)
 - [ ] Namespace prefix consistent across all properties (Conventions 2, 3)
-- [ ] `Item_Prototype` value matches a Prototype defined in the OV's `_meta/SCHEMA-OF-SCHEMAS.md` (Convention 4)
-- [ ] Non-Item files declare `Item_Prototype: Fleeting` (Convention 4)
+- [ ] `type` value matches a Prototype defined in the OV's `_meta/SCHEMA-OF-SCHEMAS.md` (Convention 4)
+- [ ] Non-Item files declare `type: Fleeting` (Convention 4)
 - [ ] Schema declaration exists at `_<purpose>-engine/_meta/SCHEMA-OF-SCHEMAS.md` (Convention 5)
-- [ ] `_Prototypes/` folder exists at the OV root with one `<NAMESPACE>_<TypeName>.md` per Prototype declared in the OV's namespace (Convention 6)
-- [ ] Each `_Prototypes/<NAMESPACE>_<TypeName>.md` conforms to `TEMPLATE-Prototype.md` and matches the Prototype's `_meta/SCHEMA-OF-SCHEMAS.md` declaration (Convention 6)
+- [ ] `_types/` folder exists at the OV root with one `<NAMESPACE>_<TypeName>.md` per Prototype declared in the OV's namespace (Convention 6)
+- [ ] Each `_types/<NAMESPACE>_<TypeName>.md` conforms to `TEMPLATE-Prototype.md` and matches the Prototype's `_meta/SCHEMA-OF-SCHEMAS.md` declaration (Convention 6)
 - [ ] `INSTALL.md` contains the install snippet with the OV's actual GitHub URL filled in (Convention 7)
 - [ ] `OPERATOR-GUIDE.md` § "Updates" contains the update-workflow snippet (Convention 7)
 - [ ] `UPDATE-PROMPT.md` exists at the OV root with the OV's name filled in (no `<OV-Name>` placeholders), references the four-zone boundary, and instructs the AI to confirm before destructive commands (Convention 7)

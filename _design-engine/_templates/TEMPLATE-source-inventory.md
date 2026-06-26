@@ -1,7 +1,7 @@
 ---
-Item_Prototype: OVE_Source_Inventory
+type: OVE_Source_Inventory
 Item_ID: "<ov-slug>-source-inventory"
-Title: "<OV Name> — Source Inventory"
+title: "<OV Name> — Source Inventory"
 Date_Added:
 Date_Modified:
 Needs_Processing: false

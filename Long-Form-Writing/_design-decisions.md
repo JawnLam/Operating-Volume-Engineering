@@ -1,7 +1,8 @@
 ---
-Item_Prototype: OVE_Design_Decisions
+type: OVE_Design_Decisions
+timestamp: "2026-06-01T00:00:00Z"
 Item_ID: "long-form-writing-decisions"
-Title: "Long-Form-Writing — Design Decisions Log"
+title: "Long-Form-Writing — Design Decisions Log"
 Date_Added: 2026-06-01
 Date_Modified: 2026-06-01
 Needs_Processing: false

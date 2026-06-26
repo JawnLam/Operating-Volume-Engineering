@@ -1,7 +1,7 @@
 ---
 Item_ID: "UUID-OR-SLUG"
-Item_Prototype: LLL_Synthesis
-Title: "Synthesis Title"
+type: LLL_Synthesis
+title: "Synthesis Title"
 Review_Type: ""
 Date_Range_Start: 
 Date_Range_End: 

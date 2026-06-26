@@ -1,7 +1,7 @@
 ---
 Item_ID: "UUID-OR-SLUG"
-Item_Prototype: LLL_Quiz
-Title: "Quiz"
+type: LLL_Quiz
+title: "Quiz"
 lll_Subject: ""
 lll_Quiz_Kind: ""
 lll_Units_Engaged: []
