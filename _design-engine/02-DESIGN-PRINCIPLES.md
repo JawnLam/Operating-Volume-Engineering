@@ -206,6 +206,8 @@ The list mirrors §17 of the substrate at `_design-engine/_meta/standalone-suffi
 
 *"Our agent remembers everything across sessions."* — Fails Absorption. Persistent memory is real value, but it is being absorbed natively by the platforms. Counts as table stakes (REQ-B1, T0), not durability. OVs claim memory as a hard gate (parity), never as a moat.
 
+> **KAOV corollary (Convention 11).** A knowledge-augmented OV whose moat reduces to *"it can read the mounted OKF bundle"* is the same trap in data-plane clothing: a general LLM pointed at the same vendored folder gets the same bytes. The moat of a KAOV lives in the **control plane** (the curated/vetted/version-pinned mount + the retrieval discipline of `08-KNOWLEDGE-RETRIEVAL.md`), never in bare access to the knowledge. Convention 11 makes this a posture requirement.
+
 ### Trap 10 — Privacy as an unqualified differentiator
 
 *"Your data is safer with us."* — Fails Absorption unless the OV demonstrably exceeds the base provider's defaults. The platforms already offer no-training, isolation tiers, and enterprise controls. "We respect your privacy" is not a moat; "our data handling is provably stricter than Anthropic's enterprise tier in these documented ways" is — see Convention 10's REQ-K1.

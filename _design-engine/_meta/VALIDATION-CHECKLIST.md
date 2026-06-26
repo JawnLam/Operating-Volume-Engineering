@@ -325,11 +325,55 @@ Open `_meta/vetting-rubric-filled.md` and confirm:
 - Step 6 issues only → C14 = `warn`
 - `posture-deferred.yaml` present with valid future date → C14 = `info` (no further checks)
 
+## C15 — Knowledge-mount conformance (Convention 11 — KAOV only)
+
+Applies only if the manifest declares `ove_Knowledge_Source: knowledge_augmented`. A `self_contained` OV (the default, empty `Knowledge_Mounts`) passes trivially — skip to C16.
+
+For each entry in `Knowledge_Mounts`:
+
+- [ ] `ship_disposition` is `vendored` — `fail` otherwise (Convention 11 forbids live external mounts)
+- [ ] `bundle_root` resolves to a directory under `_knowledge/` that actually contains the vendored bytes — `fail` if absent
+- [ ] `okf_version` is set, and `pin` records a `git_sha` and/or `vetted_timestamp` — `fail` if missing (no re-verification baseline)
+- [ ] The bundle passes **OKF v0.1 §9 conformance**: every non-reserved `.md` file has a parseable YAML frontmatter block with a non-empty `type` — `fail` otherwise
+
+Shell recipe:
+
+```bash
+# Knowledge source disposition
+grep -E '^ove_Knowledge_Source:' <Cartridge>/_ov-manifest.md
+
+# For each vendored bundle: every non-reserved .md must carry a non-empty type:
+for f in $(find <Cartridge>/_knowledge -name '*.md' ! -name index.md ! -name log.md); do
+  head -20 "$f" | grep -qE '^type:\s*\S' || echo "FAIL (no type): $f"
+done
+```
+
+Expected: declared disposition is `knowledge_augmented`; every concept file reports a `type`; no FAIL lines.
+
+## C16 — Data-plane citation form (Convention 11 — KAOV only)
+
+Applies only to knowledge-augmented OVs. Guards against the non-conformant citation syntax Gemini's source PRD proposed (`_proposals/OKF-conformance-notes.md` §6).
+
+- [ ] No `[Source: …]` pseudo-citations anywhere in shippable content — `fail` on any hit
+- [ ] Data-plane citations are real markdown links resolving into a declared mount (file-relative; not leading-slash) — `warn` on leading-slash links into `_knowledge/`
+
+Shell recipe:
+
+```bash
+# Forbidden pseudo-citation syntax
+grep -rEn '\[Source:[^]]*\]' <Cartridge> --include="*.md" --exclude-dir=_templates && echo "FAIL: [Source: …] pseudo-citation"
+
+# Leading-slash links into the data plane (OKF reference tooling forbids these)
+grep -rEn '\]\(/[^)]*_knowledge/' <Cartridge> --include="*.md" && echo "WARN: leading-slash data-plane link"
+```
+
+Expected: zero `[Source: …]` hits; data-plane references use file-relative markdown links.
+
 ---
 
 ## Overall outcome
 
-- [ ] All C1–C14 checks pass, or every warning is explicitly waived by the operator with a written rationale
+- [ ] All C1–C16 checks pass, or every warning is explicitly waived by the operator with a written rationale
 - [ ] No `fail`-class finding remains unresolved
 
 If `validate.py` is available, run it as well; this prose walkthrough is the fallback, not the canonical check.

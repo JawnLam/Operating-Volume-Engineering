@@ -3,31 +3,32 @@ Item_Prototype: Fleeting
 Item_ID: ove-version
 Title: "Operating-Volume-Engineering — Version"
 Date_Added: 2026-06-01
-Date_Modified: 2026-06-15
+Date_Modified: 2026-06-25
 Needs_Processing: false
-ove_Version: "2.2.0"
+ove_Version: "2.3.0"
 schema_version: "2.0"
 schema_status: "STABLE"
-release_date: 2026-06-15
-release_phase: "Minor release — Convention 10 (Standalone Sufficiency Posture): every OV designed via OVE declares a posture against a vendored 47-requirement substrate; two master tests (Displacement + Absorption) and 10 anti-requirement traps elevated as load-bearing in 02-DESIGN-PRINCIPLES; new validator check C14; SHIP-PREP Phase 3.10. Worked-example retrofits: Negotiation-Preparation + SOLVE-eX-Retrospective ship full posture; LFW, LLL, Relationship-Cultivation, PLC-Retrospective opt-out via posture-deferred.yaml (horizon 2026-12-01). Additive over v2.1.0; no breaking changes."
+release_date: 2026-06-25
+release_phase: "Minor release — Convention 11 (Knowledge-Augmented OVs): every OV declares ove_Knowledge_Source (self_contained default | knowledge_augmented). A knowledge_augmented OV (KAOV) mounts one or more vendored OKF v0.1 bundles as a read-only data plane under _knowledge/, retrieved at runtime under the bridge protocol (new engine chapter 08-KNOWLEDGE-RETRIEVAL.md): progressive disclosure, workspace isolation, explicit OKF-conformant sourcing, boot-time re-verification. New lifecycle activity KNOWLEDGE-MOUNT (03-DESIGN-PROTOCOL Step 4.6); new failure mode F14 (stale/non-conformant mount); new validator checks C15/C16. New dogfood cartridge Knowledge-Augmented-Demo. Additive over v2.2.0 — ove_Knowledge_Source defaults to self_contained, so existing OVs are unaffected; no breaking changes."
 ---
 
 # Operating-Volume-Engineering — Version
 
-This is Operating-Volume-Engineering **v2.2.0** — minor release introducing **Convention 10 — Standalone Sufficiency Posture**, the OVE-side enforcement mechanism for the test "would a general LLM be better for this work than this OV?" The convention vendors a field-agnostic 47-requirement substrate, requires every new OV to declare a posture against it, ships a new validator check (C14), elevates the two master tests (Displacement + Absorption) and the 10 anti-requirement traps as load-bearing canon in `02-DESIGN-PRINCIPLES`, and adds a new SHIP-PREP hard-gate (Phase 3.10). Two worked examples are retrofitted (Negotiation-Preparation, SOLVE-eX-Retrospective); four others carry a bounded deferral marker (horizon 2026-12-01) per dogfood scope.
+This is Operating-Volume-Engineering **v2.3.0** — minor release introducing **Convention 11 — Knowledge-Augmented OVs**, integrating Google Cloud's **Open Knowledge Format (OKF) v0.1** as an optional, read-only **data plane**. Every OV now declares `ove_Knowledge_Source`; the default is `self_contained` (all knowledge baked into the corpus, the v2.0 F13 pipeline). An OV may instead be `knowledge_augmented` (a KAOV): it mounts one or more **vendored** OKF bundles under `_knowledge/` and retrieves from them at session runtime under the bridge protocol in the new engine chapter `08-KNOWLEDGE-RETRIEVAL.md` (progressive disclosure, workspace isolation, OKF-conformant explicit sourcing, boot-time re-verification). The release adds the `KNOWLEDGE-MOUNT` lifecycle activity, failure mode `F14`, validator checks `C15`/`C16`, and a dogfood worked example (`Knowledge-Augmented-Demo`). Because mounts are vendored, a KAOV remains a self-contained corpus. The change is **additive** over v2.2.0 — `ove_Knowledge_Source` defaults to `self_contained`, so existing OVs validate and behave unchanged.
 
 ## Version identifiers
 
 | Identifier              | Value         | Notes                                                                  |
 |-------------------------|---------------|------------------------------------------------------------------------|
-| **Software**            | v2.2.0        | Minor release — Convention 10 (Standalone Sufficiency Posture), validator C14, SHIP-PREP Phase 3.10, master tests + anti-requirement traps elevated, 2 worked-example retrofits + 4 deferred markers |
-| **Design schema**       | v2.0          | Unchanged from v2.0.0 — `ove_OV_Archetype`, `ove_Audience_Target_Reader`, `ove_Audience_Business_Context`, `ove_Audience_Prose_Register` |
-| **Design engine**       | v2.2          | v2.2: Convention 10 added to `_meta/CONVENTIONS.md`; master tests + anti-requirement traps elevated in `02-DESIGN-PRINCIPLES.md`; OV-as-specialized-AI-agent paragraph in `01-WHAT-IS-AN-OV.md`; POSTURE-DECLARATION activity in `03-DESIGN-PROTOCOL.md`; Q15 in `04-SCHEMA-DESIGN.md`; REQ-B1/B2/B3 cross-link in `06-STATE-PERSISTENCE.md`; Phase 3.10 in `07-SHIPPING-CHECKLIST.md`; CQ12 in `BOOTSTRAP-NEW-OV.md` |
-| **Templates**           | v2.2          | v2.2: four new templates — `TEMPLATE-standalone-sufficiency-posture.md`, `TEMPLATE-posture-yaml.yaml`, `TEMPLATE-vetting-rubric-filled.md`, `TEMPLATE-posture-deferred.yaml` |
-| **Substrate**           | v2.2 (rev 1.2) | v2.2: vendored 47-requirement Standalone Sufficiency substrate at `_design-engine/_meta/standalone-sufficiency/` (Loyalty & Retention spec rev 1.2; commerce-neutral OVE surface) |
-| **Validator**           | v2.2          | v2.2: C14 (Standalone Sufficiency Posture) added; dispatcher range `range(1, 15)`; prose-mode mirror in `VALIDATION-CHECKLIST.md` |
-| **Worked examples**     | v2.2          | Six examples — Negotiation-Preparation and SOLVE-eX-Retrospective retrofit with full posture; LFW, LLL, Relationship-Cultivation, PLC-Retrospective carry `posture-deferred.yaml` (horizon 2026-12-01, scheduled v2.3.0 retrofit) |
-| **Release date**        | 2026-06-15    |                                                                        |
+| **Software**            | v2.3.0        | Minor release — Convention 11 (Knowledge-Augmented OVs / OKF data plane), engine chapter 08, KNOWLEDGE-MOUNT activity, F14, validator C15/C16, dogfood KAOV cartridge. Additive over v2.2.0 |
+| **Design schema**       | v2.0          | Unchanged required set from v2.0.0. v2.3 adds the additive, defaulted field `ove_Knowledge_Source` (`self_contained` default) + the `Knowledge_Mounts` array (empty unless `knowledge_augmented`) — no breaking change |
+| **Design engine**       | v2.3          | v2.3: Convention 11 added to `_meta/CONVENTIONS.md`; new chapter `08-KNOWLEDGE-RETRIEVAL.md`; self-contained-vs-knowledge-augmented framing in `01-WHAT-IS-AN-OV.md`; KAOV moat corollary in `02-DESIGN-PRINCIPLES.md`; KNOWLEDGE-MOUNT activity + Step 4.6 in `03-DESIGN-PROTOCOL.md`; F14 in `_meta/FAILURE-MODES.md` |
+| **Templates**           | v2.3          | v2.3: `TEMPLATE-ov-manifest.md` + `OVE_OV_Manifest` prototype gain `ove_Knowledge_Source` + `Knowledge_Mounts` |
+| **Substrate**           | v2.2 (rev 1.2) | Unchanged — vendored 47-requirement Standalone Sufficiency substrate at `_design-engine/_meta/standalone-sufficiency/` |
+| **OKF integration**     | OKF v0.1      | v2.3: KAOVs vendor OKF v0.1 bundles ([GoogleCloudPlatform/knowledge-catalog](https://github.com/GoogleCloudPlatform/knowledge-catalog)); binding format contract distilled at `_proposals/OKF-conformance-notes.md` |
+| **Validator**           | v2.3          | v2.3: C15 (Knowledge-mount conformance) + C16 (data-plane citation form) added; dispatcher range `range(1, 17)`; `_proposals` added to skip set; prose-mode mirror in `VALIDATION-CHECKLIST.md` |
+| **Worked examples**     | v2.3          | Seven examples — six unchanged from v2.2 plus `Knowledge-Augmented-Demo` (the Convention 11 dogfood: one vendored OKF bundle, passes C15/C16) |
+| **Release date**        | 2026-06-25    |                                                                        |
 
 ## Schema policy
 
@@ -52,13 +53,13 @@ If an operator chooses to rebuild an existing OV under v2.0 conventions, the pat
 ## What is in this version
 
 - **Design engine** in `_design-engine/`:
-  - Eight core operating files (`00–07`) plus `BOOTSTRAP-NEW-OV.md` (v2.0: 03 + 04 + 07 + BOOTSTRAP extended; 01 + 02 augmented; archetype + source-discipline + voice cascade)
-  - Templates for every standard OV-ship file (`_templates/`) — v2.0 adds three new templates
-  - Schema-of-schemas + failure-modes catalog (`_meta/`) — v2.0 adds F13 + Convention 9
-  - Validator (`_meta/validate.py`) — v2.0 adds C11 / C12 / C13
+  - Nine core operating files (`00–08`) plus `BOOTSTRAP-NEW-OV.md` (v2.3 adds `08-KNOWLEDGE-RETRIEVAL.md`, the OKF bridge protocol)
+  - Templates for every standard OV-ship file (`_templates/`) — v2.3 extends the manifest template with the data-plane fields
+  - Schema-of-schemas + failure-modes catalog (`_meta/`) — v2.3 adds F14; Convention 11 in `CONVENTIONS.md`
+  - Validator (`_meta/validate.py`) — v2.3 adds C15 / C16
 - **Front-door docs at the root**: `README`, `AI-BOOTSTRAP`, `INSTALL`, `OPERATOR-GUIDE`, `CONTRIBUTING`, `LICENSE`, `VERSION`, `CHANGELOG`, `UPDATE-PROMPT`
 - **Optional user profile template**: `_USER.md.template`
-- **Six worked-example cartridges** (one added in v2.1):
+- **Seven worked-example cartridges** (one added in v2.1; `Knowledge-Augmented-Demo` added in v2.3 as the Convention 11 dogfood — a `knowledge_augmented` OV mounting one vendored, OKF-conformant bundle under `_knowledge/demo-catalog/`):
   - `SOLVE-eX-Retrospective/` — retrospective design analysis of [SOLVE-eX](https://github.com/JawnLam/SOLVE-eX) (finite-horizon)
   - `LifeLong-Learning-Retrospective/` — retrospective design analysis of [LifeLong-Learning](https://github.com/JawnLam/LifeLong-Learning) (finite-horizon)
   - `Negotiation-Preparation/` — fresh worked example, anchor demonstration (full depth; finite-horizon)

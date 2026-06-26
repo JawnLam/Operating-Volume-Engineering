@@ -361,6 +361,79 @@ The two master tests (Displacement + Absorption) live in `02-DESIGN-PRINCIPLES.m
 
 Without Convention 10, the principles are advisory. With it, every shipped OV carries a declared, validator-checked record of which T0 hard gates pass, which TG conditional gates apply per declared domain stakes, which moat items are committed, and what the OV's verdict band is. The vetting rubric (`_meta/vetting-rubric-filled.md`) gives the operator a single page they can show a stakeholder when asked *"why use this OV instead of Claude?"* — and the answer rests on the substrate, not a sales pitch.
 
+## Convention 11 — Knowledge-Augmented OVs (OKF data plane)
+
+*Added v2.3.0.* Every OV designed via OVE is **structurally capable** of mounting an external knowledge corpus as a read-only **data plane**, using Google Cloud's **Open Knowledge Format (OKF) v0.1**. This separates the two things an OV holds: the **control plane** (the engine, the lifecycle, the rules of engagement — what the AI *does*) from the **data plane** (the curated domain knowledge — what the AI *knows*). OVE is the control plane; OKF is the data plane; this Convention is the bridge.
+
+### When this applies
+
+Every OV designed via OVE — but the **default disposition is `self_contained`**, and a self-contained OV mounts *nothing*. Convention 11 is "core" in the sense that every OV's manifest carries the data-plane fields and every OV is *capable* of becoming knowledge-augmented; it is not a mandate to mount anything. A normal OV is simply a Convention-11 OV with an empty `Knowledge_Mounts` list. This is how Convention 11 coexists with Convention 10 and the self-contained-corpus identity (`01-WHAT-IS-AN-OV.md`): see *The two dispositions* below.
+
+### The two dispositions
+
+Every OV declares `ove_Knowledge_Source` in its manifest:
+
+| Disposition | Meaning | `Knowledge_Mounts` |
+|---|---|---|
+| **`self_contained`** (default) | All knowledge is baked into the OV's own corpus at design time and verified by ship (the F13 pipeline). The OV is the substrate. | empty |
+| **`knowledge_augmented`** (KAOV) | The OV additionally mounts one or more OKF bundles as a read-only data plane and retrieves from them at session runtime under the bridge protocol (`08-KNOWLEDGE-RETRIEVAL.md`). | one or more mounts |
+
+**Self-containment is preserved in both dispositions** because Convention 11 requires `ship_disposition: vendored` — a knowledge-augmented OV *copies the mounted OKF bundle into its own tree at ship time*. The bytes always ship with the OV; the data plane is a curated, version-pinned part of the corpus, not a live external dependency. This is what keeps Convention 10's Absorption story intact: a general LLM pointed at the same public folder is not equivalent, because the OV's value is the control-plane discipline + the curated, vendored, re-verified mount — not mere access to bytes. **A KAOV whose only moat reduces to "it can read the mount" fails Absorption** (the substrate's raw-memory-as-permanent-distinction anti-trap); the moat must live in the control plane.
+
+### The pattern
+
+A knowledge-augmented OV ships its mounts under a dedicated **Mounted Data Plane** zone (Convention 8's fifth zone — read-only, vendored, externally-authored):
+
+```
+<OV root>/
+├── _ov-manifest.md                 ← declares ove_Knowledge_Source + Knowledge_Mounts
+└── _knowledge/                      ← Mounted Data Plane zone (vendored OKF bundles)
+    └── <bundle-slug>/               ← one vendored OKF bundle = one mount
+        ├── index.md                 ← OKF directory listing (progressive disclosure)
+        ├── <concept>.md             ← OKF concept documents
+        └── <subdir>/ …
+```
+
+Each entry in the manifest's `Knowledge_Mounts` array records: `bundle_root` (path under `_knowledge/`), `okf_version` (the OKF spec version the bundle targets), `provenance` (where the bundle came from), `ship_disposition: vendored`, and `pin` (the git SHA and/or the per-concept `timestamp` set the bundle was vetted against — the boot-time re-verification baseline).
+
+### OKF conformance (LOAD-BEARING)
+
+A vendored mount MUST be a conformant OKF v0.1 bundle. Conformance is not OVE's invention — it is Google's spec, and matching it exactly is what makes a KAOV's knowledge **interoperable** with the wider OKF ecosystem (anyone's producer, anyone's consumer). The binding facts:
+
+- **Unit terms.** The unit of knowledge is a **Concept** (one markdown document), addressed by its **Concept ID** (the file path within the bundle, `.md` removed). Never "node" / "node file."
+- **Required frontmatter.** OKF's spec requires only `type`. OKF's *reference validator* additionally requires `title`, `description`, `timestamp`. **OVE producers emit all four** (plus `resource` when the concept maps to a real asset) to satisfy both. As a consumer, be permissive: accept any concept with a non-empty `type`.
+- **Reserved filenames.** `index.md` (directory listing — no frontmatter except an optional `okf_version` at the bundle root) and `log.md` (update history). All other `.md` files are concepts.
+- **Links and citations.** Cross-links and citations are **standard markdown links**, written **file-relative** (never leading-slash — that breaks GitHub rendering and is what every shipped Google bundle does). Citations sit under a `# Citations` heading (numbered) and/or inline-link the source concept. The `[Source: <path>]` pseudo-syntax is **not** OKF and must never be emitted.
+- **Permissive consumption.** Never reject a bundle for missing optional fields, unknown `type` values, unknown extra keys, broken links, or a missing `index.md`.
+
+The full distilled contract — read from the spec *and* the reference implementation — is captured at `_proposals/OKF-conformance-notes.md`. The engine chapter `08-KNOWLEDGE-RETRIEVAL.md` is the operator/AI-facing protocol.
+
+### The bridge protocol (summary; full text in `08-KNOWLEDGE-RETRIEVAL.md`)
+
+1. **Progressive disclosure.** The AI MUST read a directory's `index.md` before reading any concept beneath it. (OKF makes `index.md` optional; OVE makes reading-index-first mandatory — a stricter discipline that prevents context exhaustion, per the "Lost in the Middle" effect.)
+2. **Workspace isolation.** The AI may retrieve only from bundles declared in `Knowledge_Mounts`. It may not traverse outside mounted paths.
+3. **Explicit sourcing.** Every factual claim drawn from the data plane that lands in a drafted artifact or `_design-decisions.md` MUST carry an OKF-conformant citation (file-relative markdown link to the source concept, and/or a `# Citations` entry). This is F13 extended to the data plane.
+4. **Boot-time re-verification.** At session start, for every mount a session depends on, the AI compares each depended-on concept's current `timestamp` (and the bundle's git SHA) against the `pin` recorded in the manifest. Any drift is surfaced to the operator and the affected claims are re-confirmed before reuse. This closes the gap that runtime citations prove *provenance*, not *currency* (F14).
+
+### Required artifacts per OV (Convention 11)
+
+| Artifact | Location | Role |
+|---|---|---|
+| `ove_Knowledge_Source` field | `_ov-manifest.md` frontmatter | `self_contained` (default) or `knowledge_augmented`. |
+| `Knowledge_Mounts` array | `_ov-manifest.md` | Empty for self-contained OVs; one entry per vendored OKF bundle for KAOVs. |
+| `_knowledge/<bundle-slug>/` | OV root | *KAOV only.* The vendored, OKF-conformant bundle(s). |
+
+### Validator coverage (C15, C16)
+
+The optional `validate.py` includes two checks:
+
+- **C15** — for each `Knowledge_Mounts` entry: the `bundle_root` resolves under `_knowledge/`; the vendored bytes are present (`ship_disposition: vendored`); `okf_version` is set; and the bundle passes OKF v0.1 §9 conformance (every non-reserved `.md` has parseable frontmatter with a non-empty `type`). A `self_contained` OV with an empty mount list passes trivially.
+- **C16** — no `[Source: …]` pseudo-citations anywhere in shippable content; data-plane citations are real markdown links resolving into a declared mount (workspace isolation).
+
+### Why this matters
+
+Convention 10 answers *"why this OV instead of a general LLM?"* Convention 11 answers the next question for knowledge-heavy domains: *"how does this OV hold a large, curated body of domain knowledge without drowning its context or fabricating?"* — by mounting it as a progressively-disclosed, vendored, re-verified OKF data plane that the control plane is disciplined about touching. Choosing OKF rather than a bespoke format is deliberate: it makes a KAOV's knowledge a portable asset that any OKF-speaking tool can produce, browse, diff, or consume, which widens the OV's integration surface instead of locking it in.
+
 ## How to apply during a new-OV design
 
 The AI walking `BOOTSTRAP-NEW-OV.md` asks the operator one question early:
@@ -414,8 +487,11 @@ After ARTIFACT-DRAFT and during REVIEW, the AI checks every drafted file for:
 - [ ] `_meta/posture.yaml` exists at OV root, is schema-conformant, and the `domain_stakes` flag is set to `low` or `high` (Convention 10)
 - [ ] If `domain_stakes: high`: all 8 TG conditional-gate dispositions are present in `posture.yaml` (Convention 10)
 - [ ] At least one moat item (`REQ-E4`, `REQ-M1`, `REQ-M2`, `REQ-M3`, or `REQ-M4`) is committed in `posture.yaml` with a concrete `schema_feature` pointer — or the absence is justified in `_design-decisions.md` (Convention 10)
+- [ ] `_ov-manifest.md` declares `ove_Knowledge_Source` (`self_contained` or `knowledge_augmented`) and a `Knowledge_Mounts` array — empty for self-contained OVs (Convention 11)
+- [ ] If `ove_Knowledge_Source: knowledge_augmented`: every `Knowledge_Mounts` entry is `ship_disposition: vendored`, its bundle is vendored under `_knowledge/`, sets `okf_version` + `pin`, and passes OKF v0.1 conformance (Convention 11)
+- [ ] No `[Source: …]` pseudo-citations; data-plane citations are file-relative markdown links into a declared mount (Convention 11)
 
-These checks are also covered by the optional `validate.py` (`C1` backbone presence, `C2` frontmatter presence, `C3` placeholder leakage — the wider scrub, `C7` Prototype coverage, `C8` zone-boundary documentation, `C9` gitignore sanity, `C10` UPDATE-PROMPT sanity, `C14` Standalone Sufficiency posture) and by walking `VALIDATION-CHECKLIST.md` for markdown-only environments.
+These checks are also covered by the optional `validate.py` (`C1` backbone presence, `C2` frontmatter presence, `C3` placeholder leakage — the wider scrub, `C7` Prototype coverage, `C8` zone-boundary documentation, `C9` gitignore sanity, `C10` UPDATE-PROMPT sanity, `C14` Standalone Sufficiency posture, `C15` Knowledge-Mount conformance, `C16` data-plane citation form) and by walking `VALIDATION-CHECKLIST.md` for markdown-only environments.
 
 ## Related references
 

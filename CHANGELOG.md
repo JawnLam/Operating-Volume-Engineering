@@ -3,13 +3,49 @@ Item_Prototype: Fleeting
 Item_ID: ove-changelog
 Title: "Operating-Volume-Engineering — Changelog"
 Date_Added: 2026-06-01
-Date_Modified: 2026-06-15
+Date_Modified: 2026-06-25
 Needs_Processing: false
 ---
 
 # Changelog
 
 All notable changes to Operating-Volume-Engineering are documented in this file. Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); versioning follows [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+## [2.3.0] — 2026-06-25
+
+Minor release introducing **Convention 11 — Knowledge-Augmented OVs**, integrating Google Cloud's **Open Knowledge Format (OKF) v0.1** as an optional, read-only **data plane**. An OV's control plane (engine, lifecycle, rules of engagement) is now cleanly separable from its data plane (curated domain knowledge). Every OV declares `ove_Knowledge_Source`; the default `self_contained` preserves prior behavior exactly. A `knowledge_augmented` OV (KAOV) mounts vendored OKF bundles under `_knowledge/` and retrieves from them at runtime under a new bridge protocol. **Additive over v2.2.0 — no breaking changes** (the new field defaults to `self_contained`, so existing OVs validate and behave unchanged; full validator suite stays green).
+
+### Added — Convention 11 — Knowledge-Augmented OVs (`_meta/CONVENTIONS.md`)
+
+Every OV is structurally capable of mounting an OKF data plane; the default disposition is `self_contained` (empty `Knowledge_Mounts`). A KAOV sets `ove_Knowledge_Source: knowledge_augmented` and declares one or more mounts. Convention 11 requires `ship_disposition: vendored` — the OKF bundle's bytes are copied into the OV under `_knowledge/` and ship with it, so a KAOV remains a self-contained corpus and Convention 10's Absorption story stays intact (the moat is the control-plane discipline + curated/vetted mount, never bare access to the bytes).
+
+### Added — Engine chapter `08-KNOWLEDGE-RETRIEVAL.md` (the OKF bridge)
+
+The bridge protocol — four rules: (1) progressive disclosure (read a directory's `index.md` before any concept beneath it; stricter than OKF, which makes `index.md` optional); (2) workspace isolation (retrieve only from declared mounts); (3) explicit sourcing (every data-plane claim carries an OKF-conformant citation — a file-relative markdown link and/or a `# Citations` entry — F13 extended to the data plane); (4) boot-time re-verification (diff each depended-on concept's `timestamp` / git SHA / `okf_version` against the recorded `pin`; re-confirm on drift).
+
+### Added — OKF v0.1 conformance contract
+
+`_proposals/OKF-conformance-notes.md` distills the binding format facts read directly from the OKF spec **and** its reference implementation ([GoogleCloudPlatform/knowledge-catalog](https://github.com/GoogleCloudPlatform/knowledge-catalog)): the unit is a **Concept** (addressed by **Concept ID**), reserved filenames (`index.md`, `log.md`), required frontmatter (`type`; the reference validator also requires `title`/`description`/`timestamp`, so OVE producers emit all four), file-relative links, `# Citations` form, and permissive consumption. Two spec-vs-reference-code contradictions are resolved by producing the stricter superset.
+
+### Added — Schema (additive; manifest)
+
+`TEMPLATE-ov-manifest.md` and the `OVE_OV_Manifest` prototype gain `ove_Knowledge_Source` (frontmatter, default `self_contained`) and a `Knowledge_Mounts` array (`bundle_root`, `okf_version`, `provenance`, `ship_disposition: vendored`, `pin`).
+
+### Added — Lifecycle, failure mode, validator
+
+- `03-DESIGN-PROTOCOL.md` — new **KNOWLEDGE-MOUNT** session activity (KAOV-only) + Decision Algorithm Step 4.6; gates ARTIFACT-DRAFT until mounts are vendored, OKF-conformant, and pinned; boot-time re-verification each session.
+- `_meta/FAILURE-MODES.md` — **F14** (stale / non-conformant data plane): the F13 vector relocated to the data plane.
+- `_meta/validate.py` — **C15** (mount resolution + OKF v0.1 §9 conformance + vendored + pin) and **C16** (data-plane citation form — no `[Source: …]` pseudo-syntax; file-relative links into declared mounts). Dispatcher range `range(1, 17)`; `_proposals` added to the scan-skip set. Prose mirror added to `VALIDATION-CHECKLIST.md`.
+
+### Added — Engine prose + docs
+
+- `01-WHAT-IS-AN-OV.md` — new section "Self-contained vs knowledge-augmented (Convention 11 framing)" + distinguishing property #9.
+- `02-DESIGN-PRINCIPLES.md` — KAOV corollary on Trap 9 (a moat that reduces to mount access fails Absorption).
+- `README.md` — knowledge-augmented paragraph under "What is an operating volume?".
+
+### Added — Worked example
+
+`Knowledge-Augmented-Demo/` — the Convention 11 dogfood: a `knowledge_augmented` OV mounting one vendored, OKF-conformant bundle (`_knowledge/demo-catalog/`), passing C15/C16 end-to-end.
 
 ## [2.2.0] — 2026-06-15
 
