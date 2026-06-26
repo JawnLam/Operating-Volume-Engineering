@@ -1,0 +1,23 @@
+# Standalone Sufficiency Posture — DEFERRED marker (Convention 10 opt-out)
+# OV: Knowledge-Augmented-Demo — a Convention 11 dogfood, not a shipped OV.
+
+Item_Prototype: Fleeting
+Item_ID: kaov-demo-posture-deferred
+Title: "Knowledge-Augmented-Demo — Standalone Sufficiency Posture (Deferred)"
+Date_Added: 2026-06-25
+Date_Modified: 2026-06-25
+Needs_Processing: false
+
+ov_name: "Knowledge-Augmented-Demo"
+ov_slug: "kaov-demo"
+
+deferred_until: "2026-12-01"
+
+rationale: |
+  This cartridge exists to dogfood Convention 11 (the OKF data plane) and to give
+  the C15/C16 validator checks a real, conformant target. Its purpose is the
+  bridge-protocol demonstration, not a market-facing standalone-sufficiency claim,
+  so the full Convention 10 posture cascade is deferred — consistent with how the
+  other lower-stakes worked examples defer. Bounded horizon 2026-12-01.
+
+responsible_party: "OVE engine maintainer"

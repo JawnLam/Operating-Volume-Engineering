@@ -88,6 +88,7 @@ CARTRIDGE_BACKBONE = [
 # placeholder text; .git and node_modules are noise; .obsidian is workspace.
 SKIP_FOLDERS = {
     "_design-engine/_templates",
+    "_proposals",
     ".git",
     "node_modules",
     ".obsidian",
@@ -1100,6 +1101,206 @@ def check_C14_standalone_sufficiency_posture(root, cartridges):
 
 
 # ---------------------------------------------------------------------------
+# Convention 11 — Knowledge-augmented OVs (OKF data plane)
+# ---------------------------------------------------------------------------
+
+_OKF_RESERVED = {"index.md", "log.md"}
+_TYPE_RE = re.compile(r'^type:\s*(\S.*)$', re.MULTILINE)
+_SOURCE_PSEUDO_RE = re.compile(r'\[Source:[^\]]*\]', re.IGNORECASE)
+_LEADING_SLASH_KNOWLEDGE_RE = re.compile(r'\]\(/[^)]*_knowledge/')
+
+
+def _parse_knowledge_source(manifest_text):
+    """Return the declared ove_Knowledge_Source value (default 'self_contained')."""
+    m = re.search(r'^ove_Knowledge_Source:\s*"?([\w-]+)"?', manifest_text, re.MULTILINE)
+    return m.group(1).strip().lower() if m else "self_contained"
+
+
+def _iter_uncommented_lines(text):
+    """Yield lines whose first non-space character is not '#' (skips YAML comments
+    and the commented-out scaffold in the manifest template)."""
+    for line in text.splitlines():
+        if line.lstrip().startswith("#"):
+            continue
+        yield line
+
+
+def _parse_knowledge_mounts(manifest_text):
+    """Parse active (uncommented) Knowledge_Mounts entries from a manifest.
+
+    Tolerates the entries living in frontmatter or in a fenced YAML block in the
+    body; commented scaffold lines are ignored. Returns a list of dicts with keys
+    bundle_root, ship_disposition, okf_version, has_pin.
+    """
+    lines = list(_iter_uncommented_lines(manifest_text))
+    mounts = []
+    current = None
+    for line in lines:
+        bm = re.match(r'\s*-\s*bundle_root:\s*"?([^"\n]+?)"?\s*$', line)
+        if bm:
+            if current is not None:
+                mounts.append(current)
+            current = {"bundle_root": bm.group(1).strip(),
+                       "ship_disposition": None, "okf_version": None, "has_pin": False}
+            continue
+        if current is None:
+            continue
+        sd = re.match(r'\s*ship_disposition:\s*"?([\w-]+)"?', line)
+        if sd:
+            current["ship_disposition"] = sd.group(1).strip().lower()
+            continue
+        ov = re.match(r'\s*okf_version:\s*"?([^"\n]+?)"?\s*$', line)
+        if ov:
+            current["okf_version"] = ov.group(1).strip()
+            continue
+        if re.match(r'\s*pin:\s*$', line):
+            current["has_pin"] = True
+            continue
+        if re.match(r'\s*(git_sha|vetted_timestamp):\s*"?\S', line):
+            current["has_pin"] = True
+            continue
+    if current is not None:
+        mounts.append(current)
+    return mounts
+
+
+def check_C15_knowledge_mounts(root, cartridges):
+    """Convention 11 (v2.3.0): a knowledge-augmented OV must vendor each declared
+    OKF mount under _knowledge/, set okf_version + pin, and the bundle must pass
+    OKF v0.1 conformance (every non-reserved .md carries a non-empty `type`).
+    A self_contained OV (the default, empty mount list) passes trivially.
+    """
+    findings = []
+    for cart in cartridges:
+        manifest = cart / "_ov-manifest.md"
+        if not manifest.exists():
+            continue  # reported by C1
+        try:
+            text = manifest.read_text(encoding="utf-8")
+        except Exception:
+            continue  # reported by C2
+        source = _parse_knowledge_source(text)
+        if source == "self_contained":
+            continue
+        if source != "knowledge_augmented":
+            findings.append(Finding(
+                "C15-mounts", "fail", manifest,
+                message=(f"ove_Knowledge_Source: '{source}' is invalid — "
+                         "must be 'self_contained' or 'knowledge_augmented' (Convention 11).")
+            ))
+            continue
+
+        mounts = _parse_knowledge_mounts(text)
+        if not mounts:
+            findings.append(Finding(
+                "C15-mounts", "fail", manifest,
+                message=("ove_Knowledge_Source: knowledge_augmented but no Knowledge_Mounts "
+                         "entries are declared (Convention 11).")
+            ))
+            continue
+
+        for mount in mounts:
+            br = mount["bundle_root"]
+            if mount["ship_disposition"] != "vendored":
+                findings.append(Finding(
+                    "C15-mounts", "fail", manifest,
+                    message=(f"mount '{br}': ship_disposition must be 'vendored' "
+                             f"(got {mount['ship_disposition']!r}) — Convention 11 forbids live external mounts.")
+                ))
+            if not mount["okf_version"]:
+                findings.append(Finding(
+                    "C15-mounts", "fail", manifest,
+                    message=f"mount '{br}': missing okf_version (no OKF version pin)."
+                ))
+            if not mount["has_pin"]:
+                findings.append(Finding(
+                    "C15-mounts", "fail", manifest,
+                    message=f"mount '{br}': missing pin (git_sha and/or vetted_timestamp) — no re-verification baseline."
+                ))
+
+            bundle_dir = (cart / br).resolve()
+            try:
+                inside = str(bundle_dir).startswith(str((cart / "_knowledge").resolve()))
+            except Exception:
+                inside = False
+            if not inside:
+                findings.append(Finding(
+                    "C15-mounts", "fail", manifest,
+                    message=f"mount '{br}': bundle_root must live under {cart.name}/_knowledge/ (vendored)."
+                ))
+                continue
+            if not bundle_dir.is_dir():
+                findings.append(Finding(
+                    "C15-mounts", "fail", manifest,
+                    message=f"mount '{br}': vendored bundle directory not found (bytes must ship with the OV)."
+                ))
+                continue
+
+            # OKF v0.1 §9 conformance: every non-reserved .md has a non-empty `type`.
+            concepts = [p for p in bundle_dir.rglob("*.md") if p.name not in _OKF_RESERVED]
+            if not concepts:
+                findings.append(Finding(
+                    "C15-mounts", "warn", bundle_dir,
+                    message=f"mount '{br}': no OKF concept documents found under the vendored bundle."
+                ))
+            for concept in concepts:
+                try:
+                    ctext = concept.read_text(encoding="utf-8")
+                except Exception as e:
+                    findings.append(Finding(
+                        "C15-mounts", "fail", concept,
+                        message=f"OKF concept unreadable: {e}"
+                    ))
+                    continue
+                fm = FRONTMATTER_RE.match(ctext)
+                if not fm:
+                    findings.append(Finding(
+                        "C15-mounts", "fail", concept,
+                        message="OKF non-conformant: concept has no parseable YAML frontmatter (OKF §9)."
+                    ))
+                    continue
+                tm = _TYPE_RE.search(fm.group(1))
+                if not tm or not tm.group(1).strip():
+                    findings.append(Finding(
+                        "C15-mounts", "fail", concept,
+                        message="OKF non-conformant: concept frontmatter has no non-empty `type` (OKF §9)."
+                    ))
+    return findings
+
+
+def check_C16_dataplane_citations(root, cartridges):
+    """Convention 11 (v2.3.0): data-plane citations must be real markdown links,
+    not the [Source: ...] pseudo-syntax (which is not OKF). Leading-slash links
+    into _knowledge/ warn (OKF reference tooling forbids leading-slash links).
+    Scoped to cartridge content; engine/proposal prose discussing the anti-pattern
+    keeps it inside backticks, which iter_prose_lines strips.
+    """
+    findings = []
+    for cart in cartridges:
+        for f in sorted(cart.rglob("*.md")):
+            if is_skip_path(f, root):
+                continue
+            try:
+                for lineno, line in iter_prose_lines(f):
+                    if _SOURCE_PSEUDO_RE.search(line):
+                        findings.append(Finding(
+                            "C16-citations", "fail", f, line=lineno,
+                            message="[Source: ...] pseudo-citation is not OKF — use a markdown link or a # Citations entry (Convention 11)."
+                        ))
+                    if _LEADING_SLASH_KNOWLEDGE_RE.search(line):
+                        findings.append(Finding(
+                            "C16-citations", "warn", f, line=lineno,
+                            message="leading-slash link into _knowledge/ — OKF reference tooling uses file-relative links (Convention 11)."
+                        ))
+            except Exception as e:
+                findings.append(Finding(
+                    "C16-citations", "warn", f,
+                    message=f"could not scan: {e}"
+                ))
+    return findings
+
+
+# ---------------------------------------------------------------------------
 # Driver
 # ---------------------------------------------------------------------------
 
@@ -1134,6 +1335,10 @@ def run(root, checks):
         findings.extend(check_C13_vocabulary_audit(root))
     if "C14" in checks:
         findings.extend(check_C14_standalone_sufficiency_posture(root, cartridges))
+    if "C15" in checks:
+        findings.extend(check_C15_knowledge_mounts(root, cartridges))
+    if "C16" in checks:
+        findings.extend(check_C16_dataplane_citations(root, cartridges))
     return findings, cartridges
 
 
@@ -1163,7 +1368,7 @@ def main(argv=None):
         print(f"Validating OVE at: {root}")
 
     skip = {c.strip() for c in args.skip.split(",") if c.strip()}
-    checks = {f"C{i}" for i in range(1, 15)} - skip
+    checks = {f"C{i}" for i in range(1, 17)} - skip
 
     findings, cartridges = run(root, sorted(checks))
 

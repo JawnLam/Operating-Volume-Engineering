@@ -14,6 +14,7 @@ ove_Audience_Prose_Register: ""     # Q14 — voice the OV's prose embodies
 ove_Design_Phase: interview   # interview | schema-design | cartridge-shape | artifact-draft | review | ship-prep | shipped
 ove_User_Name: ""              # operator-confirmed; never inferred from indirect signals
 ove_Bootstrapped: <YYYY-MM-DD>
+ove_Knowledge_Source: self_contained   # self_contained (default) | knowledge_augmented — Convention 11
 ---
 
 # <OV Name> — Design Cartridge Manifest
@@ -97,6 +98,22 @@ Defaults (override if needed):
 ## Scope boundaries
 
 *Anything explicitly out of scope for this OV.*
+
+## Knowledge mounts (Convention 11)
+
+Most OVs are `self_contained` — all knowledge is baked into the corpus at design time (the F13 source pipeline) and `Knowledge_Mounts` stays empty. Set `ove_Knowledge_Source: knowledge_augmented` only if this OV mounts an external **OKF v0.1** knowledge bundle as a read-only data plane. Convention 11 requires mounts to be **vendored** — the bundle is copied under `_knowledge/` and ships with the OV, so self-containment is preserved. See `_design-engine/08-KNOWLEDGE-RETRIEVAL.md` for the bridge protocol and `_proposals/OKF-conformance-notes.md` for the OKF format contract.
+
+```yaml
+Knowledge_Mounts: []   # self-contained default; leave empty unless knowledge_augmented
+# Knowledge_Mounts:
+#   - bundle_root: _knowledge/<bundle-slug>   # vendored OKF bundle under the OV root
+#     okf_version: "0.1"                       # OKF spec version the bundle targets
+#     provenance: "<source of the bundle + how/when it was vetted>"
+#     ship_disposition: vendored               # required by Convention 11 — bytes ship with the OV
+#     pin:
+#       git_sha: "<commit the bundle was vetted at, if from git>"
+#       vetted_timestamp: "<ISO 8601 — boot-time re-verification baseline>"
+```
 
 ## Notes
 

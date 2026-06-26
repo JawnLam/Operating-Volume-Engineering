@@ -8,6 +8,7 @@ ove_Design_Phase: interview
 ove_User_Name: ""
 ove_Bootstrapped:
 ove_Engagement_Kind: ""
+ove_Knowledge_Source: self_contained   # self_contained (default) | knowledge_augmented — Convention 11
 Date_Added:
 Date_Modified:
 Needs_Processing: false
@@ -76,6 +77,22 @@ Defaults (override if needed):
 ## Scope boundaries
 
 *Anything explicitly out of scope for this OV.*
+
+## Knowledge mounts (Convention 11)
+
+`ove_Knowledge_Source` above is `self_contained` (default) or `knowledge_augmented`. Self-contained OVs leave `Knowledge_Mounts` empty. Knowledge-augmented OVs (KAOVs) vendor one or more OKF v0.1 bundles under `_knowledge/` and declare one entry each below. See `_design-engine/08-KNOWLEDGE-RETRIEVAL.md` and `_design-engine/_meta/CONVENTIONS.md` § Convention 11.
+
+```yaml
+Knowledge_Mounts: []   # self-contained default
+# Knowledge_Mounts:
+#   - bundle_root: _knowledge/<bundle-slug>   # vendored OKF bundle under the OV root
+#     okf_version: "0.1"                       # OKF spec version the bundle targets
+#     provenance: "<where this bundle came from + how it was vetted>"
+#     ship_disposition: vendored               # bytes ship with the OV (Convention 11 requires this)
+#     pin:
+#       git_sha: "<commit the bundle was vetted at, if sourced from git>"
+#       vetted_timestamp: "<ISO 8601 — boot-time re-verification baseline>"
+```
 
 ## Notes
 

@@ -79,6 +79,15 @@ A `No` answer is **earned**, not asserted. The two master tests in `02-DESIGN-PR
 
 The test applies whether the OV is paid for or not. Many OVs are not commercialized (internal tools, personal systems, methodology corpora) — and the test still applies because the substitution risk is real regardless of monetization: if a general LLM would serve the user better, the OV has no reason to exist.
 
+## Self-contained vs knowledge-augmented (Convention 11 framing)
+
+An OV holds two distinct things: the **control plane** (this engine, the lifecycle, the rules of engagement — what the AI *does*) and the **data plane** (the curated domain knowledge — what the AI *knows*). Every OV declares how it sources its data plane via `ove_Knowledge_Source` in the manifest:
+
+- **`self_contained`** (the default) — all knowledge is baked into the OV's own corpus at design time and verified by ship (the F13 source pipeline). The corpus *is* the substrate.
+- **`knowledge_augmented`** (a KAOV) — the OV additionally mounts one or more **OKF v0.1** knowledge bundles as a read-only data plane and retrieves from them at session runtime, under the bridge protocol in `08-KNOWLEDGE-RETRIEVAL.md`. This is the right form when the domain knowledge is too large to bake flat into one corpus without drowning the context window.
+
+**Both dispositions remain self-contained.** Convention 11 requires mounts to be *vendored* — the OKF bundle's bytes are copied into the OV's `_knowledge/` zone and ship with it. The one-sentence definition above ("a self-contained markdown corpus") therefore holds for KAOVs too: the data plane is a curated, version-pinned part of the corpus, not a live external dependency. OVE adopts OKF rather than a bespoke format so a KAOV's knowledge is a portable asset any OKF-speaking tool can produce, browse, or consume. See Convention 11 in `_design-engine/_meta/CONVENTIONS.md`.
+
 ## What an OV is NOT
 
 - **Not a Custom GPT.** Custom GPTs lock to OpenAI and are configuration, not corpus.
@@ -98,6 +107,7 @@ The test applies whether the OV is paid for or not. Many OVs are not commerciali
 6. **Cartridge-specializable.** The engine is subject-agnostic; cartridges specialize it for a specific engagement.
 7. **Multi-session by design.** Built to support work that unfolds over weeks, months, or years.
 8. **Archetype-declared — finite-horizon or practice.** Every OV declares its archetype at design time. **Finite-horizon OVs** have a defined finish line (manuscript published, subject mastered, problem solved, artifact shipped). **Practice OVs** have no terminal arrival — the principal's engagement continues indefinitely (political navigation, longevity health, ongoing relationship cultivation, lifelong leadership development). The archetype shapes how the OV answers "what does done look like" — terminal-artifact spec vs three-layer mastery signal. See `04-SCHEMA-DESIGN.md` § Q6 and `BOOTSTRAP-NEW-OV.md` § CQ11.
+9. **Knowledge-source-declared — self-contained or knowledge-augmented.** Every OV declares `ove_Knowledge_Source`. Self-contained OVs bake all knowledge into the corpus; knowledge-augmented OVs (KAOVs) additionally mount vendored OKF data-plane bundles under `_knowledge/`. Both ship as self-contained corpora. See Convention 11 and `08-KNOWLEDGE-RETRIEVAL.md`.
 
 ## When is OV the right form?
 

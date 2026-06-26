@@ -31,7 +31,9 @@ updated: 2026-06-01
 
 Steps 1, 6, 7, 8, 9 are non-negotiable. Step 5 varies by activity.
 
-## The seven universal session activities
+## The session activities
+
+Seven universal activities, plus **KNOWLEDGE-MOUNT** which fires only for knowledge-augmented OVs (Convention 11).
 
 | Code | Activity | Right default when |
 |------|----------|---------------------|
@@ -39,9 +41,12 @@ Steps 1, 6, 7, 8, 9 are non-negotiable. Step 5 varies by activity.
 | **POSTURE-DECLARATION** | Operator commits to Convention 10's three load-bearing posture inputs: (a) `domain_stakes: low \| high` flag in `_meta/posture.yaml`, (b) at least one moat-item target (REQ-E4, M1, M2, M3, or M4) with the schema feature that will make it real, (c) any T0 hard-gates flagged as design-challenging early so SCHEMA-DESIGN accounts for them | INTERVIEW complete; SCHEMA-DESIGN not yet started; `_meta/posture.yaml` does not exist or has placeholder values |
 | **SCHEMA-DESIGN** | Walk through Q1–Q15 from `04-SCHEMA-DESIGN.md` to design the new OV's schema (Q15 is the formal version of POSTURE-DECLARATION's commitments) | Domain is clear; posture declared; schema is not yet locked |
 | **CARTRIDGE-SHAPE** | Decide what a cartridge represents in the new OV, what its backbone files are, what its state-persistence model is | Schema is locked; cartridge analog undecided |
+| **KNOWLEDGE-MOUNT** *(KAOV only)* | Vendor and verify the OV's OKF data-plane bundle(s) per Convention 11 / `08-KNOWLEDGE-RETRIEVAL.md`: copy each bundle under `_knowledge/`, confirm OKF conformance, and record `okf_version` + `pin` in `Knowledge_Mounts` | `ove_Knowledge_Source: knowledge_augmented` AND ≥1 declared mount is unresolved, non-conformant, or unpinned |
 | **ARTIFACT-DRAFT** | Draft a specific shipping file (`AI-BOOTSTRAP`, `README`, an engine file, a template) inside `Artifacts/` | Schema + cartridge shape locked; missing artifacts |
 | **REVIEW** | Critique an existing draft against the design principles in `02-DESIGN-PRINCIPLES.md` | An artifact has a draft but no review pass |
 | **SHIP-PREP** | Walk the checklist in `07-SHIPPING-CHECKLIST.md` (scrubbing, license, README, GitHub, Phase 3.10 Standalone Sufficiency readiness) | All artifacts drafted |
+
+> **KNOWLEDGE-MOUNT is new in v2.3.0** and fires only when the manifest declares `ove_Knowledge_Source: knowledge_augmented`. It gates ARTIFACT-DRAFT the way Step 4.5 (source inventory) does: a KAOV cannot draft artifacts that cite the data plane until the data plane is vendored, OKF-conformant, and pinned. Self-contained OVs (the default) never see this activity. See Convention 11 in `_design-engine/_meta/CONVENTIONS.md`.
 
 > **POSTURE-DECLARATION is new in v2.2.0.** It separates the posture-commitment step (operator commits to stakes + moat target + schema-challenging T0 flags) from SCHEMA-DESIGN's full Q1–Q15 walk. The commitments seed `_meta/posture.yaml` before schema design proceeds, so the schema work can be informed by which moat item the OV is committing to and which T0 gates need design attention. Without this separation, posture work tends to be retrofitted at SHIP-PREP — too late to shape the schema. See Convention 10 in `_design-engine/_meta/CONVENTIONS.md`.
 
@@ -79,6 +84,14 @@ Evaluate in order. First condition that fires determines the default proposal.
 - **If** CQ3 surfaced no cited sources → skip this step.
 
 This step exists to prevent F13 (source-grounding skipped) — see `_meta/FAILURE-MODES.md`.
+
+### Step 4.6 — Knowledge mounts unresolved (Convention 11, KAOV only)
+
+- **If** `ove_Knowledge_Source: knowledge_augmented` AND any `Knowledge_Mounts` entry is unresolved (no vendored bundle under `_knowledge/`), non-conformant (fails OKF v0.1 §9), or unpinned (missing `okf_version` / `pin`) → propose **KNOWLEDGE-MOUNT**. ARTIFACT-DRAFT is locked until every declared mount is vendored, OKF-conformant, and pinned.
+- **At every session boot for a KAOV**, run the Rule 4 re-verification from `08-KNOWLEDGE-RETRIEVAL.md`: diff each depended-on concept's `timestamp` (and the bundle's git SHA / `okf_version`) against the recorded `pin`; surface drift to the operator and re-confirm affected claims before reuse. This prevents F14 (stale/format-drift mount).
+- **If** `ove_Knowledge_Source: self_contained` (the default) → skip this step.
+
+This step exists to prevent F14 (stale or non-conformant data plane) — see `_meta/FAILURE-MODES.md`.
 
 ### Step 5 — Artifacts incomplete
 

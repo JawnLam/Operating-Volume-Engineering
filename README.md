@@ -29,6 +29,8 @@ An OV consists of:
 - **Cartridges** — per-engagement workspaces where the actual work accumulates
 - **State files** — durable records the AI reads and writes across sessions
 
+Most OVs are **self-contained** — all domain knowledge is baked into the corpus. An OV may optionally be **knowledge-augmented** (a KAOV): it mounts one or more vendored [Open Knowledge Format (OKF)](https://github.com/GoogleCloudPlatform/knowledge-catalog) bundles as a read-only *data plane* for domains too large to bake flat into one corpus. Because mounts are vendored, a KAOV is still a self-contained corpus. See `_design-engine/08-KNOWLEDGE-RETRIEVAL.md` and Convention 11.
+
 Two existing operating volumes by the same author:
 
 - **[SOLVE-eX](https://github.com/JawnLam/SOLVE-eX)** — an OV for structured problem-solving and decision-making

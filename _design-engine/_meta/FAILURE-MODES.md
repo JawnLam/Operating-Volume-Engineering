@@ -160,6 +160,24 @@ updated: 2026-06-01
 - SHIP-PREP Phase 3.8 — Worked-Example Slot-ID Verification — every worked-example reference to a Prototype slot ID carries a one-line source-justification; unjustified assignment = ship block.
 - Validator checks C11 (source-inventory presence + completeness) and C12 (citation-audit-log presence) enforce the gates programmatically.
 
+## F14 — Stale or non-conformant data plane (knowledge-augmented OVs)
+
+**Trigger pattern:** A knowledge-augmented OV (Convention 11) mounts an OKF bundle and the AI treats a runtime citation as if it were a ship-time-verified fact. Two specific cases:
+
+- **Staleness.** A cited concept's content changed after the bundle was vetted (the vendored bundle was re-vendored to a newer version, or the concept's `timestamp` advanced past the recorded `pin`), but the AI reuses the old claim because the citation path still resolves. The link proves *provenance*, not *currency*.
+- **Non-conformance.** The mounted bundle drifts from OKF v0.1 — a concept loses its required `type`, citations get written as the `[Source: …]` pseudo-tag, or links use leading-slash paths that break GitHub rendering — and the data plane silently stops being interoperable with the wider OKF ecosystem.
+
+**Why it matters:** F14 is the F13 vector relocated to the data plane. F13's guarantee is "verified against canonical source at ship." A mounted OKF bundle is external-in-origin and mutable by design (OKF concepts carry a `timestamp` and a `log.md` *because* they change), and OKF itself is v0.1 Draft and may make breaking changes. A KAOV that cites the data plane without re-verifying inherits exactly the trust-collapse F13 was built to prevent — now harder to spot because the citation looks valid.
+
+**Fix:** When boot-time re-verification detects drift, **stop reusing the affected claims**. Re-read the current concept, re-confirm the claim against it, and surface the change to the operator before updating the `pin`. If a mount has fallen out of OKF conformance, repair the bundle (or re-vendor a conformant version) before drafting from it. Never emit `[Source: …]` or leading-slash links.
+
+**Prevention:**
+
+- KNOWLEDGE-MOUNT (`03-DESIGN-PROTOCOL.md` Step 4.6) blocks ARTIFACT-DRAFT until every declared mount is vendored, OKF-conformant, and pinned.
+- The Rule 4 boot-time re-verification in `08-KNOWLEDGE-RETRIEVAL.md` runs every session for a KAOV: diff each depended-on concept's `timestamp` / git SHA / `okf_version` against the recorded `pin`; re-confirm on drift.
+- Convention 11 requires `ship_disposition: vendored`, so the data plane is version-pinned and ships with the OV rather than floating as a live external dependency.
+- Validator checks C15 (mount resolution + OKF v0.1 §9 conformance + pin present) and C16 (citation form — no `[Source: …]`, file-relative links into declared mounts only) enforce the gates programmatically.
+
 ## Adding new entries
 
 When a new failure mode surfaces in real use, add it here with:
