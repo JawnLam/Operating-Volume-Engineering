@@ -1,7 +1,7 @@
 ---
 Item_ID: "UUID-OR-SLUG"
-Item_Prototype: OVE_Design_State
-Title: "<OV Name> — Design State"
+type: OVE_Design_State
+title: "<OV Name> — Design State"
 ove_OV_Name: ""
 ove_Design_Phase: interview
 ove_Sessions_Completed: 0

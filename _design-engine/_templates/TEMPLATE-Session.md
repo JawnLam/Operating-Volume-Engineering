@@ -1,7 +1,7 @@
 ---
-Item_Prototype: OVE_Session
+type: OVE_Session
 Item_ID: "<ov-slug>-session-<NNN>"
-Title: "<OV Name> — Session <NNN> — <Activity>"
+title: "<OV Name> — Session <NNN> — <Activity>"
 Date_Added:
 Date_Modified:
 Needs_Processing: false

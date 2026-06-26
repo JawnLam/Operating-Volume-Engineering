@@ -1,7 +1,7 @@
 ---
 Item_ID: "UUID-OR-SLUG"
-Item_Prototype: LLL_Unit
-Title: "Unit Name"
+type: LLL_Unit
+title: "Unit Name"
 lll_Subject: ""
 lll_Unit_Type: ""
 lll_Phase: 

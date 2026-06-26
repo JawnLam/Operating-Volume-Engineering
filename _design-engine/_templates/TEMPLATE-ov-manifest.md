@@ -1,7 +1,7 @@
 ---
-Item_Prototype: OVE_OV_Manifest
+type: OVE_OV_Manifest
 Item_ID: "<ov-slug>-manifest"
-Title: "<OV Name> — Design Cartridge Manifest"
+title: "<OV Name> — Design Cartridge Manifest"
 Date_Added:
 Date_Modified:
 Needs_Processing: false

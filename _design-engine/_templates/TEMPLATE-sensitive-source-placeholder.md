@@ -1,7 +1,7 @@
 ---
-Item_Prototype: Fleeting
+type: Fleeting
 Item_ID: "<source-slug>-placeholder"
-Title: "<Source Identifier> — Source Access Request"
+title: "<Source Identifier> — Source Access Request"
 Date_Added:
 Date_Modified:
 Needs_Processing: false

@@ -1,7 +1,8 @@
 ---
-Item_Prototype: Fleeting
+type: Fleeting
+timestamp: "2026-06-25T00:00:00Z"
 Item_ID: ove-proposal-kaov-prd-source
-Title: "Source PRD — Knowledge-Augmented Operating Volume (KAOV)"
+title: "Source PRD — Knowledge-Augmented Operating Volume (KAOV)"
 Date_Added: 2026-06-25
 Date_Modified: 2026-06-25
 Needs_Processing: false

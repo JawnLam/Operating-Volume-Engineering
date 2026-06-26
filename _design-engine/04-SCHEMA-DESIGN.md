@@ -1,11 +1,12 @@
 ---
-Item_Prototype: Fleeting
+type: Fleeting
+timestamp: "2026-06-06T00:00:00Z"
 Item_ID: ove-engine-04-schema-design
-Title: "OVE Engine — 04 Schema Design"
+title: "OVE Engine — 04 Schema Design"
 Date_Added: 2026-06-01
 Date_Modified: 2026-06-06
 Needs_Processing: false
-type: design-engine
+doc_type: design-engine
 role: schema-design-protocol
 scope: subject-agnostic
 updated: 2026-06-01
@@ -43,8 +44,8 @@ Once chosen, everything propagates automatically per `_meta/CONVENTIONS.md`:
 - **Prototype names:** `<NAMESPACE_UPPER>_<TypeName>` (e.g., `COOK_Recipe`, `COOK_Technique`)
 - **Property names:** `<namespace>_<Title_Snake_Case_Body>` (e.g., `cook_Recipe_Status`, `cook_Difficulty_Tier`). Acronyms in the body stay fully capitalized (`URL`, `ISBN`, `POV`).
 - **Enum identifiers** (under `enums:` in schema): `<namespace>_<lowercase_plural>` (e.g., `cook_recipe_statuses`, `cook_difficulty_tiers`)
-- **`Item_Prototype` value** on each Item: the prototype name from above
-- **`Item_Prototype: Fleeting`** on non-Item files (front-door docs, engine prose, meta)
+- **`type` value** on each Item: the prototype name from above
+- **`type: Fleeting`** on non-Item files (front-door docs, engine prose, meta)
 
 The operator's answer to Q0 determines all of these — there is no additional decision-making required for the case convention or the prototype-naming convention. They are locked.
 
@@ -278,15 +279,15 @@ The remaining per-requirement dispositions in `posture.yaml` get filled in durin
 
 > **Cross-references.** Convention 10 in `_design-engine/_meta/CONVENTIONS.md` defines the artifact cascade. The substrate's `requirements.yaml` is the canonical REQ-ID list. POSTURE-DECLARATION in `03-DESIGN-PROTOCOL.md` is the lighter pre-schema activity that seeds Q15. SHIP-PREP Phase 3.10 in `07-SHIPPING-CHECKLIST.md` is the gate that enforces the posture at ship time. Validator C14 checks the artifact at any time.
 
-## Materializing the `_Prototypes/` folder
+## Materializing the `_types/` folder
 
-Once Q9 (cartridge analog) and Q12 (Prototype list) are answered, the Prototypes are *named*. Convention 6 (see `_meta/CONVENTIONS.md`) requires that they are also *defined* — one canonical `_Prototypes/<NAMESPACE>_<TypeName>.md` file per Prototype, structured per `_templates/TEMPLATE-Prototype.md`.
+Once Q9 (cartridge analog) and Q12 (Prototype list) are answered, the Prototypes are *named*. Convention 6 (see `_meta/CONVENTIONS.md`) requires that they are also *defined* — one canonical `_types/<NAMESPACE>_<TypeName>.md` file per Prototype, structured per `_templates/TEMPLATE-Prototype.md`.
 
-This is a hard step, not optional. An OV that ships without `_Prototypes/` populated is one where every cartridge reference (`Item_Prototype: <NAMESPACE>_<TypeName>`) is a name pointer with no definition behind it — fine for the operator with a central vault-wide registry, broken for everyone else.
+This is a hard step, not optional. An OV that ships without `_types/` populated is one where every cartridge reference (`type: <NAMESPACE>_<TypeName>`) is a name pointer with no definition behind it — fine for the operator with a central vault-wide registry, broken for everyone else.
 
 **During ARTIFACT-DRAFT**, walk one Prototype at a time:
 
-1. Open `_templates/TEMPLATE-Prototype.md` (or copy it into `_Prototypes/<NAMESPACE>_<TypeName>.md` and edit).
+1. Open `_templates/TEMPLATE-Prototype.md` (or copy it into `_types/<NAMESPACE>_<TypeName>.md` and edit).
 2. Fill in:
    - Purpose (what this Prototype models in the domain)
    - Required frontmatter (Universal Core + Prototype-specific fields from Q12)
@@ -294,7 +295,7 @@ This is a hard step, not optional. An OV that ships without `_Prototypes/` popul
    - Naming pattern + cartridge folder location
    - A concrete example Item
    - Relationships (which other Prototypes this one links to, per Q4)
-3. Cross-check against `_meta/SCHEMA-OF-SCHEMAS.md` — every property declared there should appear in at least one Prototype's required-frontmatter block, and every Prototype declared in `_meta/SCHEMA-OF-SCHEMAS.md` must have a corresponding `_Prototypes/<NAMESPACE>_<TypeName>.md`.
+3. Cross-check against `_meta/SCHEMA-OF-SCHEMAS.md` — every property declared there should appear in at least one Prototype's required-frontmatter block, and every Prototype declared in `_meta/SCHEMA-OF-SCHEMAS.md` must have a corresponding `_types/<NAMESPACE>_<TypeName>.md`.
 4. Repeat until every Prototype in the OV's namespace has a definition file.
 
 The shipping checklist verifies this at Phase 3.5 (see `07-SHIPPING-CHECKLIST.md`); the optional validator's C7 check enforces it programmatically.

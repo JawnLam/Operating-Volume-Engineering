@@ -1,7 +1,7 @@
 ---
 Item_ID: "UUID-OR-SLUG"
-Item_Prototype: OVE_Session
-Title: "<OV Name> — Session <NNN> — <Activity>"
+type: OVE_Session
+title: "<OV Name> — Session <NNN> — <Activity>"
 ove_OV_Name: ""
 ove_Session_Number:
 ove_Activity: ""

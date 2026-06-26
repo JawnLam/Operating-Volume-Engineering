@@ -1,7 +1,8 @@
 ---
-Item_Prototype: OVE_Source_Inventory
+type: OVE_Source_Inventory
+timestamp: "2026-06-13T00:00:00Z"
 Item_ID: "plc-retrospective-source-inventory"
-Title: "Political-Landscape-Cartography — Source Inventory (Retrospective)"
+title: "Political-Landscape-Cartography — Source Inventory (Retrospective)"
 Date_Added: 2026-06-13
 Date_Modified: 2026-06-13
 Needs_Processing: false

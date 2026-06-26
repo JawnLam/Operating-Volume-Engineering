@@ -1,11 +1,12 @@
 ---
-Item_Prototype: Fleeting
+type: Fleeting
+timestamp: "2026-06-06T00:00:00Z"
 Item_ID: ove-engine-05-writing-for-ai
-Title: "OVE Engine — 05 Writing for AI"
+title: "OVE Engine — 05 Writing for AI"
 Date_Added: 2026-06-01
 Date_Modified: 2026-06-06
 Needs_Processing: false
-type: design-engine
+doc_type: design-engine
 role: writing-discipline
 scope: subject-agnostic
 updated: 2026-06-01
@@ -63,7 +64,7 @@ Every file the AI parses has YAML frontmatter at the top. Schemas and prototypes
 
 When drafting any file with YAML frontmatter — whether it's a cartridge Item, an engine page, or a front-door doc for the new OV — apply the conventions in `_meta/CONVENTIONS.md`:
 
-- Six Universal Core fields: `Item_Prototype`, `Item_ID`, `Title`, `Date_Added`, `Date_Modified`, `Needs_Processing`
+- Six Universal Core fields: `type`, `Item_ID`, `Title`, `Date_Added`, `Date_Modified`, `Needs_Processing`
 - Property naming: prefix `lowercase_snake_case_`, body `Title_Snake_Case`, acronyms fully capitalized
 - Enum identifiers in schema: lowercase plural
 

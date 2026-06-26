@@ -1,7 +1,8 @@
 ---
-Item_Prototype: OVE_Schema_Draft
+type: OVE_Schema_Draft
+timestamp: "2026-06-01T00:00:00Z"
 Item_ID: "relationship-cultivation-schema-draft"
-Title: "Relationship-Cultivation — Schema Draft (in progress)"
+title: "Relationship-Cultivation — Schema Draft (in progress)"
 Date_Added: 2026-06-01
 Date_Modified: 2026-06-01
 Needs_Processing: false

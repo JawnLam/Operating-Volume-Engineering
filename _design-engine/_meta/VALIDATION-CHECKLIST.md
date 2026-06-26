@@ -1,11 +1,12 @@
 ---
-Item_Prototype: Fleeting
+type: Fleeting
+timestamp: "2026-06-06T00:00:00Z"
 Item_ID: ove-meta-validation-checklist
-Title: "OVE Meta — Validation Checklist"
+title: "OVE Meta — Validation Checklist"
 Date_Added: 2026-06-01
 Date_Modified: 2026-06-06
 Needs_Processing: false
-type: design-engine-meta
+doc_type: design-engine-meta
 role: validation-checklist
 scope: subject-agnostic
 updated: 2026-06-06
@@ -84,19 +85,19 @@ If any of these fails, the F6 violation must be fixed before ship — silent dri
 
 ## C7 — Prototype coverage (Convention 6)
 
-- [ ] Every cartridge `.md` file's `Item_Prototype:` value (excluding `Fleeting`) has a corresponding definition file in `_Prototypes/<NAMESPACE>_<TypeName>.md` at the OV root, or in `<Cartridge>/_Prototypes/<NAMESPACE>_<TypeName>.md` (cartridge-local override)
+- [ ] Every cartridge `.md` file's `type:` value (excluding `Fleeting`) has a corresponding definition file in `_types/<NAMESPACE>_<TypeName>.md` at the OV root, or in `<Cartridge>/_types/<NAMESPACE>_<TypeName>.md` (cartridge-local override)
 
 Shell recipe:
 
 ```bash
-# List every distinct Item_Prototype value used in any cartridge
-grep -rh '^Item_Prototype:' <Cartridge>/*.md <Cartridge>/**/*.md 2>/dev/null \
+# List every distinct type value used in any cartridge
+grep -rh '^type:' <Cartridge>/*.md <Cartridge>/**/*.md 2>/dev/null \
   | sort -u | grep -v 'Fleeting'
 
-# For each value, confirm a matching file exists in _Prototypes/
+# For each value, confirm a matching file exists in _types/
 ```
 
-If any value lacks a definition file, ship is locked. Materialize the missing Prototype per `04-SCHEMA-DESIGN.md § "Materializing the _Prototypes/ folder"`.
+If any value lacks a definition file, ship is locked. Materialize the missing Prototype per `04-SCHEMA-DESIGN.md § "Materializing the _types/ folder"`.
 
 ## C8 — Zone-boundary documentation (Convention 8)
 
@@ -170,7 +171,7 @@ ls -la _citation-audit-log.md
 
 # Cites in shippable content
 grep -rEhn 'p\.\s*[0-9]+|§\s*[0-9]+(\.[0-9]+)+' \
-  _*-engine _Prototypes README.md OPERATOR-GUIDE.md CONTRIBUTING.md INSTALL.md 2>/dev/null
+  _*-engine _types README.md OPERATOR-GUIDE.md CONTRIBUTING.md INSTALL.md 2>/dev/null
 
 # Cross-check: each grep hit appears in the audit log (the operator's responsibility)
 ```
@@ -190,11 +191,11 @@ Shell recipe:
 ```bash
 # High-confidence deliverable-promise noun sweep
 grep -rEhin '\b(dashboard|scorecard|playbook)\b' \
-  _*-engine _Prototypes README.md OPERATOR-GUIDE.md CONTRIBUTING.md INSTALL.md 2>/dev/null
+  _*-engine _types README.md OPERATOR-GUIDE.md CONTRIBUTING.md INSTALL.md 2>/dev/null
 
 # Broader sweep (operator-discretion — these have legitimate role-uses too)
 grep -rEhin '\b(report|framework|tool)\b' \
-  _*-engine _Prototypes README.md OPERATOR-GUIDE.md CONTRIBUTING.md INSTALL.md 2>/dev/null
+  _*-engine _types README.md OPERATOR-GUIDE.md CONTRIBUTING.md INSTALL.md 2>/dev/null
 ```
 
 For each hit, decide:

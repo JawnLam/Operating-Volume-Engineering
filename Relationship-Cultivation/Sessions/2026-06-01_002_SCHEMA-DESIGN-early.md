@@ -1,7 +1,8 @@
 ---
-Item_Prototype: OVE_Session
+type: OVE_Session
+timestamp: "2026-06-01T00:00:00Z"
 Item_ID: "relationship-cultivation-session-002"
-Title: "Relationship-Cultivation — Session 002 — SCHEMA-DESIGN (early)"
+title: "Relationship-Cultivation — Session 002 — SCHEMA-DESIGN (early)"
 Date_Added: 2026-06-01
 Date_Modified: 2026-06-01
 Needs_Processing: false

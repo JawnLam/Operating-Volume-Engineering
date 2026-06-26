@@ -1,7 +1,7 @@
 ---
-Item_Prototype: OVE_Design_State
+type: OVE_Design_State
 Item_ID: "<ov-slug>-state"
-Title: "<OV Name> — Design State"
+title: "<OV Name> — Design State"
 Date_Added:
 Date_Modified:
 Needs_Processing: false

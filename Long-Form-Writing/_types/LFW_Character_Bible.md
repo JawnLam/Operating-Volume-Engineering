@@ -1,7 +1,7 @@
 ---
-Item_Prototype: LFW_Character_Bible
+type: LFW_Character_Bible
 Item_ID: "<character-slug>-bible"
-Title: "<Character Name> — Bible"
+title: "<Character Name> — Bible"
 lfw_Manuscript: ""
 lfw_Item_Type: character-bible
 lfw_Status: drafting            # drafting | established | revised | final

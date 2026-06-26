@@ -1,11 +1,12 @@
 ---
-Item_Prototype: Fleeting
+type: Fleeting
+timestamp: "2026-06-06T00:00:00Z"
 Item_ID: ove-meta-schema-of-schemas
-Title: "OVE Meta — Schema of Schemas"
+title: "OVE Meta — Schema of Schemas"
 Date_Added: 2026-06-01
 Date_Modified: 2026-06-06
 Needs_Processing: false
-type: design-engine
+doc_type: design-engine
 role: meta-ontology
 scope: subject-agnostic
 updated: 2026-06-01
@@ -50,7 +51,7 @@ Documented in the OV's own `_schema.md` (or `_meta/SCHEMA-OF-SCHEMAS.md` for OVs
 
 Each cartridge and each note inside it. Every instance:
 
-- Declares its prototype via `Item_Prototype:` in YAML frontmatter (or a similar mechanism)
+- Declares its prototype via `type:` in YAML frontmatter (or a similar mechanism)
 - Conforms to the relevant Layer 2 type definition
 - Conforms to Layer 1 universals through inheritance
 

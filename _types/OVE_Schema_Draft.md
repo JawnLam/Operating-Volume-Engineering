@@ -1,7 +1,7 @@
 ---
 Item_ID: "UUID-OR-SLUG"
-Item_Prototype: OVE_Schema_Draft
-Title: "<OV Name> — Schema Draft"
+type: OVE_Schema_Draft
+title: "<OV Name> — Schema Draft"
 ove_OV_Name: ""
 ove_Schema_Status: drafting
 Date_Added:

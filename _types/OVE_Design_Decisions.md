@@ -1,7 +1,7 @@
 ---
 Item_ID: "UUID-OR-SLUG"
-Item_Prototype: OVE_Design_Decisions
-Title: "<OV Name> — Design Decisions Log"
+type: OVE_Design_Decisions
+title: "<OV Name> — Design Decisions Log"
 ove_OV_Name: ""
 Date_Added:
 Date_Modified:

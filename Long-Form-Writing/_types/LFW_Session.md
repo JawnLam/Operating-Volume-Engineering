@@ -1,7 +1,7 @@
 ---
-Item_Prototype: LFW_Session
+type: LFW_Session
 Item_ID: "<manuscript-slug>-session-<NNN>"
-Title: "<Manuscript Title> — Session <NNN> — <Activity>"
+title: "<Manuscript Title> — Session <NNN> — <Activity>"
 Date_Added:
 Date_Modified:
 Needs_Processing: false

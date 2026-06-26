@@ -1,7 +1,8 @@
 ---
-Item_Prototype: OVE_OV_Manifest
+type: OVE_OV_Manifest
+timestamp: "2026-06-25T00:00:00Z"
 Item_ID: "kaov-demo-manifest"
-Title: "Knowledge-Augmented-Demo — KAOV Worked Example"
+title: "Knowledge-Augmented-Demo — KAOV Worked Example"
 Date_Added: 2026-06-25
 Date_Modified: 2026-06-25
 Needs_Processing: false

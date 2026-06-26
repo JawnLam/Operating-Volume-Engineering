@@ -1,7 +1,8 @@
 ---
-Item_Prototype: OVE_Design_Decisions
+type: OVE_Design_Decisions
+timestamp: "2026-06-13T00:00:00Z"
 Item_ID: "plc-retrospective-design-decisions"
-Title: "Political-Landscape-Cartography — Retrospective Design Decisions"
+title: "Political-Landscape-Cartography — Retrospective Design Decisions"
 Date_Added: 2026-06-13
 Date_Modified: 2026-06-13
 Needs_Processing: false

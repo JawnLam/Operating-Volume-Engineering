@@ -1,7 +1,7 @@
 ---
-Item_Prototype: OVE_Schema_Draft
+type: OVE_Schema_Draft
 Item_ID: "<ov-slug>-schema-draft"
-Title: "<OV Name> — Schema Draft"
+title: "<OV Name> — Schema Draft"
 Date_Added:
 Date_Modified:
 Needs_Processing: false

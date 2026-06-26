@@ -1,7 +1,8 @@
 ---
-Item_Prototype: OVE_Session
+type: OVE_Session
+timestamp: "2026-06-01T00:00:00Z"
 Item_ID: "negotiation-prep-session-003"
-Title: "Negotiation-Preparation — Session 003 — CARTRIDGE-SHAPE"
+title: "Negotiation-Preparation — Session 003 — CARTRIDGE-SHAPE"
 Date_Added: 2026-06-01
 Date_Modified: 2026-06-01
 Needs_Processing: false

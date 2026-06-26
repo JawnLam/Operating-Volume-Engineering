@@ -1,7 +1,7 @@
 ---
-Item_Prototype: LFW_Scene
+type: LFW_Scene
 Item_ID: "<slug>"
-Title: "<Scene title>"
+title: "<Scene title>"
 lfw_Manuscript: ""
 lfw_Item_Type: scene
 lfw_Status: planned          # planned | drafting | drafted | revising | revised | final

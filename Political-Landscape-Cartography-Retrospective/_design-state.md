@@ -1,7 +1,8 @@
 ---
-Item_Prototype: OVE_Design_State
+type: OVE_Design_State
+timestamp: "2026-06-13T00:00:00Z"
 Item_ID: "plc-retrospective-design-state"
-Title: "Political-Landscape-Cartography — Retrospective Design State"
+title: "Political-Landscape-Cartography — Retrospective Design State"
 Date_Added: 2026-06-13
 Date_Modified: 2026-06-13
 Needs_Processing: false

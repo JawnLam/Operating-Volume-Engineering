@@ -1,7 +1,8 @@
 ---
-Item_Prototype: OVE_Design_State
+type: OVE_Design_State
+timestamp: "2026-06-25T00:00:00Z"
 Item_ID: "kaov-demo-state"
-Title: "Knowledge-Augmented-Demo — Design State"
+title: "Knowledge-Augmented-Demo — Design State"
 Date_Added: 2026-06-25
 Date_Modified: 2026-06-25
 Needs_Processing: false

@@ -1,7 +1,7 @@
 ---
 Item_ID: "UUID-OR-SLUG"
-Item_Prototype: LLL_Session
-Title: "Session NNN"
+type: LLL_Session
+title: "Session NNN"
 lll_Subject: ""
 lll_Session_Number: 
 lll_Activity: ""
