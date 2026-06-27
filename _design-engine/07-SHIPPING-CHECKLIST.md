@@ -132,16 +132,16 @@ Only `info`-class findings (e.g., C4 skipped because no `_USER.md`) and explicit
 
 ## Phase 3.5 — `_types/` coverage gate (HARD STOP)
 
-Convention 6 (`_meta/CONVENTIONS.md`) requires every OV to ship its own `_types/` folder containing one `.md` file per Prototype declared in the OV's namespace. Without this, every cartridge note's `type:` reference is a dangling pointer for anyone without a vault-wide central registry.
+Convention 6 (`_meta/CONVENTIONS.md`) requires every OV to ship its own `_types/` folder containing one `.md` file per Type declared in the OV's namespace. Without this, every cartridge note's `type:` reference is a dangling pointer for anyone without a vault-wide central registry.
 
-### Walk the Prototype list
+### Walk the Type list
 
 - [ ] `<New-OV>/_types/` folder exists at the OV root
-- [ ] Every Prototype declared in `_<purpose>-engine/_meta/SCHEMA-OF-SCHEMAS.md` (under `prototypes:` or equivalent) has a corresponding `<NAMESPACE>_<TypeName>.md` file in `_types/`
+- [ ] Every Type declared in `_<purpose>-engine/_meta/SCHEMA-OF-SCHEMAS.md` (under `types:` or equivalent) has a corresponding `<NAMESPACE>_<TypeName>.md` file in `_types/`
 - [ ] Every `type: <NAMESPACE>_<TypeName>` value used anywhere in the OV's cartridges has a corresponding `<NAMESPACE>_<TypeName>.md` file in `_types/`
-- [ ] Each Prototype file conforms to `_design-engine/_templates/TEMPLATE-Prototype.md` (Purpose, Required frontmatter, Body structure, Naming, Example, Relationships sections present)
-- [ ] Each Prototype file's required frontmatter matches the property declarations in `_meta/SCHEMA-OF-SCHEMAS.md`
-- [ ] The Fleeting Prototype is *not* duplicated in `_types/` — it's a vault-universal Prototype, not OV-specific
+- [ ] Each Type file conforms to `_design-engine/_templates/TEMPLATE-Type.md` (Purpose, Required frontmatter, Body structure, Naming, Example, Relationships sections present)
+- [ ] Each Type file's required frontmatter matches the property declarations in `_meta/SCHEMA-OF-SCHEMAS.md`
+- [ ] The Fleeting Type is *not* duplicated in `_types/` — it's a vault-universal Type, not OV-specific
 
 ### Run the gate
 
@@ -151,7 +151,7 @@ If `validate.py` is in use:
 python3 _design-engine/_meta/validate.py
 ```
 
-Check 7 (C7 — Prototype coverage) walks every cartridge and confirms every distinct `type:` value resolves to a file in `_types/`. Missing files fail with `<file>:<line>` and the missing Prototype name.
+Check 7 (C7 — Type coverage) walks every cartridge and confirms every distinct `type:` value resolves to a file in `_types/`. Missing files fail with `<file>:<line>` and the missing Type name.
 
 If running markdown-only:
 
@@ -167,10 +167,10 @@ For each value listed, confirm a matching file exists in `_types/`.
 ### Acceptance — all must be true
 
 - [ ] Every cartridge `type:` value (excluding `Fleeting`) has a definition file in `_types/`
-- [ ] Every definition file conforms to `TEMPLATE-Prototype.md`
-- [ ] No leftover stub Prototypes (placeholder text not replaced with domain-specific content)
+- [ ] Every definition file conforms to `TEMPLATE-Type.md`
+- [ ] No leftover stub Types (placeholder text not replaced with domain-specific content)
 
-**If any of these is no, return to ARTIFACT-DRAFT to materialize the missing Prototype definitions per `04-SCHEMA-DESIGN.md` § "Materializing the `_types/` folder". Phase 7 is locked until this gate is clean.**
+**If any of these is no, return to ARTIFACT-DRAFT to materialize the missing Type definitions per `04-SCHEMA-DESIGN.md` § "Materializing the `_types/` folder". Phase 7 is locked until this gate is clean.**
 
 ## Phase 3.6 — Convention 7 / 8 readiness (HARD STOP)
 
@@ -266,13 +266,13 @@ If this gate passes, flip `ove_Source_Inventory_Status` to `locked`.
 
 ## Phase 3.8 — Worked-Example Slot-ID Verification (HARD STOP)
 
-If the OV ships a worked-example cartridge with references to specific Prototype slot IDs (e.g., "Sam → § 13.1.1.8 `incumbent_defender`" mapping a worked-example character to a canonical archetype), every such mapping carries an inline one-line source-justification. Without this, worked-example mappings drift toward session-inferred fabrications that survive to ship.
+If the OV ships a worked-example cartridge with references to specific Type slot IDs (e.g., "Sam → § 13.1.1.8 `incumbent_defender`" mapping a worked-example character to a canonical archetype), every such mapping carries an inline one-line source-justification. Without this, worked-example mappings drift toward session-inferred fabrications that survive to ship.
 
 This phase exists to prevent F13 (source-grounding skipped) at its highest-stakes locus: the worked example, which the operator uses as the canonical "how to use this OV" demonstration. The v1.0 build of Political Landscape Cartography shipped four fabricated worked-sphere archetype assignments that survived the SHIP-PREP gauntlet — the motivating incident for this phase.
 
 ### Walk the worked-example mappings
 
-- [ ] Every worked-example reference to a Prototype slot ID (e.g., `<name> → § X.Y.Z <slot-id>`) carries an inline one-line source-justification (why this mapping, against which source page or section)
+- [ ] Every worked-example reference to a Type slot ID (e.g., `<name> → § X.Y.Z <slot-id>`) carries an inline one-line source-justification (why this mapping, against which source page or section)
 - [ ] Every cited slot ID exists in the OV's canonical schema (cross-check against `_meta/SCHEMA-OF-SCHEMAS.md` or the worked-example's underlying source)
 - [ ] No worked-example mapping is "best guess from name" / "by inference from similar archetype" / "based on session memory" — the source-justification must be verifiable
 - [ ] If the worked example draws from a real underlying case (a real person, a real organization, a real event), the source-justification cites the underlying source verbatim or by canonical reference
@@ -394,7 +394,7 @@ If `domain_stakes: high`, all 8 TG gates (REQ-I1 through REQ-I5; REQ-K1 through 
 At least one of REQ-E4, REQ-M1, REQ-M2, REQ-M3, or REQ-M4 must be committed in `posture.yaml` under `moat_commitments`, with a non-empty `schema_feature` pointer naming the concrete schema feature that makes the moat real. A moat commitment without a schema pointer is a wish, not a moat.
 
 - [ ] At least one entry in `moat_commitments` in `posture.yaml`
-- [ ] Each commitment's `schema_feature` points to a real, named schema artifact (a Prototype, a state file structure, a methodology field)
+- [ ] Each commitment's `schema_feature` points to a real, named schema artifact (a Type, a state file structure, a methodology field)
 
 ### Step 6 — Confirm vetting-rubric verdict + gating veto
 

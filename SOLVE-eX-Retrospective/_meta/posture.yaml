@@ -3,7 +3,7 @@
 # Substrate: _design-engine/_meta/standalone-sufficiency/ (rev 1.2)
 # Retrospective: SOLVE-eX shipped publicly as v2.1.0 at github.com/JawnLam/SOLVE-eX
 
-Item_Prototype: Fleeting
+type: Fleeting
 Item_ID: solve-ex-posture
 Title: "SOLVE-eX — Standalone Sufficiency Posture (source)"
 Date_Added: 2026-06-14

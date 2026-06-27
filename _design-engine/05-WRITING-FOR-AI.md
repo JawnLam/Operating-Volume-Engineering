@@ -31,7 +31,7 @@ Don't blur the lines. README prose belongs in README, not in the engine. Engine 
 
 ### Be operational, not theoretical
 
-Don't write *"Consider the relationship between the user's goals and the schema."* Write *"Before locking the schema, ask the user to point to one example Item in this domain. If they can't, the Prototype is probably wrong — return to Q3."*
+Don't write *"Consider the relationship between the user's goals and the schema."* Write *"Before locking the schema, ask the user to point to one example Item in this domain. If they can't, the Type is probably wrong — return to Q3."*
 
 The AI is going to execute the prose. Make it executable.
 
@@ -58,7 +58,7 @@ When a section depends on another file, link it: *"See `03-DESIGN-PROTOCOL.md` �
 
 ### Use YAML frontmatter for machine-readable metadata
 
-Every file the AI parses has YAML frontmatter at the top. Schemas and prototypes live in YAML. Prose lives in the body.
+Every file the AI parses has YAML frontmatter at the top. Schemas and types live in YAML. Prose lives in the body.
 
 ### Apply the universal conventions in frontmatter
 

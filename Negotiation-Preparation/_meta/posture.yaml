@@ -2,7 +2,7 @@
 # OV: Negotiation-Preparation (high-stakes, episodic-with-deadline)
 # Substrate: _design-engine/_meta/standalone-sufficiency/ (rev 1.2)
 
-Item_Prototype: Fleeting
+type: Fleeting
 Item_ID: negotiation-prep-posture
 Title: "Negotiation-Preparation — Standalone Sufficiency Posture (source)"
 Date_Added: 2026-06-14

@@ -1,19 +1,19 @@
 ---
 type: Fleeting
-Item_ID: prototype-NAMESPACE-typename
-title: "<NAMESPACE>_<TypeName> Prototype"
+Item_ID: type-NAMESPACE-typename
+title: "<NAMESPACE>_<TypeName> Type"
 Date_Added: YYYY-MM-DD
 Date_Modified: YYYY-MM-DD
 Needs_Processing: false
 ---
 
-# `<NAMESPACE>_<TypeName>` — Prototype Definition
+# `<NAMESPACE>_<TypeName>` — Type Definition
 
-> **What this file is.** The canonical definition of the `<NAMESPACE>_<TypeName>` Prototype for the `<OV-NAME>` Operating Volume. Items (instances) in any cartridge that declare `type: <NAMESPACE>_<TypeName>` conform to the contract described below.
+> **What this file is.** The canonical definition of the `<NAMESPACE>_<TypeName>` Type for the `<OV-NAME>` Operating Volume. Items (instances) in any cartridge that declare `type: <NAMESPACE>_<TypeName>` conform to the contract described below.
 
 ## Purpose
 
-*One paragraph: what kind of thing this Prototype represents in the OV's domain. What does it model? Why does the OV need it? When does the operator create an Item of this Prototype?*
+*One paragraph: what kind of thing this Type represents in the OV's domain. What does it model? Why does the OV need it? When does the operator create an Item of this Type?*
 
 Example for `COOK_Recipe`:
 
@@ -34,9 +34,9 @@ These fields MUST be present on every Item that declares `type: <NAMESPACE>_<Typ
 | `Date_Modified` | date | When the Item was last changed |
 | `Needs_Processing` | boolean | Whether the Item is waiting for the operator to refine it |
 
-### Prototype-specific fields
+### Type-specific fields
 
-*One row per OV-specific property this Prototype carries. Use the OV's namespace prefix and Title_Snake_Case body. Acronyms fully capitalized.*
+*One row per OV-specific property this Type carries. Use the OV's namespace prefix and Title_Snake_Case body. Acronyms fully capitalized.*
 
 | Field | Type | Required? | Notes |
 |-------|------|-----------|-------|
@@ -63,12 +63,12 @@ These fields MUST be present on every Item that declares `type: <NAMESPACE>_<Typ
 ## Naming
 
 - **Filename pattern:** `<descriptive-kebab-case-slug>.md`
-- **Location:** `<Cartridge>/<Folder-for-this-Prototype>/`
+- **Location:** `<Cartridge>/<Folder-for-this-Type>/`
 - **Wikilink target:** the slug (Obsidian-native)
 
 ## Example Item
 
-*A minimal example showing a complete, well-formed Item of this Prototype. Use a domain-appropriate concrete case, not a stub — examples should demonstrate the Prototype, not gesture at it.*
+*A minimal example showing a complete, well-formed Item of this Type. Use a domain-appropriate concrete case, not a stub — examples should demonstrate the Type, not gesture at it.*
 
 ```markdown
 ---
@@ -93,7 +93,7 @@ Needs_Processing: false
 
 ## Relationships
 
-*Which other Prototypes this one can point to or be pointed to by. Use the OV's relationship vocabulary from `04-SCHEMA-DESIGN.md` Q4.*
+*Which other Types this one can point to or be pointed to by. Use the OV's relationship vocabulary from `04-SCHEMA-DESIGN.md` Q4.*
 
 - `<NAMESPACE>_<OtherType>` — *relationship name (e.g., "originated-by", "prerequisite-of", "instantiates")*
 

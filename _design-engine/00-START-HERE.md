@@ -112,14 +112,14 @@ Then proceed with the other conditions. The operator needs to know about degrade
 
 This is the load-bearing condition.
 
-- **Existing-cartridge path:** name **one** concrete, non-guessable fact pulled from the cartridge state — the current design phase, the most recent locked decision in `_design-decisions.md`, or a named open thread from `_design-state.md`. The fact must be specific enough that an AI which skipped the reads could not produce it. *"You're in schema-drafting"* is too generic; *"You're in schema-drafting with the open thread on whether 'stakeholder' is its own Prototype or a sub-type of 'party'"* is correct.
+- **Existing-cartridge path:** name **one** concrete, non-guessable fact pulled from the cartridge state — the current design phase, the most recent locked decision in `_design-decisions.md`, or a named open thread from `_design-state.md`. The fact must be specific enough that an AI which skipped the reads could not produce it. *"You're in schema-drafting"* is too generic; *"You're in schema-drafting with the open thread on whether 'stakeholder' is its own Type or a sub-type of 'party'"* is correct.
 - **New-OV or orientation path:** name **one** specific Tier-1 rule from this engine that you will enforce in the first turn (e.g., *"I will ask one question at a time per P10,"* or *"I will use placeholders for your name per P7 until you tell me what it is"*). A rule cited from a file you haven't read is the failure to catch.
 
 ### Examples
 
 **Existing cartridge — passes all three conditions:**
 
-> *"Pre-flight complete. I've read the engine through Tier 1 and the Negotiation-Preparation cartridge. You're in design state 'schema-drafting,' three sessions in, with the open thread on whether 'stakeholder' is its own Prototype or a sub-type of 'party.' My proposal: continue schema-drafting and close that thread. Your call."*
+> *"Pre-flight complete. I've read the engine through Tier 1 and the Negotiation-Preparation cartridge. You're in design state 'schema-drafting,' three sessions in, with the open thread on whether 'stakeholder' is its own Type or a sub-type of 'party.' My proposal: continue schema-drafting and close that thread. Your call."*
 
 **New OV — passes all three conditions:**
 

@@ -124,7 +124,7 @@ These come from `_design-engine/02-DESIGN-PRINCIPLES.md` in full; the short vers
 3. **Never invent.** If you're not sure a tool, framework, person, or fact is real, say so. Fabrication poisons the resulting OV.
 4. **Never fabricate identity.** Don't infer the user's name, email, or contact details from username strings, file paths, or git config. Use placeholders until they tell you. (This is the specific Jawn-Lam-not-John-Lam lesson; see `_meta/FAILURE-MODES.md`.)
 5. **Self-similarity test.** A well-built OV should be able to be redesigned by *this* OVE. If your proposed structure can't be expressed in this OVE's own design protocol, the structure is probably wrong.
-6. **You propose, the user disposes.** Show your reasoning when proposing schemas, Prototypes, cartridge shapes. Honor overrides.
+6. **You propose, the user disposes.** Show your reasoning when proposing schemas, Types, cartridge shapes. Honor overrides.
 
 ## When in doubt
 

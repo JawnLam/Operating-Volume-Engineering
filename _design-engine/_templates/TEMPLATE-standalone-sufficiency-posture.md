@@ -78,7 +78,7 @@ At least one of the following must be committed with a concrete schema-feature p
 
 | REQ-ID | Title | Committed? | Schema feature making this real |
 |---|---|---|---|
-| REQ-E4 | Scenario & Counterfactual Simulation | <yes \| no> | `<schema feature / prototype name>` |
+| REQ-E4 | Scenario & Counterfactual Simulation | <yes \| no> | `<schema feature / type name>` |
 | REQ-M1 | Data Flywheel | <yes \| no> | `<…>` |
 | REQ-M2 | Legitimate Switching Cost | <yes \| no> | `<…>` |
 | REQ-M3 | Absorption Resistance | <yes \| no> | `<…>` |

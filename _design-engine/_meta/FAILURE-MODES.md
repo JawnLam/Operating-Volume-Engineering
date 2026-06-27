@@ -158,7 +158,7 @@ updated: 2026-06-01
 - CQ3 (`BOOTSTRAP-NEW-OV.md`) structurally captures each cited source with canonical location, page count, full-vs-excerpt status, and sensitivity.
 - ARTIFACT-DRAFT (`03-DESIGN-PROTOCOL.md` Step 4.5) blocks until `_source-inventory.md` has every cited source's canonical location filled AND the AI has acknowledged reading the canonical source with a one-line per-source summary.
 - SHIP-PREP Phase 3.7 (`07-SHIPPING-CHECKLIST.md`) — Citation Audit — every "p.XX / § X.Y / named theorist / verbatim quote" in shippable content is verified against source; unverified cite = ship block.
-- SHIP-PREP Phase 3.8 — Worked-Example Slot-ID Verification — every worked-example reference to a Prototype slot ID carries a one-line source-justification; unjustified assignment = ship block.
+- SHIP-PREP Phase 3.8 — Worked-Example Slot-ID Verification — every worked-example reference to a Type slot ID carries a one-line source-justification; unjustified assignment = ship block.
 - Validator checks C11 (source-inventory presence + completeness) and C12 (citation-audit-log presence) enforce the gates programmatically.
 
 ## F14 — Stale or non-conformant data plane (knowledge-augmented OVs)

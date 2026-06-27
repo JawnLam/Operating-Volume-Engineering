@@ -175,16 +175,16 @@ This Q14 declaration cascaded into PLC's prose voice during ARTIFACT-DRAFT and i
 
 ## Derived schema documents
 
-### Prototype definitions
+### Type definitions
 
-PLC namespace declares 16 Prototypes:
+PLC namespace declares 16 Types:
 
 - `PLC_Sphere_Manifest`, `PLC_Sphere_State`, `PLC_Sphere_Decisions` (cartridge backbone)
 - `PLC_Actor_Map`, `PLC_Resource_Ledger`, `PLC_Cycle`, `PLC_Session` (sphere content)
 - `PLC_Tactic`, `PLC_Strategy`, `PLC_Theorist`, `PLC_Move` (Catalogue + dissertation)
 - `PLC_Pattern_Stakeholder_Archetype`, `PLC_Pattern_Change_Initiator_Posture`, `PLC_Pattern_Opposition_Posture`, `PLC_Pattern_Arc_Dynamic`, `PLC_Pattern_Power_Dynamic_Theme`, `PLC_Pattern_Ethical_Dilemma` (pattern atoms — 6 families totaling 72 atoms)
 
-Each Prototype shipped with its own `_types/PLC_<TypeName>.md` per Convention 6.
+Each Type shipped with its own `_types/PLC_<TypeName>.md` per Convention 6.
 
 ### Relationship vocabulary
 
@@ -199,7 +199,7 @@ Political-Landscape-Cartography/
 ├── _plc-engine/
 │   ├── 00-START-HERE.md ... 07-SHIPPING-CHECKLIST.md
 │   ├── _meta/ (SCHEMA-OF-SCHEMAS, FAILURE-MODES)
-│   ├── _templates/ (per-Prototype templates)
+│   ├── _templates/ (per-Type templates)
 │   └── _yaml/ (scaffolding YAML)
 ├── _types/ (16 files per Convention 6)
 ├── _PATTERNS/ (6 family folders, 72 pattern atoms)

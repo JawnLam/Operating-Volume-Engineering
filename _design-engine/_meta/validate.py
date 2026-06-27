@@ -307,7 +307,7 @@ def check_C5_wikilinks(root):
         index[p.stem] = p
         index[p.name] = p
     for f in iter_md_files(root):
-        # Prototype definition files (Convention 6) contain placeholder example
+        # Type definition files (Convention 6) contain placeholder example
         # wikilinks by design — they are templates of structure, not consumers
         # of vault state. Skip C5 for files inside any _types/ folder.
         if "_types" in f.parts:
@@ -489,8 +489,8 @@ def check_C9_gitignore_sanity(root):
     return findings
 
 
-def _find_prototype_definition(root, cartridge, prototype_name):
-    """Return the Path of the Prototype definition file, or None if missing.
+def _find_type_definition(root, cartridge, type_name):
+    """Return the Path of the Type definition file, or None if missing.
 
     Search order:
       1. <cartridge>/_types/<NAME>.md           (cartridge-local override)
@@ -499,30 +499,30 @@ def _find_prototype_definition(root, cartridge, prototype_name):
 
     The Artifacts/_types/ path covers OVE design cartridges specifically:
     per BOOTSTRAP-NEW-OV.md Step 1, a design cartridge nests its in-progress
-    OV under Artifacts/. The new OV's Prototype definitions live there during
+    OV under Artifacts/. The new OV's Type definitions live there during
     design and only move to the OV root's _types/ when the OV ships.
     """
     if cartridge is not None:
-        local = cartridge / "_types" / f"{prototype_name}.md"
+        local = cartridge / "_types" / f"{type_name}.md"
         if local.exists():
             return local
-        nested = cartridge / "Artifacts" / "_types" / f"{prototype_name}.md"
+        nested = cartridge / "Artifacts" / "_types" / f"{type_name}.md"
         if nested.exists():
             return nested
-    canonical = root / "_types" / f"{prototype_name}.md"
+    canonical = root / "_types" / f"{type_name}.md"
     if canonical.exists():
         return canonical
     return None
 
 
-# `type` is the discriminator (OKF v0.1; renamed from Item_Prototype in v2.4.0).
-ITEM_PROTOTYPE_RE = re.compile(r'^type:\s*["\']?([A-Za-z_][A-Za-z0-9_]*)["\']?\s*$')
+# `type` is the discriminator (OKF v0.1; renamed for OKF v0.1 in v2.4.0).
+ITEM_TYPE_RE = re.compile(r'^type:\s*["\']?([A-Za-z_][A-Za-z0-9_]*)["\']?\s*$')
 
 
-def check_C7_prototype_coverage(root, cartridges):
+def check_C7_type_coverage(root, cartridges):
     """Convention 6: every `type` (discriminator) value used in any cartridge must
     have a definition file in either the cartridge's local _types/ or the OV
-    root's _types/. Fleeting is excluded (vault-universal Prototype)."""
+    root's _types/. Fleeting is excluded (vault-universal Type)."""
     findings = []
 
     # Verify the OV root has a _types/ folder at all
@@ -533,18 +533,18 @@ def check_C7_prototype_coverage(root, cartridges):
             message="OV root is missing _types/ folder (Convention 6)"
         ))
 
-    # For each cartridge, walk .md files, collect Item_Prototype values, verify coverage
-    seen = {}  # prototype_name -> list of (file, lineno) where first observed
+    # For each cartridge, walk .md files, collect type values, verify coverage
+    seen = {}  # type_name -> list of (file, lineno) where first observed
     for cartridge in cartridges:
         for md in cartridge.rglob("*.md"):
             if is_skip_path(md, root):
                 continue
-            # Skip Prototype-definition files themselves (they ARE the source of truth,
+            # Skip Type-definition files themselves (they ARE the source of truth,
             # not consumers of it). They live in _types/ and use type: Fleeting.
             if "_types" in md.parts:
                 continue
             # Skip the OKF data plane (Convention 11): vendored _knowledge/ bundles use
-            # OKF concept types (Dataset, Table, …) in `type:`, not OVE prototype values.
+            # OKF concept types (Dataset, Table, …) in `type:`, not OVE type values.
             if "_knowledge" in md.parts:
                 continue
             try:
@@ -562,7 +562,7 @@ def check_C7_prototype_coverage(root, cartridges):
                             break
                         if not in_frontmatter:
                             continue
-                        m = ITEM_PROTOTYPE_RE.match(stripped)
+                        m = ITEM_TYPE_RE.match(stripped)
                         if not m:
                             continue
                         name = m.group(1)
@@ -572,7 +572,7 @@ def check_C7_prototype_coverage(root, cartridges):
             except Exception:
                 continue
 
-    # For each distinct Prototype name, verify a definition file exists
+    # For each distinct Type name, verify a definition file exists
     for name, occurrences in sorted(seen.items()):
         # Use the first occurrence's cartridge for the cartridge-local search;
         # if any cartridge has a local override, the canonical search will also pick it up
@@ -581,7 +581,7 @@ def check_C7_prototype_coverage(root, cartridges):
         cartridges_using = sorted({c for (_, _, c) in occurrences}, key=lambda p: p.name)
         unresolved_cartridges = []
         for cartridge in cartridges_using:
-            if _find_prototype_definition(root, cartridge, name) is None:
+            if _find_type_definition(root, cartridge, name) is None:
                 unresolved_cartridges.append(cartridge)
         if unresolved_cartridges:
             # Point at the first occurrence for a concrete file:line
@@ -589,7 +589,7 @@ def check_C7_prototype_coverage(root, cartridges):
             cartridge_list = ", ".join(c.name for c in unresolved_cartridges)
             findings.append(Finding(
                 "C7-coverage", "fail", first_md, line=first_line,
-                message=(f"Item_Prototype: {name} is used but has no definition file "
+                message=(f"type: {name} is used but has no definition file "
                          f"at _types/{name}.md "
                          f"(neither OV-root nor cartridge-local); "
                          f"cartridges affected: {cartridge_list}")
@@ -1325,7 +1325,7 @@ def run(root, checks):
     if "C6" in checks:
         findings.extend(check_C6_bootstrap_engine_drift(root))
     if "C7" in checks:
-        findings.extend(check_C7_prototype_coverage(root, cartridges))
+        findings.extend(check_C7_type_coverage(root, cartridges))
     if "C8" in checks:
         findings.extend(check_C8_zone_documentation(root))
     if "C9" in checks:
