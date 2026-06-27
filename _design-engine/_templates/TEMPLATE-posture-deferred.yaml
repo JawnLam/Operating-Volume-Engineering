@@ -11,7 +11,7 @@
 #
 # Universal core fields (Convention 1) appear at top.
 
-Item_Prototype: Fleeting
+type: Fleeting
 Item_ID: <ov-slug>-posture-deferred
 Title: "<OV Name> — Standalone Sufficiency Posture (Deferred)"
 Date_Added: YYYY-MM-DD
@@ -46,4 +46,4 @@ responsible_party: "<OVE engine maintainer | operator name | team>"
 # captures intent so the retrofit doesn't start from zero.
 planned_moat_commitments:
   # - req_id: REQ-M2
-  #   schema_feature: "<feature / prototype name pointer>"
+  #   schema_feature: "<feature / type name pointer>"

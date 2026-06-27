@@ -92,7 +92,7 @@ ove_Schema_Status: drafting    # drafting | locked | shipped
 
 When Q1–Q13 are answered, derive:
 
-### Prototype definitions
+### Type definitions
 
 *One per Q3-defined unit type. Frontmatter, required body sections, naming, location.*
 

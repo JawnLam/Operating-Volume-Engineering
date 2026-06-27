@@ -1,7 +1,7 @@
 # Standalone Sufficiency Posture — DEFERRED marker (Convention 10 opt-out)
 # OV: Relationship-Cultivation — posture retrofit deferred to v2.3.0 of OVE.
 
-Item_Prototype: Fleeting
+type: Fleeting
 Item_ID: rc-posture-deferred
 Title: "Relationship-Cultivation — Standalone Sufficiency Posture (Deferred)"
 Date_Added: 2026-06-14

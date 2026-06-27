@@ -83,7 +83,7 @@ This is the highest-risk drift to catch — the root-mirror / engine-canonical d
 
 If any of these fails, the F6 violation must be fixed before ship — silent drift between root and engine is the failure mode the engine itself catalogues.
 
-## C7 — Prototype coverage (Convention 6)
+## C7 — Type coverage (Convention 6)
 
 - [ ] Every cartridge `.md` file's `type:` value (excluding `Fleeting`) has a corresponding definition file in `_types/<NAMESPACE>_<TypeName>.md` at the OV root, or in `<Cartridge>/_types/<NAMESPACE>_<TypeName>.md` (cartridge-local override)
 
@@ -97,7 +97,7 @@ grep -rh '^type:' <Cartridge>/*.md <Cartridge>/**/*.md 2>/dev/null \
 # For each value, confirm a matching file exists in _types/
 ```
 
-If any value lacks a definition file, ship is locked. Materialize the missing Prototype per `04-SCHEMA-DESIGN.md § "Materializing the _types/ folder"`.
+If any value lacks a definition file, ship is locked. Materialize the missing Type per `04-SCHEMA-DESIGN.md § "Materializing the _types/ folder"`.
 
 ## C8 — Zone-boundary documentation (Convention 8)
 

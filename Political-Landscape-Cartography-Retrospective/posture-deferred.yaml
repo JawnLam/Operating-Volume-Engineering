@@ -1,7 +1,7 @@
 # Standalone Sufficiency Posture — DEFERRED marker (Convention 10 opt-out)
 # OV: Political-Landscape-Cartography — posture retrofit deferred to v2.3.0 of OVE.
 
-Item_Prototype: Fleeting
+type: Fleeting
 Item_ID: plc-posture-deferred
 Title: "Political-Landscape-Cartography — Standalone Sufficiency Posture (Deferred)"
 Date_Added: 2026-06-14

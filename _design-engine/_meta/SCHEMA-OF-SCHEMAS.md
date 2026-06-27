@@ -24,7 +24,7 @@ These hold across every OV:
 
 - A `AI-BOOTSTRAP.md` at the root
 - A `<purpose>-engine/` folder containing operating prose
-- A schema (per cartridge or per OV) defining Prototypes and relationships
+- A schema (per cartridge or per OV) defining Types and relationships
 - Cartridges representing specific engagements
 - State files persisting across sessions
 - A bootstrap protocol for new cartridges
@@ -38,7 +38,7 @@ These are the **invariants of the OV form**. Any OV that lacks them is either in
 
 Each OV defines its own:
 
-- Specific Prototypes (concept, case file, design decision, piece, character, stakeholder, etc.)
+- Specific Types (concept, case file, design decision, piece, character, stakeholder, etc.)
 - Specific relationship vocabulary
 - Specific cartridge backbone files
 - Specific custom session activities
@@ -51,7 +51,7 @@ Documented in the OV's own `_schema.md` (or `_meta/SCHEMA-OF-SCHEMAS.md` for OVs
 
 Each cartridge and each note inside it. Every instance:
 
-- Declares its prototype via `type:` in YAML frontmatter (or a similar mechanism)
+- Declares its type via `type:` in YAML frontmatter (or a similar mechanism)
 - Conforms to the relevant Layer 2 type definition
 - Conforms to Layer 1 universals through inheritance
 
@@ -60,7 +60,7 @@ Each cartridge and each note inside it. Every instance:
 OVE is itself an OV. Therefore:
 
 - OVE's Layer 1 universals are the same as every OV's Layer 1 universals (it has `AI-BOOTSTRAP.md`, an engine, cartridges, templates, etc.)
-- OVE's Layer 2 schema defines Prototypes specific to designing OVs (design decisions, schema drafts, artifacts-in-progress)
+- OVE's Layer 2 schema defines Types specific to designing OVs (design decisions, schema drafts, artifacts-in-progress)
 - OVE's Layer 3 instances are the five worked-example cartridges (and any user-created design cartridges)
 
 The recursion produces a useful diagnostic: a well-built OV should be capable of being **redesigned by OVE itself**. If you can't express an OV's design using OVE's design protocol, either:
@@ -73,7 +73,7 @@ This is the **self-similarity test** from `02-DESIGN-PRINCIPLES.md` P9.
 
 ## OVE's Layer 2 schema (in brief)
 
-### Prototypes specific to OVE
+### Types specific to OVE
 
 **Design decision** — a locked choice made during the design of an OV.
 - Where: `<Cartridge>/_design-decisions.md`
@@ -123,7 +123,7 @@ A well-formed OV satisfies:
 - [ ] Has all Layer 1 universals
 - [ ] Has an explicit Layer 2 schema (`_schema.md` or `_meta/SCHEMA-OF-SCHEMAS.md`)
 - [ ] Every cartridge has the required backbone files per Layer 2
-- [ ] Every note instance has valid frontmatter per its Layer 3 prototype
+- [ ] Every note instance has valid frontmatter per its Layer 3 type
 - [ ] No domain bleed from Layer 2/3 back into Layer 1 (engine)
 - [ ] No dangling wiki-links
 - [ ] Cartridges can be moved between users without breaking (substrate-agnostic, P1)

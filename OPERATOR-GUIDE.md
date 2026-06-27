@@ -122,7 +122,7 @@ Your installed OVE folder has four content zones. Knowing which is which prevent
 |------|-------|
 | `README.md`, `INSTALL.md`, `OPERATOR-GUIDE.md`, `CONTRIBUTING.md`, `LICENSE.md`, `VERSION.md`, `CHANGELOG.md` | Front-door docs |
 | `_design-engine/` | The full design protocol — engine chapters, templates, meta |
-| `_types/` | OVE's own Prototype definitions (Convention 6) |
+| `_types/` | OVE's own Type definitions (Convention 6) |
 | `_USER.md.template` | The template, not your filled-in `_USER.md` |
 | `.gitignore` | Engine-zone file; its patterns define your Operator-Private Zone |
 

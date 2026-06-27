@@ -12,6 +12,10 @@ Needs_Processing: false
 
 All notable changes to Operating-Volume-Engineering are documented in this file. Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); versioning follows [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.5.0] — 2026-06-27
+
+Minor release — **terminology retirement: "Prototype" → "Type".** The engine concept formerly called a *Prototype* (the type-definition unit) is now uniformly called a **Type**, completing the OKF `type` vocabulary adopted in v2.4.0. Infrastructure surfaces only — engine docs, `_meta/CONVENTIONS.md` (Conventions 4 & 6 reworded), `04-SCHEMA-DESIGN.md`, `07-SHIPPING-CHECKLIST.md`, `BOOTSTRAP-NEW-OV.md`, `SCHEMA-OF-SCHEMAS.md`, `validate.py` (C7 is now "Type coverage"), `_types/` definitions, front-door docs, and worked-example `_schema-draft.md`/`posture*.yaml`. Template `_design-engine/_templates/TEMPLATE-Prototype.md` → `TEMPLATE-Type.md`. Documented rename-mapping arrows (`` `Item_Prototype`→`type` ``) are preserved as the migration's audit trail; historical CHANGELOG entries below are unchanged; Hugo excluded. Adds design note `_proposals/Convention-12-Registry-Sync-Design-Note.md` (registry sync; bounded-bidirectional; soft-retire de-registration). No behavioral change to generated OVs beyond vocabulary.
+
 ## [2.4.0] — 2026-06-26
 
 Minor release bringing OVE into **Google OKF v0.1 conformance** — the OVE half of the coordinated OKF release (vault Master_Schema v1.23.0 was Phase 1).

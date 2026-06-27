@@ -23,4 +23,4 @@ The factual knowledge lives in the mounted OKF bundle (`_knowledge/demo-catalog`
 
 ## Namespace
 
-`kaov_` (demonstration only; the OV ships no Prototypes of its own beyond the OVE backbone).
+`kaov_` (demonstration only; the OV ships no Types of its own beyond the OVE backbone).

@@ -1,7 +1,7 @@
 # Standalone Sufficiency Posture — DEFERRED marker (Convention 10 opt-out)
 # OV: LifeLong-Learning — posture retrofit deferred to v2.3.0 of OVE.
 
-Item_Prototype: Fleeting
+type: Fleeting
 Item_ID: lll-posture-deferred
 Title: "LifeLong-Learning — Standalone Sufficiency Posture (Deferred)"
 Date_Added: 2026-06-14

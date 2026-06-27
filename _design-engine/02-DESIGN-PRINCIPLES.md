@@ -118,7 +118,7 @@ This applies recursively: when helping the user choose tools/frameworks for the 
 1. **CQ3 captures sources structurally** (`BOOTSTRAP-NEW-OV.md`): each cited source logged in `_source-inventory.md` with canonical location, page count, full-vs-excerpt status, sensitivity.
 2. **ARTIFACT-DRAFT is gated** (`03-DESIGN-PROTOCOL.md` Step 4.5): drafting cannot begin until every inventory entry has canonical location filled AND the AI has acknowledged reading the canonical source with a one-line summary per source.
 3. **Citation Audit at SHIP-PREP Phase 3.7** (`07-SHIPPING-CHECKLIST.md`): every "p.XX / § X.Y / named theorist / verbatim quote" in shippable content is verified against source; unverified = ship block.
-4. **Worked-Example Slot-ID Verification at Phase 3.8**: every worked-example reference to a Prototype slot ID carries a one-line source-justification.
+4. **Worked-Example Slot-ID Verification at Phase 3.8**: every worked-example reference to a Type slot ID carries a one-line source-justification.
 
 The contract exists because P8's "say so when unsure" honor system did not survive the v1.0 build of a practice-OV citing a 294-page dissertation as substrate. Multiple fabrications survived to ARTIFACT-DRAFT and most were caught only by operator spot-check rather than the SHIP-PREP gauntlet. v2.0 makes the gate structural rather than honor-based.
 
@@ -146,7 +146,7 @@ The AI's role is to **propose** designs with rationale and surface tradeoffs. Th
 - Name the main alternative
 - Wait for the user's call before proceeding
 
-This applies to schema choices, cartridge shapes, Prototypes, file structures — every load-bearing design decision.
+This applies to schema choices, cartridge shapes, Types, file structures — every load-bearing design decision.
 
 ## P12 — Write before you end
 

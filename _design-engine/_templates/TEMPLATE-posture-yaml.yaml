@@ -8,7 +8,7 @@
 # Universal core fields (Convention 1) appear at top as YAML keys mirroring
 # the markdown frontmatter convention.
 
-Item_Prototype: Fleeting
+type: Fleeting
 Item_ID: <ov-slug>-posture
 Title: "<OV Name> — Standalone Sufficiency Posture (source)"
 Date_Added: YYYY-MM-DD
@@ -31,7 +31,7 @@ convention_10_revision: "1.2"
 # Each commitment ties a moat REQ-ID to a concrete schema feature.
 moat_commitments:
   - req_id: REQ-M2
-    schema_feature: "<feature / prototype name / pointer that makes this moat real>"
+    schema_feature: "<feature / type name / pointer that makes this moat real>"
   # - req_id: REQ-E4
   #   schema_feature: "..."
   # - req_id: REQ-M1

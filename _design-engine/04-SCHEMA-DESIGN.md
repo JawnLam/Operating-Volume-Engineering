@@ -20,7 +20,7 @@ updated: 2026-06-01
 
 A schema is the structural contract every artifact in the OV conforms to. It defines:
 
-1. **The Prototypes** — the unit(s) of knowledge or work the OV produces (a "concept" in LLL, a "case file" in SOLVE-eX, a "design decision" in OVE)
+1. **The Types** — the unit(s) of knowledge or work the OV produces (a "concept" in LLL, a "case file" in SOLVE-eX, a "design decision" in OVE)
 2. **The relationships** — how Items link to each other
 3. **The state model** — what state files exist, what they own
 4. **The cartridge backbone** — what every cartridge has at minimum
@@ -41,13 +41,13 @@ Ask the user:
 
 Once chosen, everything propagates automatically per `_meta/CONVENTIONS.md`:
 
-- **Prototype names:** `<NAMESPACE_UPPER>_<TypeName>` (e.g., `COOK_Recipe`, `COOK_Technique`)
+- **Type names:** `<NAMESPACE_UPPER>_<TypeName>` (e.g., `COOK_Recipe`, `COOK_Technique`)
 - **Property names:** `<namespace>_<Title_Snake_Case_Body>` (e.g., `cook_Recipe_Status`, `cook_Difficulty_Tier`). Acronyms in the body stay fully capitalized (`URL`, `ISBN`, `POV`).
 - **Enum identifiers** (under `enums:` in schema): `<namespace>_<lowercase_plural>` (e.g., `cook_recipe_statuses`, `cook_difficulty_tiers`)
-- **`type` value** on each Item: the prototype name from above
+- **`type` value** on each Item: the type name from above
 - **`type: Fleeting`** on non-Item files (front-door docs, engine prose, meta)
 
-The operator's answer to Q0 determines all of these — there is no additional decision-making required for the case convention or the prototype-naming convention. They are locked.
+The operator's answer to Q0 determines all of these — there is no additional decision-making required for the case convention or the type-naming convention. They are locked.
 
 If the operator wants different conventions than the defaults in `_meta/CONVENTIONS.md`, they tell you during this session. Log the override in `_design-decisions.md` so future sessions know which conventions apply.
 
@@ -75,7 +75,7 @@ The mix shapes everything downstream.
 
 Some domains have named experts (cybernetics has thinkers; philosophy has philosophers). Some have traditions (cuisine has regional traditions). Some have institutions (law has courts and codes). Some have none.
 
-This question determines whether you need a "thinker" or "authority" Prototype.
+This question determines whether you need a "thinker" or "authority" Type.
 
 ### Q3 — What is the smallest quizzable / actionable / discussable unit?
 
@@ -193,7 +193,7 @@ For each backbone file: is it overwritten, append-only, or hybrid? What gets wri
 
 ### Q12 — What templates ship with the OV?
 
-Templates scaffold the work. Every Prototype needs one. Every artifact-kind (session log, quiz, journal, draft) needs one.
+Templates scaffold the work. Every Type needs one. Every artifact-kind (session log, quiz, journal, draft) needs one.
 
 ### Q13 — What's the bootstrap-new-cartridge protocol?
 
@@ -248,7 +248,7 @@ This is the most important question in Q15 because it pulls Convention 10 into t
 
 | REQ-ID | Title | What "supports this in the schema" usually looks like |
 |---|---|---|
-| **REQ-E4** | Scenario & Counterfactual Simulation | A Prototype or state structure that holds the user's actual data + a methodology field defining the simulation contract (inputs, outputs, methodology version). |
+| **REQ-E4** | Scenario & Counterfactual Simulation | A Type or state structure that holds the user's actual data + a methodology field defining the simulation contract (inputs, outputs, methodology version). |
 | **REQ-M1** | Data Flywheel | A schema field marking which artifacts contribute anonymized outcome data; a cartridge-level outcome-record format the engine can aggregate without breaking privacy. |
 | **REQ-M2** | Legitimate Switching Cost | A cartridge backbone whose state files become the operator's system of record for the domain — substantive enough that leaving the OV means leaving real, accumulated value. |
 | **REQ-M3** | Absorption Resistance | The schema's distinctive feature must rest on proprietary data, real integration, or accountability — NOT on promptable behavior. Name the feature that the platform cannot ship natively even if it wanted to. |
@@ -281,22 +281,22 @@ The remaining per-requirement dispositions in `posture.yaml` get filled in durin
 
 ## Materializing the `_types/` folder
 
-Once Q9 (cartridge analog) and Q12 (Prototype list) are answered, the Prototypes are *named*. Convention 6 (see `_meta/CONVENTIONS.md`) requires that they are also *defined* — one canonical `_types/<NAMESPACE>_<TypeName>.md` file per Prototype, structured per `_templates/TEMPLATE-Prototype.md`.
+Once Q9 (cartridge analog) and Q12 (Type list) are answered, the Types are *named*. Convention 6 (see `_meta/CONVENTIONS.md`) requires that they are also *defined* — one canonical `_types/<NAMESPACE>_<TypeName>.md` file per Type, structured per `_templates/TEMPLATE-Type.md`.
 
 This is a hard step, not optional. An OV that ships without `_types/` populated is one where every cartridge reference (`type: <NAMESPACE>_<TypeName>`) is a name pointer with no definition behind it — fine for the operator with a central vault-wide registry, broken for everyone else.
 
-**During ARTIFACT-DRAFT**, walk one Prototype at a time:
+**During ARTIFACT-DRAFT**, walk one Type at a time:
 
-1. Open `_templates/TEMPLATE-Prototype.md` (or copy it into `_types/<NAMESPACE>_<TypeName>.md` and edit).
+1. Open `_templates/TEMPLATE-Type.md` (or copy it into `_types/<NAMESPACE>_<TypeName>.md` and edit).
 2. Fill in:
-   - Purpose (what this Prototype models in the domain)
-   - Required frontmatter (Universal Core + Prototype-specific fields from Q12)
+   - Purpose (what this Type models in the domain)
+   - Required frontmatter (Universal Core + Type-specific fields from Q12)
    - Body structure (the required sections an Item must contain)
    - Naming pattern + cartridge folder location
    - A concrete example Item
-   - Relationships (which other Prototypes this one links to, per Q4)
-3. Cross-check against `_meta/SCHEMA-OF-SCHEMAS.md` — every property declared there should appear in at least one Prototype's required-frontmatter block, and every Prototype declared in `_meta/SCHEMA-OF-SCHEMAS.md` must have a corresponding `_types/<NAMESPACE>_<TypeName>.md`.
-4. Repeat until every Prototype in the OV's namespace has a definition file.
+   - Relationships (which other Types this one links to, per Q4)
+3. Cross-check against `_meta/SCHEMA-OF-SCHEMAS.md` — every property declared there should appear in at least one Type's required-frontmatter block, and every Type declared in `_meta/SCHEMA-OF-SCHEMAS.md` must have a corresponding `_types/<NAMESPACE>_<TypeName>.md`.
+4. Repeat until every Type in the OV's namespace has a definition file.
 
 The shipping checklist verifies this at Phase 3.5 (see `07-SHIPPING-CHECKLIST.md`); the optional validator's C7 check enforces it programmatically.
 
@@ -306,7 +306,7 @@ The new OV's schema document must contain:
 
 1. **Domain identity** — name, shape (Q1 categories), summary
 2. **Answers to Q1–Q13** — the analytical answers that justify the design
-3. **Prototype definitions** — frontmatter, required body sections, naming, location
+3. **Type definitions** — frontmatter, required body sections, naming, location
 4. **Relationship vocabulary** — the named relations
 5. **Mastery / progress scale** — default or custom
 6. **Custom session activities** — with trigger conditions
@@ -319,7 +319,7 @@ The new OV's schema document must contain:
 
 Run these checks before locking the schema:
 
-- [ ] Could you describe an example Item in this domain that fits naturally? (If not, the Prototypes are off.)
+- [ ] Could you describe an example Item in this domain that fits naturally? (If not, the Types are off.)
 - [ ] Are the relationships sufficient to express how Items actually link in your head?
 - [ ] Does the cartridge analog match how the user *thinks* about the work, not just how it's structured on disk?
 - [ ] Would a user-domain-expert recognize this schema as "yes, that's how this domain works"?
