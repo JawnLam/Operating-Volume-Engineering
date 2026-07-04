@@ -32,7 +32,7 @@ v2.3.0 was a minor release introducing **Convention 11 — Knowledge-Augmented O
 | **Substrate**           | v2.2 (rev 1.2) | Unchanged — vendored 47-requirement Standalone Sufficiency substrate at `_design-engine/_meta/standalone-sufficiency/` |
 | **OKF integration**     | OKF v0.1      | v2.3: KAOVs vendor OKF v0.1 bundles ([GoogleCloudPlatform/knowledge-catalog](https://github.com/GoogleCloudPlatform/knowledge-catalog)); binding format contract distilled at `_proposals/OKF-conformance-notes.md` |
 | **Validator**           | v2.3          | v2.3: C15 (Knowledge-mount conformance) + C16 (data-plane citation form) added; dispatcher range `range(1, 17)`; `_proposals` added to skip set; prose-mode mirror in `VALIDATION-CHECKLIST.md` |
-| **Worked examples**     | v2.3          | Seven examples — six unchanged from v2.2 plus `Knowledge-Augmented-Demo` (the Convention 11 dogfood: one vendored OKF bundle, passes C15/C16) |
+| **Worked examples**     | v2.3          | Two examples in this distribution — `LifeLong-Learning-Retrospective` + `Long-Form-Writing` (trimmed from the upstream seven) |
 | **Release date**        | 2026-06-25    |                                                                        |
 
 ## Schema policy
@@ -64,14 +64,10 @@ If an operator chooses to rebuild an existing OV under v2.0 conventions, the pat
   - Validator (`_meta/validate.py`) — v2.3 adds C15 / C16
 - **Front-door docs at the root**: `README`, `AI-BOOTSTRAP`, `INSTALL`, `OPERATOR-GUIDE`, `CONTRIBUTING`, `LICENSE`, `VERSION`, `CHANGELOG`, `UPDATE-PROMPT`
 - **Optional user profile template**: `_USER.md.template`
-- **Seven worked-example cartridges** (one added in v2.1; `Knowledge-Augmented-Demo` added in v2.3 as the Convention 11 dogfood — a `knowledge_augmented` OV mounting one vendored, OKF-conformant bundle under `_knowledge/demo-catalog/`):
-  - `SOLVE-eX-Retrospective/` — retrospective design analysis of [SOLVE-eX](https://github.com/JawnLam/SOLVE-eX) (finite-horizon)
+- **Two worked-example cartridges** (trimmed from the upstream set for this distribution):
   - `LifeLong-Learning-Retrospective/` — retrospective design analysis of [LifeLong-Learning](https://github.com/JawnLam/LifeLong-Learning) (finite-horizon)
-  - `Negotiation-Preparation/` — fresh worked example, anchor demonstration (full depth; finite-horizon)
   - `Long-Form-Writing/` — fresh worked example, lighter depth (finite-horizon)
-  - `Relationship-Cultivation/` — fresh worked example, lighter depth (finite-horizon)
-  - `Political-Landscape-Cartography-Retrospective/` — **v2.1, canonical practice-archetype demonstration**; retrospective analysis of [Political-Landscape-Cartography v1.0.0](https://github.com/JawnLam/Political-Landscape-Cartography) (private). Shows Q6b three-layer mastery signal, Q14 audience register, Convention 9 sensitive-source pattern, and restrictive LICENSE template applied concretely.
-- **`.gitignore`** that keeps a user's private design work out of source control by default while preserving the five shipped worked examples
+- **`.gitignore`** that keeps a user's private design work out of source control by default while preserving the two shipped worked examples
 
 ## Compatibility
 

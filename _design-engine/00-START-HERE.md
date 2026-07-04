@@ -36,7 +36,7 @@ If neither exists, default to:
 
 ## Identifying the active engagement
 
-When the user says *"let's continue the X design"* or names a cartridge, identify the matching subfolder. Existing cartridges include the five worked examples (`SOLVE-eX-Retrospective`, `LifeLong-Learning-Retrospective`, `Negotiation-Preparation`, `Long-Form-Writing`, `Relationship-Cultivation`) — these are reference implementations. Any other subfolder is a real user engagement.
+When the user says *"let's continue the X design"* or names a cartridge, identify the matching subfolder. Existing cartridges include the two worked examples (`LifeLong-Learning-Retrospective`, `Long-Form-Writing`) — these are reference implementations. Any other subfolder is a real user engagement.
 
 If the user wants to **design a new OV**, route to `BOOTSTRAP-NEW-OV.md`.
 
@@ -119,7 +119,7 @@ This is the load-bearing condition.
 
 **Existing cartridge — passes all three conditions:**
 
-> *"Pre-flight complete. I've read the engine through Tier 1 and the Negotiation-Preparation cartridge. You're in design state 'schema-drafting,' three sessions in, with the open thread on whether 'stakeholder' is its own Type or a sub-type of 'party.' My proposal: continue schema-drafting and close that thread. Your call."*
+> *"Pre-flight complete. I've read the engine through Tier 1 and the Long-Form-Writing cartridge. You're in design state 'schema-drafting,' two sessions in, with the open thread on whether 'scene' is its own Type or a sub-field of 'chapter.' My proposal: continue schema-drafting and close that thread. Your call."*
 
 **New OV — passes all three conditions:**
 

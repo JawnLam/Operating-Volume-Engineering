@@ -88,7 +88,6 @@ CARTRIDGE_BACKBONE = [
 # placeholder text; .git and node_modules are noise; .obsidian is workspace.
 SKIP_FOLDERS = {
     "_design-engine/_templates",
-    "_proposals",
     ".git",
     "node_modules",
     ".obsidian",

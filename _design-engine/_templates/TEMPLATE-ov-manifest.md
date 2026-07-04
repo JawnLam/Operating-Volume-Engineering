@@ -101,7 +101,7 @@ Defaults (override if needed):
 
 ## Knowledge mounts (Convention 11)
 
-Most OVs are `self_contained` — all knowledge is baked into the corpus at design time (the F13 source pipeline) and `Knowledge_Mounts` stays empty. Set `ove_Knowledge_Source: knowledge_augmented` only if this OV mounts an external **OKF v0.1** knowledge bundle as a read-only data plane. Convention 11 requires mounts to be **vendored** — the bundle is copied under `_knowledge/` and ships with the OV, so self-containment is preserved. See `_design-engine/08-KNOWLEDGE-RETRIEVAL.md` for the bridge protocol and `_proposals/OKF-conformance-notes.md` for the OKF format contract.
+Most OVs are `self_contained` — all knowledge is baked into the corpus at design time (the F13 source pipeline) and `Knowledge_Mounts` stays empty. Set `ove_Knowledge_Source: knowledge_augmented` only if this OV mounts an external **OKF v0.1** knowledge bundle as a read-only data plane. Convention 11 requires mounts to be **vendored** — the bundle is copied under `_knowledge/` and ships with the OV, so self-containment is preserved. See `_design-engine/08-KNOWLEDGE-RETRIEVAL.md` for the bridge protocol and `_design-engine/_meta/OKF-conformance-notes.md` for the OKF format contract.
 
 ```yaml
 Knowledge_Mounts: []   # self-contained default; leave empty unless knowledge_augmented

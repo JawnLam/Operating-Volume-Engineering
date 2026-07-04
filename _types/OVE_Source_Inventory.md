@@ -12,7 +12,7 @@ AI_Instructions: ""
 
 # <OV Name> — Source Inventory
 
-> **Captures every external source the OV-being-designed will cite as substrate. Per CQ3 (`_design-engine/BOOTSTRAP-NEW-OV.md`) and F13 (`_design-engine/_meta/FAILURE-MODES.md`). ARTIFACT-DRAFT cannot begin until every entry has `Canonical location` filled AND `AI-read acknowledgment` filled. SHIP-PREP Phase 3.7 (`_design-engine/07-SHIPPING-CHECKLIST.md`) verifies every citation against this inventory. Added in OVE v2.0; canonical exemplar lives at `Political-Landscape-Cartography-Retrospective/_source-inventory.md`.**
+> **Captures every external source the OV-being-designed will cite as substrate. Per CQ3 (`_design-engine/BOOTSTRAP-NEW-OV.md`) and F13 (`_design-engine/_meta/FAILURE-MODES.md`). ARTIFACT-DRAFT cannot begin until every entry has `Canonical location` filled AND `AI-read acknowledgment` filled. SHIP-PREP Phase 3.7 (`_design-engine/07-SHIPPING-CHECKLIST.md`) verifies every citation against this inventory. Added in OVE v2.0.**
 
 ## Status values
 
@@ -44,4 +44,3 @@ AI_Instructions: ""
 - `_design-engine/03-DESIGN-PROTOCOL.md` § Step 4.5 — ARTIFACT-DRAFT gate
 - `_design-engine/07-SHIPPING-CHECKLIST.md` § Phase 3.7 — Citation Audit gate
 - `_design-engine/_meta/CONVENTIONS.md` § Convention 9 — sensitive source materials ship-by-reference pattern
-- `Political-Landscape-Cartography-Retrospective/_source-inventory.md` — canonical exemplar (added in v2.1)

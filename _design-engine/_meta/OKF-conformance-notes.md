@@ -7,7 +7,7 @@ Date_Added: 2026-06-25
 Date_Modified: 2026-06-25
 Needs_Processing: false
 Status: REFERENCE — distilled from Google's real OKF spec + reference code. Source of truth for KAOV format compliance.
-Cited_by: _proposals/KAOV-design-note.md
+Cited_by: _design-engine/08-KNOWLEDGE-RETRIEVAL.md, _design-engine/_meta/CONVENTIONS.md
 ---
 
 # OKF v0.1 Conformance Notes
@@ -17,7 +17,7 @@ Cited_by: _proposals/KAOV-design-note.md
 > normative spec AND the reference implementation (not from any summary). It is
 > the format contract any KAOV producer/consumer must satisfy to stay
 > interoperable with the broader OKF ecosystem. Where Gemini's source PRD
-> (`_proposals/KAOV-PRD-source.md`) diverged from real OKF, the divergence is
+> diverged from real OKF, the divergence is
 > flagged here.
 
 ## 0. What was read (provenance)
@@ -234,4 +234,4 @@ explicit sourcing all map cleanly onto real OKF intent.
 **Format details: non-conformant in four ways** that would have broken interoperability
 — (1) "Node File" terminology, (2) invented `dependencies` field + wrong required-field
 set, (3) `[Source: …]` citation pseudo-syntax, (4) bundle-prefixed link paths. All four
-are corrected above and propagated into `_proposals/KAOV-design-note.md`.
+are corrected above.

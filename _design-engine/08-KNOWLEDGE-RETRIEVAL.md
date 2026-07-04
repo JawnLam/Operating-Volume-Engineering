@@ -26,7 +26,7 @@ A **knowledge-augmented OV (KAOV)** additionally mounts one or more **OKF v0.1 b
 
 Large domains break the "bake everything into the corpus" model: you cannot load a 5,000-concept enterprise catalog into a session and still reason well. Research on long-context degradation (the "Lost in the Middle" effect — recall accuracy collapses when relevant facts are buried in a large flat context) makes the flat-load approach actively harmful, not merely expensive. The fix is **progressive disclosure**: keep the knowledge in a structured, hierarchical bundle and pull only the slice a task needs.
 
-OVE adopts Google Cloud's **Open Knowledge Format (OKF)** for that bundle rather than inventing a format. The reason is integration, not convenience: an OKF bundle is plain markdown that *any* OKF-speaking producer, consumer, browser, or graph viewer can use. A KAOV's knowledge is therefore a portable asset, not a lock-in. The binding format facts live in `_proposals/OKF-conformance-notes.md`; the ones a session must obey are restated below.
+OVE adopts Google Cloud's **Open Knowledge Format (OKF)** for that bundle rather than inventing a format. The reason is integration, not convenience: an OKF bundle is plain markdown that *any* OKF-speaking producer, consumer, browser, or graph viewer can use. A KAOV's knowledge is therefore a portable asset, not a lock-in. The binding format facts live in `_design-engine/_meta/OKF-conformance-notes.md`; the ones a session must obey are restated below.
 
 ## What a mount is
 
@@ -105,7 +105,7 @@ The bridge protocol is wired into `03-DESIGN-PROTOCOL.md` as the **KNOWLEDGE-MOU
 ## Related references
 
 - `_design-engine/_meta/CONVENTIONS.md` § Convention 11 — the convention this chapter implements
-- `_proposals/OKF-conformance-notes.md` — the full OKF v0.1 format contract (spec + reference implementation)
+- `_design-engine/_meta/OKF-conformance-notes.md` — the full OKF v0.1 format contract (spec + reference implementation)
 - `_design-engine/02-DESIGN-PRINCIPLES.md` — the F13 source-grounding contract this extends
 - `_design-engine/03-DESIGN-PROTOCOL.md` § KNOWLEDGE-MOUNT — the lifecycle state
 - `_design-engine/_meta/FAILURE-MODES.md` § F14 — the stale-mount failure mode
