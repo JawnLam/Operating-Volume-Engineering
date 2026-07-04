@@ -22,7 +22,7 @@ The following contributions do **not** require a major version bump:
 
 | Contribution                                                                | Where it lives                                                                |
 |-----------------------------------------------------------------------------|-------------------------------------------------------------------------------|
-| New worked-example cartridge for a different domain                         | `<Domain>/` at the root, paralleling the five shipped examples                |
+| New worked-example cartridge for a different domain                         | `<Domain>/` at the root, paralleling the two shipped examples                |
 | New entry in the failure-modes catalog                                       | `_design-engine/_meta/FAILURE-MODES.md`                                       |
 | New template for an OV-ship file                                             | `_design-engine/_templates/TEMPLATE-<name>.md`                                |
 | Clarification, correction, or expansion in any engine file (00–07, BOOTSTRAP) | Edit in place; minor version bump                                            |
@@ -118,9 +118,6 @@ The OV is designed to be extended at the OV root by adding new design cartridge 
 |------|-------|
 | `Long-Form-Writing/` | OVE worked example |
 | `LifeLong-Learning-Retrospective/` | OVE worked example |
-| `Negotiation-Preparation/` | OVE worked example |
-| `Relationship-Cultivation/` | OVE worked example |
-| `SOLVE-eX-Retrospective/` | OVE worked example |
 
 **Shipped Examples are reference implementations.** If you want to riff on one, copy it into an Operator-Extension Zone cartridge.
 

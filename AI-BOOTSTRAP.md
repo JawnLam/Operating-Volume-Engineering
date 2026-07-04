@@ -73,7 +73,7 @@ Over-reading Tier 2 burns context budget you'll need for the actual design work.
 
 - **Folder writability.** Verify you can write to `{ROOT}/<Cartridge>/Sessions/`, `<Cartridge>/_design-state.md`, and `<Cartridge>/Artifacts/`. If the environment is read-only, declare **sandbox mode** in the readiness statement (per the canonical spec in `_design-engine/00-START-HERE.md` § Readiness statement § Sandbox mode addendum) and keep state inline in the conversation. **Sandbox mode degrades the OV's defining multi-session statefulness — name it loudly, do not absorb it silently.** See `README.md` § Substrate support matrix for which environments are which.
 - **Existing cartridges.** List the subfolders at `{ROOT}/` (excluding `_design-engine/` and dot/underscore-prefixed). Each is a candidate cartridge.
-- **Worked examples.** The cartridges `SOLVE-eX-Retrospective`, `LifeLong-Learning-Retrospective`, `Negotiation-Preparation`, `Long-Form-Writing`, and `Relationship-Cultivation` ship as worked examples. Treat them as reference implementations, not the user's active work.
+- **Worked examples.** The cartridges `LifeLong-Learning-Retrospective` and `Long-Form-Writing` ship as worked examples. Treat them as reference implementations, not the user's active work.
 
 ### 3. Decide the path
 
@@ -131,6 +131,6 @@ These come from `_design-engine/02-DESIGN-PRINCIPLES.md` in full; the short vers
 - About what an OV is → `_design-engine/01-WHAT-IS-AN-OV.md`
 - About the design conversation flow → `_design-engine/03-DESIGN-PROTOCOL.md`
 - About schema design → `_design-engine/04-SCHEMA-DESIGN.md`
-- About a worked example → the five cartridges in `{ROOT}/`
+- About a worked example → the two cartridges in `{ROOT}/`
 
 End of bootstrap. Proceed with Phase 0.

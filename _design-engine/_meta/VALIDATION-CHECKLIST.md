@@ -353,7 +353,7 @@ Expected: declared disposition is `knowledge_augmented`; every concept file repo
 
 ## C16 — Data-plane citation form (Convention 11 — KAOV only)
 
-Applies only to knowledge-augmented OVs. Guards against the non-conformant citation syntax Gemini's source PRD proposed (`_proposals/OKF-conformance-notes.md` §6).
+Applies only to knowledge-augmented OVs. Guards against the non-conformant citation syntax Gemini's source PRD proposed (`_design-engine/_meta/OKF-conformance-notes.md` §6).
 
 - [ ] No `[Source: …]` pseudo-citations anywhere in shippable content — `fail` on any hit
 - [ ] Data-plane citations are real markdown links resolving into a declared mount (file-relative; not leading-slash) — `warn` on leading-slash links into `_knowledge/`

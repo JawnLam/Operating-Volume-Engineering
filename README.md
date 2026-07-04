@@ -122,11 +122,8 @@ Sandbox mode is a real and supported way to use this folder; it just isn't the d
 | `_design-engine/`                      | The subject-agnostic OV-design operating manual                   |
 | `_design-engine/_templates/`           | Templates for every standard file an OV ships with                |
 | `_design-engine/_meta/`                | Schema-of-schemas + the failure-modes catalog                     |
-| `SOLVE-eX-Retrospective/`              | Worked example: retrospective design analysis of SOLVE-eX         |
 | `LifeLong-Learning-Retrospective/`     | Worked example: retrospective design analysis of LifeLong-Learning |
-| `Negotiation-Preparation/`             | Worked example: fresh-design walkthrough (anchor demonstration)   |
 | `Long-Form-Writing/`                   | Worked example: fresh design for book/dissertation/screenplay work |
-| `Relationship-Cultivation/`            | Worked example: fresh design for a relational-CRM-style OV        |
 
 Each cartridge contains: `_ov-manifest.md`, `_design-state.md`, `_design-decisions.md`, `_schema-draft.md`, `Sessions/`, `Artifacts/`.
 

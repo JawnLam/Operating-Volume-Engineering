@@ -147,13 +147,10 @@ This is where your work lives. Every design cartridge you open through OVE (a ne
 
 ### Shipped Examples Zone — release-owned; updated by `git pull`
 
-The five worked-example cartridges that demonstrate OVE:
+The two worked-example cartridges that demonstrate OVE:
 
 - `Long-Form-Writing/`
 - `LifeLong-Learning-Retrospective/`
-- `Negotiation-Preparation/`
-- `Relationship-Cultivation/`
-- `SOLVE-eX-Retrospective/`
 
 **Do not edit Shipped Examples directly.** If you want to riff on an example, copy it into an Extension Zone cartridge (`mv Long-Form-Writing My-LFW-Variant`) and customize there.
 

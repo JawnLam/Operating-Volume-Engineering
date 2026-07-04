@@ -218,7 +218,7 @@ The worked-example cartridges that demonstrate the OV. Tracked by git, updated b
 
 - LFW: `Example-Project-The-Late-Frost/`, `Example-Project-The-Persistence-Question/`
 - LLL: `Example-Subject-Roman-Empire/`
-- OVE: the 5 worked-example cartridges (`Long-Form-Writing/`, `LifeLong-Learning-Retrospective/`, `Negotiation-Preparation/`, `Relationship-Cultivation/`, `SOLVE-eX-Retrospective/`)
+- OVE: the 2 worked-example cartridges (`Long-Form-Writing/`, `LifeLong-Learning-Retrospective/`)
 - SOLVE-eX: shipped sample sessions, tool entries, etc.
 
 Operators **do not edit Shipped-Examples directly.** If customization is desired, copy the example into an Operator-Extension Zone cartridge and customize there.
@@ -413,7 +413,7 @@ A vendored mount MUST be a conformant OKF v0.1 bundle. Conformance is not OVE's 
 - **Links and citations.** Cross-links and citations are **standard markdown links**, written **file-relative** (never leading-slash — that breaks GitHub rendering and is what every shipped Google bundle does). Citations sit under a `# Citations` heading (numbered) and/or inline-link the source concept. The `[Source: <path>]` pseudo-syntax is **not** OKF and must never be emitted.
 - **Permissive consumption.** Never reject a bundle for missing optional fields, unknown `type` values, unknown extra keys, broken links, or a missing `index.md`.
 
-The full distilled contract — read from the spec *and* the reference implementation — is captured at `_proposals/OKF-conformance-notes.md`. The engine chapter `08-KNOWLEDGE-RETRIEVAL.md` is the operator/AI-facing protocol.
+The full distilled contract — read from the spec *and* the reference implementation — is captured at `_design-engine/_meta/OKF-conformance-notes.md`. The engine chapter `08-KNOWLEDGE-RETRIEVAL.md` is the operator/AI-facing protocol.
 
 ### The bridge protocol (summary; full text in `08-KNOWLEDGE-RETRIEVAL.md`)
 

@@ -82,7 +82,7 @@ Custom activities (preview):
 
 ## Notes for OV-design students
 
-This worked example is intentionally **lighter** than Negotiation-Preparation. Only the first two design sessions are captured here (INTERVIEW + early SCHEMA-DESIGN). The point is to demonstrate that the OV form works for creative / procedural domains, not to ship a complete writing OV.
+This worked example is intentionally **light**: only the first two design sessions are captured here (INTERVIEW + early SCHEMA-DESIGN). The point is to demonstrate that the OV form works for creative / procedural domains, not to ship a complete writing OV.
 
 What's interesting about the writing OV vs. the others:
 

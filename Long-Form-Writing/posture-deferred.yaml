@@ -15,7 +15,7 @@ deferred_until: "2026-12-01"
 
 rationale: |
   v2.2.0 dogfood scope for Convention 10 was limited to the two potentially
-  high-stakes worked examples (Negotiation-Preparation, SOLVE-eX-Retrospective)
+  high-stakes worked examples
   to validate the Convention end-to-end on real OV substrate before retrofitting
   the lower-stakes examples. This OV's full posture retrofit is scheduled for
   v2.3.0. The deferral is bounded (horizon 2026-12-01); C14 validator warns
