@@ -87,7 +87,9 @@ For environment setup, see [`INSTALL.md`](INSTALL.md). For day-to-day operation 
 - **AI assistant** — any model capable of reading markdown and parsing YAML frontmatter (Claude Sonnet/Opus class, GPT-4 class and above, Gemini 2.x and above)
 - **OS** — Mac, Windows, or Linux
 - **Editor** — any text editor with AI integration; Obsidian works well; Claude Code / Cursor / Windsurf are excellent
-- **Python / network / runtime dependencies** — none for the core flow. The optional validator at `_design-engine/_meta/validate.py` requires Python 3.7+ standard library only.
+- **Python / network / runtime dependencies** — none. The OV form is plain markdown; a human and a capable AI operate it with zero code execution.
+
+**Tooling posture.** The optional validator at `_design-engine/_meta/validate.py` (Python 3.7+ standard library only) is convenience automation, not a dependency — it runs the same checks a human can walk by hand. Every automated check has a manual equivalent in `_design-engine/_meta/VALIDATION-CHECKLIST.md`, and a check with no manual equivalent may not gate a ship. So "no runtime dependencies" and "SHIP-PREP references `validate.py`" are both true: the script is a faster path to the same result, never a new requirement. The canonical statement of this posture is in `_design-engine/_meta/CONVENTIONS.md` § Tooling posture.
 
 ## Substrate support matrix
 
