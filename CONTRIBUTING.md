@@ -123,7 +123,7 @@ The OV is designed to be extended at the OV root by adding new design cartridge 
 
 ### Grows-Through-Use Zone — release-seeded, operator-appended *(Convention 14, optional)*
 
-OVE itself does not declare one, but an OV designed via OVE **may** declare a fifth zone for a catalog that ships seeded and grows as the operator uses it (loaded every session, must survive `git pull` via merge-not-clobber). See `_design-engine/_meta/CONVENTIONS.md` § Convention 14. First shipped instance: the Keel OV's portfolio failure catalog (`_portfolio/`). Validator check C19 enforces it when declared.
+OVE itself does not declare one, but an OV designed via OVE **may** declare a fifth zone for a catalog that ships seeded and grows as the operator uses it (loaded every session, must survive `git pull` via merge-not-clobber). See `_design-engine/_meta/CONVENTIONS.md` § Convention 14. First shipped instance: the Baseplate OV's portfolio failure catalog (`_portfolio/`). Validator check C19 enforces it when declared.
 
 ## 7. Sharing cartridges
 

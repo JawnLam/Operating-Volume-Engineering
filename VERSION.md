@@ -6,16 +6,16 @@ title: "Operating-Volume-Engineering — Version"
 Date_Added: 2026-06-01
 Date_Modified: 2026-07-16
 Needs_Processing: false
-ove_Version: "2.7.0"
+ove_Version: "2.7.1"
 schema_version: "2.0"
 schema_status: "STABLE"
 release_date: 2026-07-16
-release_phase: "Minor release — Convention 14 (Grows-Through-Use Zone): a fifth content zone for OV content that ships seeded, grows as the operator uses the OV, is loaded every session, ships tracked (not gitignored), and updates merge-not-clobber so git pull never destroys operator-appended entries. Validator C19 enforces it (seed present + non-empty + not gitignored) when an OV declares a _portfolio/ zone; OVs without one pass trivially. Surfaced by dogfooding the Keel OV (founding-document stacks) inside upgraded OVE — the process-improvement loop v2.6 enabled. Additive over v2.6.0 — no breaking changes; OVs without the zone are unaffected."
+release_phase: "Minor release — Convention 14 (Grows-Through-Use Zone): a fifth content zone for OV content that ships seeded, grows as the operator uses the OV, is loaded every session, ships tracked (not gitignored), and updates merge-not-clobber so git pull never destroys operator-appended entries. Validator C19 enforces it (seed present + non-empty + not gitignored) when an OV declares a _portfolio/ zone; OVs without one pass trivially. Surfaced by dogfooding the Baseplate OV (founding-document stacks) inside upgraded OVE — the process-improvement loop v2.6 enabled. Additive over v2.6.0 — no breaking changes; OVs without the zone are unaffected."
 ---
 
 # Operating-Volume-Engineering — Version
 
-This is Operating-Volume-Engineering **v2.7.0** — a minor release adding **Convention 14 (the Grows-Through-Use Zone)**: a fifth content zone for OV content that ships seeded, grows as the operator uses the OV, is loaded every session, ships tracked (not gitignored), and updates **merge-not-clobber** so `git pull` never destroys the operator's accumulated entries. Validator **C19** enforces it. It was surfaced by dogfooding the **Keel** OV inside upgraded OVE — the process-improvement loop v2.6 was built to enable. Additive over v2.6.0 — OVs without the zone are unaffected. See `CHANGELOG.md` § 2.7.0.
+This is Operating-Volume-Engineering **v2.7.1** — a minor release adding **Convention 14 (the Grows-Through-Use Zone)**: a fifth content zone for OV content that ships seeded, grows as the operator uses the OV, is loaded every session, ships tracked (not gitignored), and updates **merge-not-clobber** so `git pull` never destroys the operator's accumulated entries. Validator **C19** enforces it. It was surfaced by dogfooding the **Baseplate** OV inside upgraded OVE — the process-improvement loop v2.6 was built to enable. Additive over v2.6.0 — OVs without the zone are unaffected. See `CHANGELOG.md` § 2.7.1.
 
 ### Prior: v2.6.0
 
@@ -33,7 +33,7 @@ v2.3.0 was a minor release introducing **Convention 11 — Knowledge-Augmented O
 
 | Identifier              | Value         | Notes                                                                  |
 |-------------------------|---------------|------------------------------------------------------------------------|
-| **Software**            | v2.7.0        | Minor release — Convention 14 (Grows-Through-Use Zone) + validator C19; a fifth content zone for use-grown catalogs (merge-not-clobber). Surfaced by dogfooding the Keel OV. Additive over v2.6.0 |
+| **Software**            | v2.7.1        | Minor release — Convention 14 (Grows-Through-Use Zone) + validator C19; a fifth content zone for use-grown catalogs (merge-not-clobber). Surfaced by dogfooding the Baseplate OV. Additive over v2.6.0 |
 | **Design schema**       | v2.0          | Unchanged required set from v2.0.0. The v2.3 additive field `ove_Knowledge_Source` (`self_contained` default) + `Knowledge_Mounts` array (empty unless `knowledge_augmented`) remain — no breaking change |
 | **Design engine**       | v2.7          | v2.7: Convention 14 (Grows-Through-Use Zone) in `_meta/CONVENTIONS.md`; `CONTRIBUTING.md` fifth-zone note. v2.6 (golden-session gate, TRACEABILITY, Convention 13, tooling posture) retained |
 | **Templates**           | v2.6          | v2.6: `TEMPLATE-golden-session-script.md` added |
