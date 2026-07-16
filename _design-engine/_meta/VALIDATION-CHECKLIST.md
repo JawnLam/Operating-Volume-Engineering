@@ -420,11 +420,30 @@ grep -qE '^#{1,6}\s+Orphans\b' _design-engine/_meta/TRACEABILITY.md || echo "FAI
 
 Expected: zero `UNTRACED` lines; Orphans section present. Any untraced ID is a Convention 13 violation — add its row (or an Orphans disposition) before ship.
 
+## C19 — Grows-Through-Use Zone (Convention 14 — v2.7.0)
+
+Applies only if the OV declares a Grows-Through-Use Zone (a `_portfolio/` folder at the OV root, or the phrase "Grows-Through-Use Zone" in `CONTRIBUTING.md`). An OV without such a zone passes trivially. Mirrors `check_C19_grows_through_use()` in `validate.py`.
+
+- [ ] The declared zone folder (`_portfolio/`) exists at the OV root
+- [ ] It contains at least one **non-empty** seed file (the release ships it seeded)
+- [ ] `.gitignore` does **not** exclude the zone — it must ship and be version-controlled (the contract is merge-not-clobber, not ignore)
+
+Shell recipe:
+
+```bash
+# Zone present + seeded?
+ls _portfolio/*.md && grep -rl '.' _portfolio/*.md
+# Not gitignored?
+grep -E '^/?_portfolio' .gitignore && echo "FAIL: zone is gitignored" || echo "OK: zone ships"
+```
+
+Expected: seed file present and non-empty; zone not gitignored.
+
 ---
 
 ## Overall outcome
 
-- [ ] All C1–C18 checks pass, or every warning is explicitly waived by the operator with a written rationale
+- [ ] All C1–C19 checks pass, or every warning is explicitly waived by the operator with a written rationale
 - [ ] No `fail`-class finding remains unresolved
 
 If `validate.py` is available, run it as well; this prose walkthrough is the fallback, not the canonical check.

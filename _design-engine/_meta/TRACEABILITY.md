@@ -60,6 +60,7 @@ Every ID defined in the engine's authority files (`02-DESIGN-PRINCIPLES.md`, `_m
 | **Convention 10 — Standalone Sufficiency Posture** | POSTURE-DECLARATION activity; SCHEMA-DESIGN Q15; readiness gate (Phase 3.10) | C14 | — | Enforces the two master tests + disowns the 10 traps. |
 | **Convention 11 — Knowledge-Augmented OVs (OKF data plane)** | KNOWLEDGE-MOUNT (Step 4.6); boot-time re-verification (`08-KNOWLEDGE-RETRIEVAL.md` Rule 4) | C15, C16 | F14 | Vendored, pinned, OKF-conformant mounts. |
 | **Convention 13 — Traceability maintenance** | This file updated in the same change as any `P`/`F`/`C`/`Convention` edit | C18 | — | Prevents the untraced-requirement / silent-orphan drift. |
+| **Convention 14 — Grows-Through-Use Zone** | Declared zone (`_portfolio/`) in manifest + `CONTRIBUTING.md`; seeded at release; operator-appended; merge-not-clobber on `git pull` | C19 | — | Fifth content zone for use-grown catalogs. First instance: Keel's portfolio failure catalog (v2.7.0). |
 
 ## Cross-cutting disciplines (F-codes / C-checks without a numbered P or Convention)
 

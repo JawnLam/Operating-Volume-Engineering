@@ -6,16 +6,20 @@ title: "Operating-Volume-Engineering — Version"
 Date_Added: 2026-06-01
 Date_Modified: 2026-07-16
 Needs_Processing: false
-ove_Version: "2.6.0"
+ove_Version: "2.7.0"
 schema_version: "2.0"
 schema_status: "STABLE"
 release_date: 2026-07-16
-release_phase: "Minor release — verification-layer hardening from a seven-layer engineering-document audit. Adds the Golden-Session gate (GOLDEN-SESSION.md, TEMPLATE-golden-session-script.md, _types/OVE_Golden_Session.md, SHIP-PREP Phase 3.11 HARD STOP, F15, validator C17) that executes an OV before ship rather than only auditing its form; a unified traceability matrix (TRACEABILITY.md) with Convention 13 and validator C18; a tooling-posture doctrine reconciling 'no runtime dependencies' with validate.py; and a release-identity single-sourcing repair (CHANGELOG is authoritative; VERSION + README derive from it). Additive over v2.5.0 — cartridge schema and engine numbering unchanged; existing OVs validate and behave unchanged."
+release_phase: "Minor release — Convention 14 (Grows-Through-Use Zone): a fifth content zone for OV content that ships seeded, grows as the operator uses the OV, is loaded every session, ships tracked (not gitignored), and updates merge-not-clobber so git pull never destroys operator-appended entries. Validator C19 enforces it (seed present + non-empty + not gitignored) when an OV declares a _portfolio/ zone; OVs without one pass trivially. Surfaced by dogfooding the Keel OV (founding-document stacks) inside upgraded OVE — the process-improvement loop v2.6 enabled. Additive over v2.6.0 — no breaking changes; OVs without the zone are unaffected."
 ---
 
 # Operating-Volume-Engineering — Version
 
-This is Operating-Volume-Engineering **v2.6.0** — a minor release hardening OVE's own verification layer: the **Golden-Session gate** (execute an OV before shipping, not just audit its form — SHIP-PREP Phase 3.11 HARD STOP, failure mode F15, validator C17), a **unified traceability matrix** (`_design-engine/_meta/TRACEABILITY.md`) with **Convention 13** and validator **C18**, a **tooling-posture doctrine** reconciling "no runtime dependencies" with the optional `validate.py`, and a **release-identity single-sourcing** repair (CHANGELOG is authoritative; VERSION and README derive from it). Additive over v2.5.0 — cartridge schema and engine numbering unchanged; existing OVs validate and behave unchanged. See `CHANGELOG.md` § 2.6.0.
+This is Operating-Volume-Engineering **v2.7.0** — a minor release adding **Convention 14 (the Grows-Through-Use Zone)**: a fifth content zone for OV content that ships seeded, grows as the operator uses the OV, is loaded every session, ships tracked (not gitignored), and updates **merge-not-clobber** so `git pull` never destroys the operator's accumulated entries. Validator **C19** enforces it. It was surfaced by dogfooding the **Keel** OV inside upgraded OVE — the process-improvement loop v2.6 was built to enable. Additive over v2.6.0 — OVs without the zone are unaffected. See `CHANGELOG.md` § 2.7.0.
+
+### Prior: v2.6.0
+
+v2.6.0 hardened OVE's verification layer: the **Golden-Session gate** (execute an OV before shipping — SHIP-PREP Phase 3.11, F15, validator C17), a **unified traceability matrix** with **Convention 13** and **C18**, a **tooling-posture doctrine**, and a **release-identity single-sourcing** repair. See `CHANGELOG.md` § 2.6.0.
 
 ### Prior: v2.5.0
 
@@ -29,13 +33,13 @@ v2.3.0 was a minor release introducing **Convention 11 — Knowledge-Augmented O
 
 | Identifier              | Value         | Notes                                                                  |
 |-------------------------|---------------|------------------------------------------------------------------------|
-| **Software**            | v2.6.0        | Minor release — verification-layer hardening: Golden-Session gate (Phase 3.11, F15, C17), traceability matrix + Convention 13 + C18, tooling-posture doctrine, release-identity single-sourcing repair. Additive over v2.5.0; no behavioral change to generated OVs |
+| **Software**            | v2.7.0        | Minor release — Convention 14 (Grows-Through-Use Zone) + validator C19; a fifth content zone for use-grown catalogs (merge-not-clobber). Surfaced by dogfooding the Keel OV. Additive over v2.6.0 |
 | **Design schema**       | v2.0          | Unchanged required set from v2.0.0. The v2.3 additive field `ove_Knowledge_Source` (`self_contained` default) + `Knowledge_Mounts` array (empty unless `knowledge_augmented`) remain — no breaking change |
-| **Design engine**       | v2.6          | v2.6: `_meta/GOLDEN-SESSION.md` + `_meta/TRACEABILITY.md` added; Convention 13 + Tooling-posture doctrine in `_meta/CONVENTIONS.md`; F15 in `_meta/FAILURE-MODES.md`; Phase 3.11 in `07-SHIPPING-CHECKLIST.md`; audit-spine + read-tier rows in `03-DESIGN-PROTOCOL.md` / `00-START-HERE.md`. v2.5 "Prototype"→"Type" and v2.4 OKF keystone retained |
+| **Design engine**       | v2.7          | v2.7: Convention 14 (Grows-Through-Use Zone) in `_meta/CONVENTIONS.md`; `CONTRIBUTING.md` fifth-zone note. v2.6 (golden-session gate, TRACEABILITY, Convention 13, tooling posture) retained |
 | **Templates**           | v2.6          | v2.6: `TEMPLATE-golden-session-script.md` added |
 | **Substrate**           | v2.2 (rev 1.2) | Unchanged — vendored 47-requirement Standalone Sufficiency substrate at `_design-engine/_meta/standalone-sufficiency/` |
 | **OKF integration**     | OKF v0.1      | KAOVs vendor OKF v0.1 bundles ([GoogleCloudPlatform/knowledge-catalog](https://github.com/GoogleCloudPlatform/knowledge-catalog)); binding format contract distilled at `_design-engine/_meta/OKF-conformance-notes.md` |
-| **Validator**           | v2.6          | C1–C18; adds C17 (golden-session) + C18 (traceability completeness); dispatcher range `range(1, 19)`; prose-mode mirror in `VALIDATION-CHECKLIST.md` |
+| **Validator**           | v2.7          | C1–C19; adds C19 (grows-through-use zone); dispatcher range `range(1, 20)`; prose-mode mirror in `VALIDATION-CHECKLIST.md` |
 | **Worked examples**     | v2.6          | Two examples in this distribution — `LifeLong-Learning-Retrospective` + `Long-Form-Writing` |
 | **Release date**        | 2026-07-16    |                                                                        |
 

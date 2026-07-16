@@ -12,6 +12,18 @@ Needs_Processing: false
 
 All notable changes to Operating-Volume-Engineering are documented in this file. Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); versioning follows [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.7.0] — 2026-07-16
+
+Minor release adding **Convention 14 — the Grows-Through-Use Zone** — a fifth content zone for OV content that ships seeded, grows as the operator uses the OV, and must survive `git pull`. **Additive — no breaking changes**; OVs that declare no such zone are unaffected. Surfaced by dogfooding: designing the **Keel** OV (founding-document stacks) inside upgraded OVE hit the one structural question its four zones couldn't answer — where a cross-cartridge, use-grown failure/lesson catalog lives — and the answer generalized into a reusable convention. This is the process-improvement loop v2.6 was built to enable: use surfaces a gap, the gap becomes a convention, the engine improves.
+
+### Added — Convention 14 (Grows-Through-Use Zone)
+
+`_meta/CONVENTIONS.md` gains Convention 14: a declared zone (e.g., `_portfolio/`) that is release-seeded, operator-appended during operation, loaded every session, tracked (not gitignored), and updated **merge-not-clobber** so `git pull` never destroys the operator's accumulated entries. It is distinct from Convention 8's four zones (not Engine — the operator writes to it; not Operator-Private — it ships; not Operator-Extension — it's release-seeded; not Shipped-Examples — it's use-grown). First shipped instance: the Keel OV's portfolio failure catalog. `CONTRIBUTING.md § Content zones` documents it as an optional fifth zone.
+
+### Added — Validator C19
+
+`validate.py` gains **C19** (grows-through-use zone): if an OV has a `_portfolio/` zone, its seed file must exist, be non-empty, and not be gitignored. OVs without the zone pass trivially. Dispatcher range → `range(1, 20)`; prose fallback in `VALIDATION-CHECKLIST.md`. `TRACEABILITY.md` traces Convention 14 → C19 (C18 stays green).
+
 ## [2.6.0] — 2026-07-16
 
 Minor release hardening OVE's own verification layer, from an audit of OVE against the seven-layer engineering-document taxonomy. **Additive — no breaking changes**; the cartridge schema and engine file numbering are untouched, existing OVs validate and behave unchanged. Four changes:
