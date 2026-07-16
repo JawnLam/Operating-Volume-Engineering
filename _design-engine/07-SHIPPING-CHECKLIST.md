@@ -411,6 +411,41 @@ Return to ARTIFACT-DRAFT to close the gap. **Phase 4 is locked until Phase 3.10 
 
 > **Why this phase exists at the ship boundary.** Convention 10's claims are easy to leave at "we'll get to it" until the final ship moment. Phase 3.10 makes the posture work non-deferrable — the OV does not ship until the substitution-defense story is real, documented, and validator-checked. Without this phase as a hard gate, posture decay is the dominant failure mode (the operator commits at Q15, the dispositions get filled aspirationally during ARTIFACT-DRAFT, and the gap between aspiration and reality goes unflagged into release).
 
+## Phase 3.11 — Golden Session Execution (HARD STOP)
+
+**Execute the OV before you ship it.** Every prior gate audits the corpus's *form*; none has run it. This phase runs a **golden session** — a scripted session-1 of the ship-candidate folder by a fresh model instance with no prior context — and blocks ship on any universal-criterion failure. It exists to prevent F15 (static-audit blind spot); the canonical protocol is `_design-engine/_meta/GOLDEN-SESSION.md`. Positioned after Standalone Sufficiency (3.10) and before License (Phase 4).
+
+### Walk the run
+
+- [ ] A golden-session script exists, authored during SHIP-PREP from `_design-engine/_templates/TEMPLATE-golden-session-script.md`, with the F1 probe (multi-part opener) and F2 probe (one planted nonexistent framework/tool) embedded, plus 2–5 per-OV criteria
+- [ ] The script was **run against a fresh model instance** with no prior conversation context (ideally a different model family than the design AI — P1), pointed at the ship-candidate folder with the OV's own quick-start message
+- [ ] The evaluator was the operator, or a second agent that had **not** read the OV, walking the script rather than grading from memory
+- [ ] The log is **filled from the real run** — every `Observed` cell has an entry, every row a `Pass/Fail` verdict
+- [ ] All universal criteria (readiness-fact, Tier-1 compliance, F1 probe, F2 probe, state honesty; retrieval for KAOVs) **pass**, or each failure carries a logged triage: `fix` (changed + re-ran) or `operator-waived` (explicit reason)
+- [ ] Every failure was assessed as a candidate new F-code; any novel failure was added to `_meta/FAILURE-MODES.md`
+- [ ] The filled log ships inside the OV's `_meta/` folder as an Item of Type `<NAMESPACE>_Golden_Session`
+
+### Run the gate
+
+If `validate.py` is in use:
+
+```bash
+python3 _design-engine/_meta/validate.py --root <OV-root> --skip C1,C2,C3,C4,C5,C6,C7,C8,C9,C10,C11,C12,C13,C14,C15,C16,C18
+```
+
+(The skip list runs only C17. Remove it for the full sweep.) Check 17 (C17 — golden-session presence/completeness) confirms the log exists, has no unfilled `Observed` cells, and that every `fail` row carries a triage note. **C17 judges that the ritual happened — it does not judge behavior. Behavioral pass/fail is the evaluator's call, recorded in the log.**
+
+Markdown-only fallback: walk `_design-engine/_meta/VALIDATION-CHECKLIST.md` § C17.
+
+### Acceptance — all must be true
+
+- [ ] Golden-session log exists in the OV's `_meta/` and is filled from a real fresh-instance run
+- [ ] Every universal criterion passes, or its failure is triaged (fixed or operator-waived with a reason)
+- [ ] No `Observed` cell is empty; every `fail` row has a triage note
+- [ ] C17 exits 0 (or the prose-fallback walkthrough is clean)
+
+**If any of these is no, return to ARTIFACT-DRAFT/REVIEW to fix the behavior (or the operator waives with a logged reason), then re-run the session. Phase 4 is locked until this gate is clean.**
+
 ## Phase 4 — License + attribution
 
 The default for the OV ecosystem is CC-BY 4.0 (matching SOLVE-eX, LifeLong-Learning, OVE itself). Reasonable open alternatives: MIT, Apache-2.0. For OVs where the Methodology Author wants restrictive licensing (proprietary methodology, sensitive substrate per Convention 9, monetized release), use the v2.0 restrictive template. Confirm the choice with the user.

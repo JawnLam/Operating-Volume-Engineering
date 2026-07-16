@@ -43,6 +43,12 @@ Checks (independently togglable via --skip):
         scorecard, playbook), _vocabulary-audit-log.md must record each
         instance's disposition (kept-with-justification or replaced).
 
+  C17 golden-session (CR-1 — v2.6.0)
+        For every filled golden-session log (type ending in _Golden_Session),
+        the criteria table has no unfilled Observed cell and every 'fail' row
+        carries a triage note. Absence is info (Phase 3.11 enforces presence at
+        ship). Mechanical only — never judges behavior.
+
   C18 traceability-completeness (Convention 13 — v2.6.0)
         Every P/F/C/Convention ID defined in the engine authority files
         appears in _design-engine/_meta/TRACEABILITY.md, and the matrix
@@ -1310,6 +1316,154 @@ def check_C16_dataplane_citations(root, cartridges):
 
 
 # ---------------------------------------------------------------------------
+# CR-1 — Golden Session presence/completeness (C17)
+# ---------------------------------------------------------------------------
+
+_GOLDEN_TYPE_RE = re.compile(r'^type:\s*["\']?(\S*Golden_Session)["\']?\s*$', re.MULTILINE)
+_TABLE_ROW_RE = re.compile(r'^\s*\|(.+)\|\s*$')
+
+
+def _split_table_row(line):
+    """Split a markdown table row into stripped cell strings."""
+    m = _TABLE_ROW_RE.match(line)
+    if not m:
+        return None
+    return [c.strip() for c in m.group(1).split("|")]
+
+
+def _is_separator_row(cells):
+    return all(re.match(r'^:?-{2,}:?$', c) for c in cells if c != "") and any(cells)
+
+
+def _cell_unfilled(cell):
+    """A cell is unfilled if blank, a dash/ellipsis stub, or an angle-bracket placeholder.
+    'n-a'/'n/a' count as FILLED (an explicit not-applicable disposition)."""
+    c = cell.strip()
+    if c == "":
+        return True
+    if c in {"-", "—", "–", "...", "…"}:
+        return True
+    if c.startswith("<") and c.endswith(">"):
+        return True
+    return False
+
+
+def _parse_criteria_log(text):
+    """Locate the criteria log table (the one whose header names 'Observed' and a
+    pass/fail column) and return (rows, col_index) where rows are lists of cells.
+    Returns (None, None) if no such table is found."""
+    lines = text.splitlines()
+    header_idx = None
+    cols = None
+    for i, line in enumerate(lines):
+        cells = _split_table_row(line)
+        if not cells:
+            continue
+        lowered = [c.lower() for c in cells]
+        if any("observed" in c for c in lowered) and any(
+            "pass" in c or "fail" in c for c in lowered
+        ):
+            header_idx = i
+            cols = lowered
+            break
+    if header_idx is None:
+        return None, None
+
+    def _find(colnames):
+        for idx, name in enumerate(cols):
+            if any(k in name for k in colnames):
+                return idx
+        return None
+
+    idx_obs = _find(["observed"])
+    idx_pf = _find(["pass/fail", "pass", "fail"])
+    idx_tri = _find(["triage"])
+
+    rows = []
+    for line in lines[header_idx + 1:]:
+        cells = _split_table_row(line)
+        if not cells:
+            break  # table ended
+        if _is_separator_row(cells):
+            continue
+        rows.append(cells)
+    return rows, (idx_obs, idx_pf, idx_tri)
+
+
+def check_C17_golden_session(root, cartridges):
+    """CR-1 (v2.6.0): golden-session gate presence/completeness. For every filled
+    golden-session log (an Item whose `type` ends in `_Golden_Session`, excluding
+    the _types/ definition and _templates/ skeleton), confirm the criteria log has
+    no unfilled `Observed` cell and that every `fail` row carries a triage note.
+    Absence of any golden-session log is `info` — Phase 3.11 is where presence is
+    enforced at ship; C17 validates the log's completeness when one exists.
+    Mechanical only: it never judges behavior."""
+    findings = []
+    logs = []
+    for f in iter_md_files(root):  # skips _templates, .git, etc.
+        if "_types" in f.parts:
+            continue  # the Type definition, not an instance
+        try:
+            text = f.read_text(encoding="utf-8")
+        except Exception:
+            continue
+        fm = FRONTMATTER_RE.match(text)
+        if not fm:
+            continue
+        tm = _GOLDEN_TYPE_RE.search(fm.group(1))
+        if not tm:
+            continue
+        # Skip an unfilled template placeholder type value like <NAMESPACE>_Golden_Session
+        if tm.group(1).startswith("<"):
+            continue
+        logs.append((f, text))
+
+    if not logs:
+        findings.append(Finding(
+            "C17-golden", "info", root,
+            message="no golden-session log found (type ending in _Golden_Session). "
+                    "Phase 3.11 (07-SHIPPING-CHECKLIST.md) requires one at ship; run the gate "
+                    "per _design-engine/_meta/GOLDEN-SESSION.md before release."
+        ))
+        return findings
+
+    for f, text in logs:
+        rows, cols = _parse_criteria_log(text)
+        if rows is None:
+            findings.append(Finding(
+                "C17-golden", "fail", f,
+                message="golden-session log has no criteria table (expected columns "
+                        "Criterion | Expected | Observed | Pass/Fail | Triage)."
+            ))
+            continue
+        idx_obs, idx_pf, idx_tri = cols
+        if idx_obs is None or idx_pf is None:
+            findings.append(Finding(
+                "C17-golden", "fail", f,
+                message="golden-session criteria table is missing an Observed or Pass/Fail column."
+            ))
+            continue
+        for row in rows:
+            label = row[0] if row else "?"
+            obs = row[idx_obs] if idx_obs < len(row) else ""
+            pf = row[idx_pf] if idx_pf < len(row) else ""
+            tri = row[idx_tri] if (idx_tri is not None and idx_tri < len(row)) else ""
+            if _cell_unfilled(obs):
+                findings.append(Finding(
+                    "C17-golden", "fail", f,
+                    message=f"criterion '{label}': Observed cell is unfilled — the log must be "
+                            "filled from a real run (Phase 3.11)."
+                ))
+            if "fail" in pf.lower() and _cell_unfilled(tri):
+                findings.append(Finding(
+                    "C17-golden", "fail", f,
+                    message=f"criterion '{label}': marked fail but has no triage note "
+                            "(fix or operator-waived reason required)."
+                ))
+    return findings
+
+
+# ---------------------------------------------------------------------------
 # Convention 13 — Traceability completeness (C18)
 # ---------------------------------------------------------------------------
 
@@ -1435,6 +1589,8 @@ def run(root, checks):
         findings.extend(check_C15_knowledge_mounts(root, cartridges))
     if "C16" in checks:
         findings.extend(check_C16_dataplane_citations(root, cartridges))
+    if "C17" in checks:
+        findings.extend(check_C17_golden_session(root, cartridges))
     if "C18" in checks:
         findings.extend(check_C18_traceability(root))
     return findings, cartridges

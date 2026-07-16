@@ -370,6 +370,27 @@ grep -rEn '\]\(/[^)]*_knowledge/' <Cartridge> --include="*.md" && echo "WARN: le
 
 Expected: zero `[Source: …]` hits; data-plane references use file-relative markdown links.
 
+## C17 — Golden-session presence/completeness (CR-1 — v2.6.0)
+
+Applies at SHIP-PREP Phase 3.11. For every filled golden-session log (an Item whose `type` ends in `_Golden_Session`, e.g. `OVE_Golden_Session`, shipped in the OV's `_meta/`), confirm the criteria table is complete. This mirrors `check_C17_golden_session()` in `validate.py`. **Mechanical only — it never judges behavior;** the evaluator's pass/fail verdicts are taken as given. Absence of any golden-session log is `info` here (presence is enforced at ship by Phase 3.11's HARD STOP, not by this check).
+
+- [ ] A golden-session log exists in the OV's `_meta/` (skip with `info` if none — but Phase 3.11 requires one at ship)
+- [ ] The log has a criteria table with columns `Criterion | Expected | Observed | Pass/Fail | Triage`
+- [ ] Every `Observed` cell is filled (no blanks, no `<placeholder>` stubs) — `fail` on any empty cell
+- [ ] Every row marked `fail` carries a non-empty `Triage` note (fix or operator-waived reason) — `fail` otherwise
+
+Shell recipe:
+
+```bash
+# Find golden-session logs (exclude the _types/ definition and _templates/ skeleton)
+grep -rEl '^type:\s*\S*Golden_Session' --include="*.md" . \
+  | grep -v '/_types/' | grep -v '/_templates/'
+
+# For each, eyeball the criteria table: no empty Observed cell; every 'fail' row has a Triage note.
+```
+
+Expected: at least one filled log at ship; no empty `Observed` cells; every `fail` row triaged.
+
 ## C18 — Traceability completeness (Convention 13 — v2.6.0)
 
 Every `P`/`F`/`C`/`Convention` ID defined in the engine's authority files must be traced in `_design-engine/_meta/TRACEABILITY.md`, and the matrix must carry an Orphans section. This mirrors `check_C18_traceability()` in `validate.py`. Mechanical presence check only — it confirms the ritual happened, not that any chain is correct (verifying chains live is audit-mode's job, `03-DESIGN-PROTOCOL.md` §4).
@@ -403,7 +424,7 @@ Expected: zero `UNTRACED` lines; Orphans section present. Any untraced ID is a C
 
 ## Overall outcome
 
-- [ ] All C1–C16 and C18 checks pass, or every warning is explicitly waived by the operator with a written rationale
+- [ ] All C1–C18 checks pass, or every warning is explicitly waived by the operator with a written rationale
 - [ ] No `fail`-class finding remains unresolved
 
 If `validate.py` is available, run it as well; this prose walkthrough is the fallback, not the canonical check.

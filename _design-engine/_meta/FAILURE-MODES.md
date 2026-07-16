@@ -179,6 +179,21 @@ updated: 2026-06-01
 - Convention 11 requires `ship_disposition: vendored`, so the data plane is version-pinned and ships with the OV rather than floating as a live external dependency.
 - Validator checks C15 (mount resolution + OKF v0.1 §9 conformance + pin present) and C16 (citation form — no `[Source: …]`, file-relative links into declared mounts only) enforce the gates programmatically.
 
+## F15 — Static-audit blind spot (shipped without execution)
+
+**Trigger pattern:** The OV passes the entire SHIP-PREP gauntlet — personal-data scrub, Type coverage, citation audit, vocabulary audit, standalone-sufficiency posture — and ships, but **no gate ever ran the OV**. Every check inspected the corpus's *form*; none exercised its *function*. A bootstrap that reads cleanly can still fail on first contact: the AI skips a Tier-1 read, produces a generic readiness statement, dumps a multi-bullet questionnaire, or elaborates confidently on a framework the operator never mentioned — none of which a form audit detects.
+
+**Why it matters:** Classical acceptance testing runs the product; a build that only ever type-checks is untested. Documented historical basis: in the F13 case (the v1.0 build of a source-grounded OV), fabricated citations "survived the entire SHIP-PREP gauntlet and only surfaced via operator spot-check." The static gauntlet is necessary but not sufficient — the failures that reach the operator are precisely the ones that live in behavior, not in form.
+
+**Fix:** Before ship, execute a **golden session** — a scripted session-1 run of the ship-candidate folder by a fresh model instance with no prior conversation context, evaluated against behavioral pass/fail criteria (`_meta/GOLDEN-SESSION.md`). Any universal-criterion failure blocks ship until it is fixed or the operator waives it with a logged reason. If a failure is novel, add it to this catalog (the loop below).
+
+**Prevention:**
+
+- `_meta/GOLDEN-SESSION.md` defines the subject-agnostic gate: procedure, universal criteria (readiness-fact, Tier-1 compliance, F1 probe, F2 probe, state honesty), and per-OV criteria.
+- SHIP-PREP Phase 3.11 (`07-SHIPPING-CHECKLIST.md`) makes the golden session a HARD STOP after Standalone Sufficiency (3.10) and before License (Phase 4).
+- Validator check C17 confirms the ritual happened — script present, log filled with no empty `observed` cells, every `fail` row triaged — without judging behavior (the human/agent evaluator's job).
+- The gate is manual-first: a human, two chat windows, and the script suffice (preserves P1/P3).
+
 ## Adding new entries
 
 When a new failure mode surfaces in real use, add it here with:
