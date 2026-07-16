@@ -10,7 +10,7 @@ Needs_Processing: false
 
 # Contributing to Operating-Volume-Engineering
 
-OVE ships at v2.5.0 with a stable cartridge schema and engine file structure. This document describes when a contribution is in-scope without a major bump, when it requires a major version bump, and how to propose either.
+OVE ships at v2.6.0 with a stable cartridge schema and engine file structure. This document describes when a contribution is in-scope without a major bump, when it requires a major version bump, and how to propose either.
 
 For day-to-day operation, see `OPERATOR-GUIDE.md`. For release history, see `CHANGELOG.md`.
 
@@ -131,4 +131,4 @@ A worked-example cartridge is a complete `<Domain>/` folder. To share as a contr
 
 ## Version
 
-This contribution guide ships with Operating-Volume-Engineering v2.5.0.
+This contribution guide ships with Operating-Volume-Engineering v2.6.0.
