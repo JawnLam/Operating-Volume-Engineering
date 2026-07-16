@@ -61,6 +61,7 @@ Plus, if present at root: `{ROOT}/_USER.md`.
 | `04-SCHEMA-DESIGN.md` | SCHEMA-DESIGN activity proposed or active |
 | `06-STATE-PERSISTENCE.md` | CARTRIDGE-SHAPE activity, or any session-end state work |
 | `07-SHIPPING-CHECKLIST.md` | SHIP-PREP activity |
+| `_meta/GOLDEN-SESSION.md` | SHIP-PREP active (authoring or running the Phase 3.11 golden-session gate) |
 | `_meta/SCHEMA-OF-SCHEMAS.md` | Audit mode, or non-trivial schema design |
 | `_meta/CONVENTIONS.md` | Any new-OV design path — SCHEMA-DESIGN, ARTIFACT-DRAFT, REVIEW — and any audit checking convention compliance |
 | `_meta/FAILURE-MODES.md` | Audit mode, or when consulting a specific F-code beyond what the inline reference covers |
