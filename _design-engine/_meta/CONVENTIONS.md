@@ -463,6 +463,31 @@ Convention 10 answers *"why this OV instead of a general LLM?"* Convention 11 an
 
 The optional `validate.py` includes a check (C18) that is **mechanical, not semantic**: it confirms every `P\d+` / `F\d+` / `C\d+` / `Convention \d+` defined in the engine's authority files (`02-DESIGN-PRINCIPLES.md`, `_meta/CONVENTIONS.md`, `_meta/FAILURE-MODES.md`, `_meta/validate.py`) also appears in `TRACEABILITY.md`, and that the Orphans section exists. It verifies the ritual happened — it does not judge whether a chain is correct (that is audit-mode's job). The prose-fallback equivalent is in `_meta/VALIDATION-CHECKLIST.md` § C18.
 
+## Convention 14 — Grows-Through-Use Zone
+
+*Added v2.7.0.* Some OVs accumulate operator-generated knowledge that is neither engine nor per-cartridge state: a catalog that ships seeded, grows as the operator uses the OV, is loaded at every session start, and must survive `git pull`. Declare that content in a **Grows-Through-Use Zone** — a fifth content zone alongside Convention 8's four. First shipped instance: the portfolio failure/lesson catalog of the Keel OV (`_portfolio/failure-catalog.md`); the pattern generalizes to any OV with a cross-cartridge, use-grown catalog.
+
+### Why it is its own zone
+
+It fits none of Convention 8's four zones cleanly:
+
+- **Not Engine Zone** — the operator writes to it during operation, so `git pull` cannot own it outright.
+- **Not Operator-Private Zone** — it is tracked and ships (the seed entries are release doctrine); it is not gitignored.
+- **Not Operator-Extension Zone** — it is release-*seeded*, not operator-created from nothing.
+- **Not Shipped Examples Zone** — it is grown by real use, not a static reference implementation.
+
+### The contract
+
+- **Declared** in the manifest and in `CONTRIBUTING.md § Content zones` as the Grows-Through-Use Zone, naming its path (e.g., `_portfolio/`).
+- **Seeded at release** — the OV ships with initial entries (the release's doctrine).
+- **Operator-appended during use** — the OV's protocol appends to it at the relevant close-out (Keel appends a failure mode at each cartridge close).
+- **Tracked, not gitignored** — it ships and is version-controlled.
+- **Merge-not-clobber on update** — the update workflow (`OPERATOR-GUIDE.md § Updates`, `UPDATE-PROMPT.md`) uses a stash/merge that preserves operator-appended entries; a release must never overwrite the file wholesale. This is the load-bearing rule: the operator's accumulated entries are the compounding value, and a clobbering update destroys exactly what the zone exists to protect.
+
+### Validator coverage (C19 — Grows-Through-Use Zone)
+
+The optional `validate.py` includes a check (C19): if an OV declares a Grows-Through-Use Zone (a `_portfolio/` folder, or a zone named in `CONTRIBUTING.md`), the seed file exists, is non-empty, and is **not** matched by a `.gitignore` pattern (it must ship). An OV that declares no such zone passes trivially. The prose-fallback equivalent is in `_meta/VALIDATION-CHECKLIST.md` § C19.
+
 ## How to apply during a new-OV design
 
 The AI walking `BOOTSTRAP-NEW-OV.md` asks the operator one question early:

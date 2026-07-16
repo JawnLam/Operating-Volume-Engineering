@@ -10,7 +10,7 @@ Needs_Processing: false
 
 # Contributing to Operating-Volume-Engineering
 
-OVE ships at v2.6.0 with a stable cartridge schema and engine file structure. This document describes when a contribution is in-scope without a major bump, when it requires a major version bump, and how to propose either.
+OVE ships at v2.7.0 with a stable cartridge schema and engine file structure. This document describes when a contribution is in-scope without a major bump, when it requires a major version bump, and how to propose either.
 
 For day-to-day operation, see `OPERATOR-GUIDE.md`. For release history, see `CHANGELOG.md`.
 
@@ -121,6 +121,10 @@ The OV is designed to be extended at the OV root by adding new design cartridge 
 
 **Shipped Examples are reference implementations.** If you want to riff on one, copy it into an Operator-Extension Zone cartridge.
 
+### Grows-Through-Use Zone — release-seeded, operator-appended *(Convention 14, optional)*
+
+OVE itself does not declare one, but an OV designed via OVE **may** declare a fifth zone for a catalog that ships seeded and grows as the operator uses it (loaded every session, must survive `git pull` via merge-not-clobber). See `_design-engine/_meta/CONVENTIONS.md` § Convention 14. First shipped instance: the Keel OV's portfolio failure catalog (`_portfolio/`). Validator check C19 enforces it when declared.
+
 ## 7. Sharing cartridges
 
 A worked-example cartridge is a complete `<Domain>/` folder. To share as a contribution:
@@ -131,4 +135,4 @@ A worked-example cartridge is a complete `<Domain>/` folder. To share as a contr
 
 ## Version
 
-This contribution guide ships with Operating-Volume-Engineering v2.6.0.
+This contribution guide ships with Operating-Volume-Engineering v2.7.0.

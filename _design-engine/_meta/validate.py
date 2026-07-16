@@ -54,6 +54,11 @@ Checks (independently togglable via --skip):
         appears in _design-engine/_meta/TRACEABILITY.md, and the matrix
         carries an Orphans section. Mechanical presence check only.
 
+  C19 grows-through-use-zone (Convention 14 — v2.7.0)
+        If an OV declares a Grows-Through-Use Zone (a _portfolio/ folder or
+        the phrase in CONTRIBUTING.md), its seed file exists, is non-empty,
+        and is not gitignored. OVs without such a zone pass trivially.
+
 This validator is a safety net, not a replacement for the SHIPPING-CHECKLIST
 or operator judgment. It catches the high-embarrassment failure modes (F3
 identity, F6 drift, F13 source-grounding, placeholder leaks) without requiring
@@ -1554,6 +1559,48 @@ def check_C18_traceability(root):
 # Driver
 # ---------------------------------------------------------------------------
 
+def check_C19_grows_through_use(root):
+    """Convention 14 (v2.7.0): if an OV declares a Grows-Through-Use Zone — a
+    `_portfolio/` folder at the OV root, or the phrase 'Grows-Through-Use Zone'
+    in CONTRIBUTING.md — its seed file must exist, be non-empty, and NOT be
+    gitignored (it ships and is version-controlled). An OV that declares no such
+    zone passes trivially. Mechanical presence check only."""
+    findings = []
+    portfolio = root / "_portfolio"
+
+    # An OV declares the zone operationally by having the folder. A prose mention of
+    # the convention in CONTRIBUTING (documentation) is NOT a declaration.
+    if not portfolio.is_dir():
+        return findings  # trivial pass — no such zone
+
+    seeds = [p for p in portfolio.rglob("*.md")
+             if p.name not in ("index.md",) and p.stat().st_size > 0]
+    if not seeds:
+        findings.append(Finding(
+            "C19-grows-zone", "fail", portfolio,
+            message="_portfolio/ (Grows-Through-Use Zone) has no non-empty seed file — a release "
+                    "must ship the zone seeded (Convention 14)."
+        ))
+
+    # The zone must ship — a .gitignore rule excluding _portfolio would break the contract.
+    gi = root / ".gitignore"
+    if gi.exists():
+        try:
+            for line in gi.read_text(encoding="utf-8").splitlines():
+                s = line.strip()
+                if s and not s.startswith("#") and s.replace("/", "").startswith("_portfolio"):
+                    findings.append(Finding(
+                        "C19-grows-zone", "fail", gi,
+                        message="_portfolio/ (Grows-Through-Use Zone) is excluded by .gitignore — it "
+                                "must ship and be version-controlled (Convention 14: merge-not-clobber, "
+                                "not ignore)."
+                    ))
+                    break
+        except Exception:
+            pass
+    return findings
+
+
 def run(root, checks):
     findings = []
     cartridges = list_cartridges(root)
@@ -1593,6 +1640,8 @@ def run(root, checks):
         findings.extend(check_C17_golden_session(root, cartridges))
     if "C18" in checks:
         findings.extend(check_C18_traceability(root))
+    if "C19" in checks:
+        findings.extend(check_C19_grows_through_use(root))
     return findings, cartridges
 
 
@@ -1622,7 +1671,7 @@ def main(argv=None):
         print(f"Validating OVE at: {root}")
 
     skip = {c.strip() for c in args.skip.split(",") if c.strip()}
-    checks = {f"C{i}" for i in range(1, 19)} - skip
+    checks = {f"C{i}" for i in range(1, 20)} - skip
 
     findings, cartridges = run(root, sorted(checks))
 
