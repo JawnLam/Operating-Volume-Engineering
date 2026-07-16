@@ -12,6 +12,10 @@ Needs_Processing: false
 
 All notable changes to Operating-Volume-Engineering are documented in this file. Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); versioning follows [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.7.1] — 2026-07-16
+
+Patch — naming correction. The OV used as Convention 14's worked example (dogfooded to surface the Grows-Through-Use Zone) was renamed after the v2.7.0 release: **Keel → Baseplate** (a vocabulary-audit decision — "Keel" gave way to "Baseplate," the foundational mounting surface). Live references in `_meta/CONVENTIONS.md`, `_meta/TRACEABILITY.md`, `CONTRIBUTING.md`, and `VERSION.md` now say "Baseplate"; the historical [2.7.0] entry below is unchanged (it was accurate at release). No engine behavior changed. Its repo: github.com/JawnLam/Baseplate.
+
 ## [2.7.0] — 2026-07-16
 
 Minor release adding **Convention 14 — the Grows-Through-Use Zone** — a fifth content zone for OV content that ships seeded, grows as the operator uses the OV, and must survive `git pull`. **Additive — no breaking changes**; OVs that declare no such zone are unaffected. Surfaced by dogfooding: designing the **Keel** OV (founding-document stacks) inside upgraded OVE hit the one structural question its four zones couldn't answer — where a cross-cartridge, use-grown failure/lesson catalog lives — and the answer generalized into a reusable convention. This is the process-improvement loop v2.6 was built to enable: use surfaces a gap, the gap becomes a convention, the engine improves.
