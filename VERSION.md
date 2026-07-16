@@ -1,16 +1,16 @@
 ---
 type: Fleeting
-timestamp: "2026-06-25T00:00:00Z"
+timestamp: "2026-06-27T00:00:00Z"
 Item_ID: ove-version
 title: "Operating-Volume-Engineering — Version"
 Date_Added: 2026-06-01
-Date_Modified: 2026-06-25
+Date_Modified: 2026-06-27
 Needs_Processing: false
-ove_Version: "2.4.0"
+ove_Version: "2.5.0"
 schema_version: "2.0"
 schema_status: "STABLE"
-release_date: 2026-06-25
-release_phase: "Minor release — Convention 11 (Knowledge-Augmented OVs): every OV declares ove_Knowledge_Source (self_contained default | knowledge_augmented). A knowledge_augmented OV (KAOV) mounts one or more vendored OKF v0.1 bundles as a read-only data plane under _knowledge/, retrieved at runtime under the bridge protocol (new engine chapter 08-KNOWLEDGE-RETRIEVAL.md): progressive disclosure, workspace isolation, explicit OKF-conformant sourcing, boot-time re-verification. New lifecycle activity KNOWLEDGE-MOUNT (03-DESIGN-PROTOCOL Step 4.6); new failure mode F14 (stale/non-conformant mount); new validator checks C15/C16. New dogfood cartridge Knowledge-Augmented-Demo. Additive over v2.2.0 — ove_Knowledge_Source defaults to self_contained, so existing OVs are unaffected; no breaking changes."
+release_date: 2026-06-27
+release_phase: "Minor release — terminology retirement: 'Prototype' → 'Type'. The type-definition unit formerly called a Prototype is now uniformly a Type, completing the OKF `type` vocabulary adopted in v2.4.0. Infrastructure surfaces only — engine docs, _meta/CONVENTIONS.md (Conventions 4 & 6 reworded), 04-SCHEMA-DESIGN.md, 07-SHIPPING-CHECKLIST.md, BOOTSTRAP-NEW-OV.md, SCHEMA-OF-SCHEMAS.md, validate.py (C7 is now 'Type coverage'), _types/ definitions, front-door docs, and worked-example _schema-draft.md/posture*.yaml. Template TEMPLATE-Prototype.md → TEMPLATE-Type.md; rename-mapping arrows preserved as audit trail; historical CHANGELOG entries unchanged; Hugo excluded. The prior v2.4.0 brought the engine into Google OKF v0.1 conformance (Convention 1 Universal Core adopts OKF field names). No behavioral change to generated OVs beyond vocabulary. Additive over v2.4.0."
 ---
 
 # Operating-Volume-Engineering — Version
@@ -25,15 +25,15 @@ v2.3.0 was a minor release introducing **Convention 11 — Knowledge-Augmented O
 
 | Identifier              | Value         | Notes                                                                  |
 |-------------------------|---------------|------------------------------------------------------------------------|
-| **Software**            | v2.3.0        | Minor release — Convention 11 (Knowledge-Augmented OVs / OKF data plane), engine chapter 08, KNOWLEDGE-MOUNT activity, F14, validator C15/C16, dogfood KAOV cartridge. Additive over v2.2.0 |
-| **Design schema**       | v2.0          | Unchanged required set from v2.0.0. v2.3 adds the additive, defaulted field `ove_Knowledge_Source` (`self_contained` default) + the `Knowledge_Mounts` array (empty unless `knowledge_augmented`) — no breaking change |
-| **Design engine**       | v2.3          | v2.3: Convention 11 added to `_meta/CONVENTIONS.md`; new chapter `08-KNOWLEDGE-RETRIEVAL.md`; self-contained-vs-knowledge-augmented framing in `01-WHAT-IS-AN-OV.md`; KAOV moat corollary in `02-DESIGN-PRINCIPLES.md`; KNOWLEDGE-MOUNT activity + Step 4.6 in `03-DESIGN-PROTOCOL.md`; F14 in `_meta/FAILURE-MODES.md` |
-| **Templates**           | v2.3          | v2.3: `TEMPLATE-ov-manifest.md` + `OVE_OV_Manifest` type gain `ove_Knowledge_Source` + `Knowledge_Mounts` |
+| **Software**            | v2.5.0        | Minor release — terminology retirement "Prototype" → "Type"; completes the OKF `type` vocabulary adopted in v2.4.0. Infrastructure surfaces only; no behavioral change to generated OVs. Additive over v2.4.0 |
+| **Design schema**       | v2.0          | Unchanged required set from v2.0.0. The v2.3 additive field `ove_Knowledge_Source` (`self_contained` default) + `Knowledge_Mounts` array (empty unless `knowledge_augmented`) remain — no breaking change |
+| **Design engine**       | v2.5          | v2.5: "Prototype" → "Type" across engine docs; Conventions 4 & 6 reworded in `_meta/CONVENTIONS.md`; `04-SCHEMA-DESIGN.md`, `07-SHIPPING-CHECKLIST.md`, `BOOTSTRAP-NEW-OV.md`, `_meta/SCHEMA-OF-SCHEMAS.md` follow. v2.4 keystone (Convention 1 adopts OKF field names) retained |
+| **Templates**           | v2.5          | v2.5: `TEMPLATE-Prototype.md` → `TEMPLATE-Type.md` |
 | **Substrate**           | v2.2 (rev 1.2) | Unchanged — vendored 47-requirement Standalone Sufficiency substrate at `_design-engine/_meta/standalone-sufficiency/` |
-| **OKF integration**     | OKF v0.1      | v2.3: KAOVs vendor OKF v0.1 bundles ([GoogleCloudPlatform/knowledge-catalog](https://github.com/GoogleCloudPlatform/knowledge-catalog)); binding format contract distilled at `_proposals/OKF-conformance-notes.md` |
-| **Validator**           | v2.3          | v2.3: C15 (Knowledge-mount conformance) + C16 (data-plane citation form) added; dispatcher range `range(1, 17)`; `_proposals` added to skip set; prose-mode mirror in `VALIDATION-CHECKLIST.md` |
-| **Worked examples**     | v2.3          | Two examples in this distribution — `LifeLong-Learning-Retrospective` + `Long-Form-Writing` (trimmed from the upstream seven) |
-| **Release date**        | 2026-06-25    |                                                                        |
+| **OKF integration**     | OKF v0.1      | KAOVs vendor OKF v0.1 bundles ([GoogleCloudPlatform/knowledge-catalog](https://github.com/GoogleCloudPlatform/knowledge-catalog)); binding format contract distilled at `_design-engine/_meta/OKF-conformance-notes.md` |
+| **Validator**           | v2.5          | C1–C16; C7 renamed "Type coverage"; dispatcher range `range(1, 17)`; prose-mode mirror in `VALIDATION-CHECKLIST.md` |
+| **Worked examples**     | v2.5          | Two examples in this distribution — `LifeLong-Learning-Retrospective` + `Long-Form-Writing` |
+| **Release date**        | 2026-06-27    |                                                                        |
 
 ## Schema policy
 

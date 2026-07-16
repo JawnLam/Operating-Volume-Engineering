@@ -10,7 +10,7 @@ Needs_Processing: false
 
 # Contributing to Operating-Volume-Engineering
 
-OVE ships at v1.0.0 with a stable cartridge schema and engine file structure. This document describes when a contribution is in-scope at v1.x, when it requires a major version bump, and how to propose either.
+OVE ships at v2.5.0 with a stable cartridge schema and engine file structure. This document describes when a contribution is in-scope without a major bump, when it requires a major version bump, and how to propose either.
 
 For day-to-day operation, see `OPERATOR-GUIDE.md`. For release history, see `CHANGELOG.md`.
 
@@ -61,8 +61,8 @@ Major bumps require: documented migration path, scripted or manual migration ste
 1. Draft the schema/structure change as a markdown spec — what changes, why, what breaks, what migration looks like.
 2. Author the migration path.
 3. Test against multiple cartridges of different shapes.
-4. Update `CHANGELOG.md` flagging the break.
-5. Update `VERSION.md`.
+4. Update `CHANGELOG.md` flagging the break — the top entry is the single source of truth for the version.
+5. Sync `VERSION.md` (frontmatter + body) and `README.md` (badge + release prose) to the CHANGELOG top entry. Release identity is single-sourced from CHANGELOG; the three surfaces derive from it and must agree at ship (see `_design-engine/07-SHIPPING-CHECKLIST.md` Phase 5).
 
 ## 5. Voice and tone conventions
 
@@ -131,4 +131,4 @@ A worked-example cartridge is a complete `<Domain>/` folder. To share as a contr
 
 ## Version
 
-This contribution guide ships with Operating-Volume-Engineering v1.2.0.
+This contribution guide ships with Operating-Volume-Engineering v2.5.0.

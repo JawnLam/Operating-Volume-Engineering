@@ -447,8 +447,13 @@ Use canonical text from [choosealicense.com](https://choosealicense.com). Fill i
 
 ## Phase 5 — Version + changelog
 
-- [ ] `VERSION.md` shows `v1.0.0` with release date
-- [ ] `CHANGELOG.md` has a v1.0.0 entry listing what shipped
+**Single-source the release identity.** `CHANGELOG.md`'s top entry is the one source of truth for the current version. `VERSION.md` (frontmatter + body) and `README.md` (badge + release-status prose + attribution version) *derive* their version from it — they never hold an independent number. Shipping a release is not done until all three agree with the CHANGELOG top entry; a mismatch between any of them is the F6 drift pattern relocated to release metadata, and it is a ship block. If the OV deliberately runs a separate public-release line (e.g., the public GitHub tag lags the internal engine version on purpose), that split is documented here as an explicit decision — never left as a silent divergence.
+
+- [ ] `CHANGELOG.md` top entry names the current version with its release date and what shipped
+- [ ] `VERSION.md` frontmatter (`ove_Version` or the OV's equivalent) matches the CHANGELOG top entry
+- [ ] `VERSION.md` body matches the CHANGELOG top entry
+- [ ] `README.md` version badge and release-status prose match the CHANGELOG top entry
+- [ ] Any intentional public-vs-internal version split is documented here, not left silent
 - [ ] Schema policy is documented in `VERSION.md`
 
 ## Phase 6 — README polish
