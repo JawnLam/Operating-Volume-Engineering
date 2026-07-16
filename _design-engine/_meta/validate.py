@@ -43,6 +43,11 @@ Checks (independently togglable via --skip):
         scorecard, playbook), _vocabulary-audit-log.md must record each
         instance's disposition (kept-with-justification or replaced).
 
+  C18 traceability-completeness (Convention 13 — v2.6.0)
+        Every P/F/C/Convention ID defined in the engine authority files
+        appears in _design-engine/_meta/TRACEABILITY.md, and the matrix
+        carries an Orphans section. Mechanical presence check only.
+
 This validator is a safety net, not a replacement for the SHIPPING-CHECKLIST
 or operator judgment. It catches the high-embarrassment failure modes (F3
 identity, F6 drift, F13 source-grounding, placeholder leaks) without requiring
@@ -1305,6 +1310,93 @@ def check_C16_dataplane_citations(root, cartridges):
 
 
 # ---------------------------------------------------------------------------
+# Convention 13 — Traceability completeness (C18)
+# ---------------------------------------------------------------------------
+
+# Authority files where P/F/C/Convention IDs are DEFINED. C18 sweeps these and
+# confirms every ID also appears in TRACEABILITY.md. The matrix file itself is
+# excluded from the sweep (it would trivially satisfy the check).
+TRACEABILITY_AUTHORITY_FILES = [
+    "_design-engine/02-DESIGN-PRINCIPLES.md",
+    "_design-engine/_meta/CONVENTIONS.md",
+    "_design-engine/_meta/FAILURE-MODES.md",
+    "_design-engine/_meta/validate.py",
+]
+
+# ID token patterns. Convention captured with its number so "Convention 7" and
+# "Convention 13" are distinct tokens; P/F/C are letter+digits with word bounds.
+_ID_PATTERNS = [
+    re.compile(r'\bP\d+\b'),
+    re.compile(r'\bF\d+\b'),
+    re.compile(r'\bC\d+\b'),
+    re.compile(r'\bConvention \d+\b'),
+]
+
+
+def _extract_ids(text):
+    ids = set()
+    for pat in _ID_PATTERNS:
+        for m in pat.finditer(text):
+            ids.add(m.group(0))
+    return ids
+
+
+def check_C18_traceability(root):
+    """Convention 13 (v2.6.0): every P/F/C/Convention ID defined in the engine's
+    authority files must appear in _design-engine/_meta/TRACEABILITY.md, and the
+    matrix must carry an Orphans section. Mechanical presence check only — it
+    confirms the ritual happened, not that any chain is correct (audit-mode's job).
+    """
+    findings = []
+    matrix = root / "_design-engine" / "_meta" / "TRACEABILITY.md"
+    if not matrix.exists():
+        return [Finding(
+            "C18-traceability", "fail", root,
+            message="_design-engine/_meta/TRACEABILITY.md is missing (Convention 13). "
+                    "The traceability matrix must exist and trace every P/F/C/Convention ID."
+        )]
+    try:
+        matrix_text = matrix.read_text(encoding="utf-8")
+    except Exception as e:
+        return [Finding("C18-traceability", "fail", matrix, message=f"unreadable: {e}")]
+
+    # Orphans section must exist (an empty one is fine; a missing one is not).
+    if not re.search(r'^#{1,6}\s+Orphans\b', matrix_text, re.MULTILINE):
+        findings.append(Finding(
+            "C18-traceability", "fail", matrix,
+            message="TRACEABILITY.md has no 'Orphans' section — Convention 13 requires it "
+                    "(an empty orphan section is the goal; a missing one is a violation)."
+        ))
+
+    matrix_ids = _extract_ids(matrix_text)
+    defined = set()
+    for rel in TRACEABILITY_AUTHORITY_FILES:
+        f = root / rel
+        if not f.exists():
+            findings.append(Finding(
+                "C18-traceability", "warn", root,
+                message=f"traceability authority file not found (skipped): {rel}"
+            ))
+            continue
+        try:
+            defined |= _extract_ids(f.read_text(encoding="utf-8"))
+        except Exception as e:
+            findings.append(Finding(
+                "C18-traceability", "warn", f,
+                message=f"could not scan authority file: {e}"
+            ))
+
+    missing = sorted(defined - matrix_ids, key=lambda s: (s.split()[0] if " " in s else s[0], s))
+    for mid in missing:
+        findings.append(Finding(
+            "C18-traceability", "fail", matrix,
+            message=f"ID '{mid}' is defined in an engine authority file but is not traced "
+                    f"in TRACEABILITY.md (Convention 13)."
+        ))
+    return findings
+
+
+# ---------------------------------------------------------------------------
 # Driver
 # ---------------------------------------------------------------------------
 
@@ -1343,6 +1435,8 @@ def run(root, checks):
         findings.extend(check_C15_knowledge_mounts(root, cartridges))
     if "C16" in checks:
         findings.extend(check_C16_dataplane_citations(root, cartridges))
+    if "C18" in checks:
+        findings.extend(check_C18_traceability(root))
     return findings, cartridges
 
 
@@ -1372,7 +1466,7 @@ def main(argv=None):
         print(f"Validating OVE at: {root}")
 
     skip = {c.strip() for c in args.skip.split(",") if c.strip()}
-    checks = {f"C{i}" for i in range(1, 17)} - skip
+    checks = {f"C{i}" for i in range(1, 19)} - skip
 
     findings, cartridges = run(root, sorted(checks))
 

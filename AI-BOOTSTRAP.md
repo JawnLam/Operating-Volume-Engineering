@@ -64,6 +64,7 @@ Plus, if present at root: `{ROOT}/_USER.md`.
 | `_meta/SCHEMA-OF-SCHEMAS.md` | Audit mode, or non-trivial schema design |
 | `_meta/CONVENTIONS.md` | Any new-OV design path — SCHEMA-DESIGN, ARTIFACT-DRAFT, REVIEW — and any audit checking convention compliance |
 | `_meta/FAILURE-MODES.md` | Audit mode, or when consulting a specific F-code beyond what the inline reference covers |
+| `_meta/TRACEABILITY.md` | Audit mode — walk it as the audit spine (principle → enforcement → check → failure) |
 | `BOOTSTRAP-NEW-OV.md` | The "design a new OV" path |
 | `_design-engine/_templates/*` | ARTIFACT-DRAFT activity |
 
