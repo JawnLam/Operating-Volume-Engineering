@@ -1,21 +1,25 @@
 ---
 type: Fleeting
-timestamp: "2026-06-27T00:00:00Z"
+timestamp: "2026-07-16T00:00:00Z"
 Item_ID: ove-version
 title: "Operating-Volume-Engineering — Version"
 Date_Added: 2026-06-01
-Date_Modified: 2026-06-27
+Date_Modified: 2026-07-16
 Needs_Processing: false
-ove_Version: "2.5.0"
+ove_Version: "2.6.0"
 schema_version: "2.0"
 schema_status: "STABLE"
-release_date: 2026-06-27
-release_phase: "Minor release — terminology retirement: 'Prototype' → 'Type'. The type-definition unit formerly called a Prototype is now uniformly a Type, completing the OKF `type` vocabulary adopted in v2.4.0. Infrastructure surfaces only — engine docs, _meta/CONVENTIONS.md (Conventions 4 & 6 reworded), 04-SCHEMA-DESIGN.md, 07-SHIPPING-CHECKLIST.md, BOOTSTRAP-NEW-OV.md, SCHEMA-OF-SCHEMAS.md, validate.py (C7 is now 'Type coverage'), _types/ definitions, front-door docs, and worked-example _schema-draft.md/posture*.yaml. Template TEMPLATE-Prototype.md → TEMPLATE-Type.md; rename-mapping arrows preserved as audit trail; historical CHANGELOG entries unchanged; Hugo excluded. The prior v2.4.0 brought the engine into Google OKF v0.1 conformance (Convention 1 Universal Core adopts OKF field names). No behavioral change to generated OVs beyond vocabulary. Additive over v2.4.0."
+release_date: 2026-07-16
+release_phase: "Minor release — verification-layer hardening from a seven-layer engineering-document audit. Adds the Golden-Session gate (GOLDEN-SESSION.md, TEMPLATE-golden-session-script.md, _types/OVE_Golden_Session.md, SHIP-PREP Phase 3.11 HARD STOP, F15, validator C17) that executes an OV before ship rather than only auditing its form; a unified traceability matrix (TRACEABILITY.md) with Convention 13 and validator C18; a tooling-posture doctrine reconciling 'no runtime dependencies' with validate.py; and a release-identity single-sourcing repair (CHANGELOG is authoritative; VERSION + README derive from it). Additive over v2.5.0 — cartridge schema and engine numbering unchanged; existing OVs validate and behave unchanged."
 ---
 
 # Operating-Volume-Engineering — Version
 
-This is Operating-Volume-Engineering **v2.5.0** — minor release **retiring the term "Prototype" in favor of "Type"** across all infrastructure surfaces (engine docs, conventions, schema, `validate.py`, `_types/` definitions, templates, front-door docs), completing the OKF `type` vocabulary; `TEMPLATE-Prototype.md` → `TEMPLATE-Type.md`; adds the Convention 12 (Registry Sync) design note. See `CHANGELOG.md` § 2.5.0. The prior **v2.4.0** brought the engine into **Google OKF v0.1 conformance**. **Convention 1's Universal Core is renamed to OKF-native field names** (`Item_Prototype`→`type`, `Title`→`title`, `Tags`→`tags`; added `timestamp` derived from `Date_Modified`, plus optional `description`/`resource`), mirroring vault Master_Schema v1.23.0 — **so every OV designed via OVE now emits OKF-compliant items by default.** Convention 6's per-OV folder is renamed `_Prototypes/`→`_types/` (vocabulary consistency with the `type` discriminator); the validator (`C7`) and all engine docs follow. `Date_Modified` is kept and time-synced with `timestamp`. Hugo (`hugo_*`) remains excluded and untouched. The OVE corpus itself (93 notes + 24 prototypes) was migrated; `validate.py` updated to key on `type`/`_types`. This is the OVE half of the coordinated OKF release (vault done in schema v1.23.0; LFW/LLL/SOLVE-eX/PLC migrate in parallel).
+This is Operating-Volume-Engineering **v2.6.0** — a minor release hardening OVE's own verification layer: the **Golden-Session gate** (execute an OV before shipping, not just audit its form — SHIP-PREP Phase 3.11 HARD STOP, failure mode F15, validator C17), a **unified traceability matrix** (`_design-engine/_meta/TRACEABILITY.md`) with **Convention 13** and validator **C18**, a **tooling-posture doctrine** reconciling "no runtime dependencies" with the optional `validate.py`, and a **release-identity single-sourcing** repair (CHANGELOG is authoritative; VERSION and README derive from it). Additive over v2.5.0 — cartridge schema and engine numbering unchanged; existing OVs validate and behave unchanged. See `CHANGELOG.md` § 2.6.0.
+
+### Prior: v2.5.0
+
+v2.5.0 was a minor release **retiring the term "Prototype" in favor of "Type"** across all infrastructure surfaces, completing the OKF `type` vocabulary; `TEMPLATE-Prototype.md` → `TEMPLATE-Type.md`. See `CHANGELOG.md` § 2.5.0. The prior **v2.4.0** brought the engine into **Google OKF v0.1 conformance**. **Convention 1's Universal Core is renamed to OKF-native field names** (`Item_Prototype`→`type`, `Title`→`title`, `Tags`→`tags`; added `timestamp` derived from `Date_Modified`, plus optional `description`/`resource`), mirroring vault Master_Schema v1.23.0 — **so every OV designed via OVE now emits OKF-compliant items by default.** Convention 6's per-OV folder is renamed `_Prototypes/`→`_types/` (vocabulary consistency with the `type` discriminator); the validator (`C7`) and all engine docs follow. `Date_Modified` is kept and time-synced with `timestamp`. Hugo (`hugo_*`) remains excluded and untouched. The OVE corpus itself (93 notes + 24 prototypes) was migrated; `validate.py` updated to key on `type`/`_types`. This is the OVE half of the coordinated OKF release (vault done in schema v1.23.0; LFW/LLL/SOLVE-eX/PLC migrate in parallel).
 
 ### Prior: v2.3.0
 
@@ -25,15 +29,15 @@ v2.3.0 was a minor release introducing **Convention 11 — Knowledge-Augmented O
 
 | Identifier              | Value         | Notes                                                                  |
 |-------------------------|---------------|------------------------------------------------------------------------|
-| **Software**            | v2.5.0        | Minor release — terminology retirement "Prototype" → "Type"; completes the OKF `type` vocabulary adopted in v2.4.0. Infrastructure surfaces only; no behavioral change to generated OVs. Additive over v2.4.0 |
+| **Software**            | v2.6.0        | Minor release — verification-layer hardening: Golden-Session gate (Phase 3.11, F15, C17), traceability matrix + Convention 13 + C18, tooling-posture doctrine, release-identity single-sourcing repair. Additive over v2.5.0; no behavioral change to generated OVs |
 | **Design schema**       | v2.0          | Unchanged required set from v2.0.0. The v2.3 additive field `ove_Knowledge_Source` (`self_contained` default) + `Knowledge_Mounts` array (empty unless `knowledge_augmented`) remain — no breaking change |
-| **Design engine**       | v2.5          | v2.5: "Prototype" → "Type" across engine docs; Conventions 4 & 6 reworded in `_meta/CONVENTIONS.md`; `04-SCHEMA-DESIGN.md`, `07-SHIPPING-CHECKLIST.md`, `BOOTSTRAP-NEW-OV.md`, `_meta/SCHEMA-OF-SCHEMAS.md` follow. v2.4 keystone (Convention 1 adopts OKF field names) retained |
-| **Templates**           | v2.5          | v2.5: `TEMPLATE-Prototype.md` → `TEMPLATE-Type.md` |
+| **Design engine**       | v2.6          | v2.6: `_meta/GOLDEN-SESSION.md` + `_meta/TRACEABILITY.md` added; Convention 13 + Tooling-posture doctrine in `_meta/CONVENTIONS.md`; F15 in `_meta/FAILURE-MODES.md`; Phase 3.11 in `07-SHIPPING-CHECKLIST.md`; audit-spine + read-tier rows in `03-DESIGN-PROTOCOL.md` / `00-START-HERE.md`. v2.5 "Prototype"→"Type" and v2.4 OKF keystone retained |
+| **Templates**           | v2.6          | v2.6: `TEMPLATE-golden-session-script.md` added |
 | **Substrate**           | v2.2 (rev 1.2) | Unchanged — vendored 47-requirement Standalone Sufficiency substrate at `_design-engine/_meta/standalone-sufficiency/` |
 | **OKF integration**     | OKF v0.1      | KAOVs vendor OKF v0.1 bundles ([GoogleCloudPlatform/knowledge-catalog](https://github.com/GoogleCloudPlatform/knowledge-catalog)); binding format contract distilled at `_design-engine/_meta/OKF-conformance-notes.md` |
-| **Validator**           | v2.5          | C1–C16; C7 renamed "Type coverage"; dispatcher range `range(1, 17)`; prose-mode mirror in `VALIDATION-CHECKLIST.md` |
-| **Worked examples**     | v2.5          | Two examples in this distribution — `LifeLong-Learning-Retrospective` + `Long-Form-Writing` |
-| **Release date**        | 2026-06-27    |                                                                        |
+| **Validator**           | v2.6          | C1–C18; adds C17 (golden-session) + C18 (traceability completeness); dispatcher range `range(1, 19)`; prose-mode mirror in `VALIDATION-CHECKLIST.md` |
+| **Worked examples**     | v2.6          | Two examples in this distribution — `LifeLong-Learning-Retrospective` + `Long-Form-Writing` |
+| **Release date**        | 2026-07-16    |                                                                        |
 
 ## Schema policy
 

@@ -1,16 +1,40 @@
 ---
 type: Fleeting
-timestamp: "2026-06-25T00:00:00Z"
+timestamp: "2026-07-16T00:00:00Z"
 Item_ID: ove-changelog
 title: "Operating-Volume-Engineering — Changelog"
 Date_Added: 2026-06-01
-Date_Modified: 2026-06-25
+Date_Modified: 2026-07-16
 Needs_Processing: false
 ---
 
 # Changelog
 
 All notable changes to Operating-Volume-Engineering are documented in this file. Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); versioning follows [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+## [2.6.0] — 2026-07-16
+
+Minor release hardening OVE's own verification layer, from an audit of OVE against the seven-layer engineering-document taxonomy. **Additive — no breaking changes**; the cartridge schema and engine file numbering are untouched, existing OVs validate and behave unchanged. Four changes:
+
+### Added — Golden-Session gate (execute the OV before shipping)
+
+`_design-engine/_meta/GOLDEN-SESSION.md` defines a subject-agnostic behavioral acceptance gate: a scripted session-1 run of the ship-candidate folder by a fresh model instance with no prior context, evaluated against universal criteria (readiness-fact, Tier-1 compliance, an F1 one-question probe, an F2 fabrication probe, state honesty, plus KAOV retrieval) and 2–5 per-OV criteria. New template `_design-engine/_templates/TEMPLATE-golden-session-script.md`; new Type `_types/OVE_Golden_Session.md`; new **SHIP-PREP Phase 3.11** (HARD STOP, after Standalone Sufficiency 3.10, before License); new failure mode **F15** (static-audit blind spot — shipped without execution); new validator check **C17** (mechanical presence/completeness of the log — never judges behavior) with prose fallback. The gate is manual-first (a human, two chat windows, and the script) so it preserves P1/P3. OVE ran the gate on itself: `_meta/golden-session-ove-2026-07-16.md` (all universal criteria pass).
+
+### Added — Unified traceability matrix + Convention 13
+
+`_design-engine/_meta/TRACEABILITY.md` traces every principle, convention, check, and failure mode through `principle → enforcement → validator check → failure`, with an Orphans section that surfaces gaps (2 low-priority gaps reported: cross-reference integrity has no first-class principle; P12 has no mechanical check). **Convention 13** (Traceability maintenance) requires updating the matrix in the same change as any P/F/C/Convention edit; new validator check **C18** enforces completeness mechanically. Audit mode (`03-DESIGN-PROTOCOL.md` §4) now walks the matrix as its spine. Convention 12 is left reserved for the Registry-Sync design note.
+
+### Added — Tooling-posture doctrine
+
+`_meta/CONVENTIONS.md` § Tooling posture and `README.md` § System requirements now state the doctrine explicitly: the OV form requires no runtime; any shipped validator is optional automation; every automated check has a manual equivalent in `VALIDATION-CHECKLIST.md`; a check with no manual equivalent may not gate a ship. Resolves the seam between "no runtime dependencies" and SHIP-PREP's use of `validate.py`. Verified 1:1: every C-check (C1–C18) has a prose fallback.
+
+### Fixed — Release-identity single-sourcing
+
+Repaired a three-way version drift: `VERSION.md` frontmatter (`ove_Version: 2.4.0` with a v2.3 release phase), body (`v2.5.0`), and `README` badge/prose (`v1.0.0 initial public release`) disagreed. All now derive from the CHANGELOG top entry, and `07-SHIPPING-CHECKLIST.md` Phase 5 + `CONTRIBUTING.md` codify the rule: release identity lives in CHANGELOG; VERSION and README derive from it and must agree at ship. Stale `_proposals/` path in VERSION.md fixed (OKF notes relocated into the engine in v2.5.0's distribution trim).
+
+### Validator
+
+`validate.py` dispatcher range is now `range(1, 19)`; adds C17 (golden-session) and C18 (traceability completeness). Prose mirrors added to `VALIDATION-CHECKLIST.md`.
 
 ## [2.5.0] — 2026-06-27
 
