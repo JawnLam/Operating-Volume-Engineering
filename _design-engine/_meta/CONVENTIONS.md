@@ -89,7 +89,7 @@ Every OV bundles a top-level `_types/` folder containing one `.md` file per Type
 
 **Why this matters.** Without Convention 6, an OV's Types live only by reference. A cartridge note declares `type: COOK_Recipe` — that's a name pointer. If the reader has no `COOK_Recipe.md` definition available, the name is meaningless. Operators with a vault-wide central registry (e.g., a Master_Schema and an `_Infrastructure/_types/` folder) get the definition from the central registry, but operators without such infrastructure are stranded. Convention 6 makes the OV portable: the Type definitions travel with it.
 
-**The vault-wide central registry, if any, is a downstream union view.** Operators who run multiple OVs may choose to maintain a central registry that aggregates Types across all of their OVs (the user's `_Infrastructure For All Vaults/_types/` is one example). That central registry is convenience, not authority — the canonical home of each Type is still the OV's local `_types/` folder. If the two disagree, the OV's local folder wins.
+**The vault-wide central registry, if any, is a downstream union view.** Operators who run multiple OVs may choose to maintain a central registry that aggregates Types across all of their OVs (the user's `_INFRA/_types/` is one example). That central registry is convenience, not authority — the canonical home of each Type is still the OV's local `_types/` folder. If the two disagree, the OV's local folder wins.
 
 **Concretely:**
 
@@ -440,6 +440,22 @@ The optional `validate.py` includes two checks:
 ### Why this matters
 
 Convention 10 answers *"why this OV instead of a general LLM?"* Convention 11 answers the next question for knowledge-heavy domains: *"how does this OV hold a large, curated body of domain knowledge without drowning its context or fabricating?"* — by mounting it as a progressively-disclosed, vendored, re-verified OKF data plane that the control plane is disciplined about touching. Choosing OKF rather than a bespoke format is deliberate: it makes a KAOV's knowledge a portable asset that any OKF-speaking tool can produce, browse, diff, or consume, which widens the OV's integration surface instead of locking it in.
+
+## Convention 13 — Traceability maintenance
+
+*Added v2.6.0.* Update `_design-engine/_meta/TRACEABILITY.md` in the same change that adds or amends any `P`-code, `F`-code, `C`-check, or numbered Convention. The matrix is the one place where every principle, convention, check, and failure mode is traced through `principle → enforcement → check → failure`; it decays into fiction the moment a new ID ships without a row. Treating the update as a follow-up task is the failure — the arithmetic that produces an orphan (a check with no principle, a principle with no teeth) is invisible until someone re-derives the whole map, which is exactly the cost the matrix exists to remove.
+
+> **Numbering note.** Convention 12 is reserved for the "Registry Sync" design note and is deliberately skipped here; this maintenance convention takes 13. See `_design-engine/_meta/TRACEABILITY.md` § Orphans (O-3).
+
+### What the convention requires
+
+- **Same-change update.** Any commit that defines a new `P`/`F`/`C`/`Convention`, or changes what an existing one enforces, edits `TRACEABILITY.md` in the same commit — the new or changed ID gets a row (or an updated row) with its enforcement mechanism, validator check (or `manual-only`), and the failure mode(s) it prevents.
+- **Orphan re-evaluation.** The change re-checks the trailing **Orphans** section: a newly-added check with no backing principle, or a principle with no enforcement, is listed there with a disposition (`gap — needs enforcement`, `gap — needs principle`, or `intentional (reason)`). An empty orphan section is the goal; a *silent* orphan — a gap that exists but isn't listed — is a Convention 13 violation.
+- **Audit spine.** Audit mode (`03-DESIGN-PROTOCOL.md` §4) walks `TRACEABILITY.md` as its spine rather than re-deriving the enforcement map each time.
+
+### Validator coverage (C18 — traceability completeness)
+
+The optional `validate.py` includes a check (C18) that is **mechanical, not semantic**: it confirms every `P\d+` / `F\d+` / `C\d+` / `Convention \d+` defined in the engine's authority files (`02-DESIGN-PRINCIPLES.md`, `_meta/CONVENTIONS.md`, `_meta/FAILURE-MODES.md`, `_meta/validate.py`) also appears in `TRACEABILITY.md`, and that the Orphans section exists. It verifies the ritual happened — it does not judge whether a chain is correct (that is audit-mode's job). The prose-fallback equivalent is in `_meta/VALIDATION-CHECKLIST.md` § C18.
 
 ## How to apply during a new-OV design
 

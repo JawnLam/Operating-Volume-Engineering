@@ -370,11 +370,40 @@ grep -rEn '\]\(/[^)]*_knowledge/' <Cartridge> --include="*.md" && echo "WARN: le
 
 Expected: zero `[Source: …]` hits; data-plane references use file-relative markdown links.
 
+## C18 — Traceability completeness (Convention 13 — v2.6.0)
+
+Every `P`/`F`/`C`/`Convention` ID defined in the engine's authority files must be traced in `_design-engine/_meta/TRACEABILITY.md`, and the matrix must carry an Orphans section. This mirrors `check_C18_traceability()` in `validate.py`. Mechanical presence check only — it confirms the ritual happened, not that any chain is correct (verifying chains live is audit-mode's job, `03-DESIGN-PROTOCOL.md` §4).
+
+- [ ] `_design-engine/_meta/TRACEABILITY.md` exists
+- [ ] It contains an `Orphans` section (an empty one is fine; a missing one is a `fail`)
+- [ ] Every ID defined in the authority files appears in the matrix
+
+Shell recipe:
+
+```bash
+# Collect every P/F/C/Convention ID defined in the authority files
+grep -rEoh '\bP[0-9]+\b|\bF[0-9]+\b|\bC[0-9]+\b|\bConvention [0-9]+\b' \
+  _design-engine/02-DESIGN-PRINCIPLES.md \
+  _design-engine/_meta/CONVENTIONS.md \
+  _design-engine/_meta/FAILURE-MODES.md \
+  _design-engine/_meta/validate.py | sort -u > /tmp/defined-ids.txt
+
+# For each, confirm it appears in the matrix
+while read id; do
+  grep -qF "$id" _design-engine/_meta/TRACEABILITY.md || echo "UNTRACED: $id"
+done < /tmp/defined-ids.txt
+
+# Orphans section present?
+grep -qE '^#{1,6}\s+Orphans\b' _design-engine/_meta/TRACEABILITY.md || echo "FAIL: no Orphans section"
+```
+
+Expected: zero `UNTRACED` lines; Orphans section present. Any untraced ID is a Convention 13 violation — add its row (or an Orphans disposition) before ship.
+
 ---
 
 ## Overall outcome
 
-- [ ] All C1–C16 checks pass, or every warning is explicitly waived by the operator with a written rationale
+- [ ] All C1–C16 and C18 checks pass, or every warning is explicitly waived by the operator with a written rationale
 - [ ] No `fail`-class finding remains unresolved
 
 If `validate.py` is available, run it as well; this prose walkthrough is the fallback, not the canonical check.

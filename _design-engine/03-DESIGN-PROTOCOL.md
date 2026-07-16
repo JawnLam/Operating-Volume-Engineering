@@ -134,7 +134,7 @@ When a user asks you to audit an existing OV (not design a new one):
    - One representative cartridge in full
    - Skim its other cartridges
 
-3. **Audit against the design principles** in `02-DESIGN-PRINCIPLES.md`. Specifically check:
+3. **Walk `_design-engine/_meta/TRACEABILITY.md` as the audit spine.** The matrix already maps every principle, convention, check, and failure mode through `principle → enforcement → check → failure`. Do not re-derive that map from scratch — walk the matrix row by row and verify each chain is live in the OV under audit (the enforcement mechanism is present, the validator check runs or has a manual equivalent, the failure mode is actually guarded). Note any chain that has gone stale, and check the matrix's Orphans section for gaps the OV has not addressed. Then audit against the design principles in `02-DESIGN-PRINCIPLES.md`, specifically:
    - [ ] **P1 Substrate-agnostic.** Does it lock to a platform?
    - [ ] **P2 Statefulness through files.** Is state on disk? Is the source-of-truth clear?
    - [ ] **P3 Self-describing.** Does the folder bootstrap the AI without external setup?
