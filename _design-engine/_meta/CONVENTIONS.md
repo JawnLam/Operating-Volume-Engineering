@@ -22,6 +22,12 @@ A new OV designed by OVE produces files that live alongside the operator's other
 
 These conventions are not platform-specific. They work in any tool that reads YAML frontmatter. They are minimum-friction defaults; an operator who has different conventions can override them per-OV in the schema design.
 
+## Tooling posture (doctrine)
+
+**The OV form requires no runtime.** An OV is plain markdown; a human and a capable AI operate it with zero code execution. Any validator an OV ships — for OVs designed via OVE, `_design-engine/_meta/validate.py` — is **optional automation**, a convenience that catches high-embarrassment failures faster than a manual walkthrough, never a dependency of the form. This is why the README can honestly state "no runtime dependencies" while SHIP-PREP references `validate.py`: the script is a faster path to the same checks, not a new requirement.
+
+The load-bearing rule that keeps the two honest: **every automated check has a manual equivalent in `_meta/VALIDATION-CHECKLIST.md`, and a check with no manual equivalent may not gate a ship.** If a `C`-check cannot be walked by a human with grep and a text editor, it cannot be a hard stop — because an operator on a markdown-only substrate would then be unable to ship a conforming OV. When you add a `C`-check to `validate.py`, add its prose fallback to `VALIDATION-CHECKLIST.md` in the same change (this pairs with Convention 13's same-change discipline for traceability). See `README.md` § System requirements for the operator-facing statement of this posture.
+
 ## Convention 1 — Universal Core fields on every shipped note (OKF v0.1 conformant)
 
 Every `.md` file that ships in an OV designed via OVE declares these Universal Core fields in YAML frontmatter. **As of v2.4.0 the core is Google OKF v0.1 conformant** — the discriminator is lowercase `type` (OKF's single required field), and `title`/`timestamp`/`tags` use OKF's lowercase names:
