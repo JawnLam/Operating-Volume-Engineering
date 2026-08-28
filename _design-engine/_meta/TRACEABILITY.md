@@ -74,6 +74,7 @@ Every ID defined in the engine's authority files (`02-DESIGN-PRINCIPLES.md`, `_m
 | **Sandbox-mode honesty** | Phase 0 writability check; sandbox announcement in readiness statement (`00-START-HERE.md`) | manual-only | F12 | Read-only substrate must be declared, not absorbed. |
 | **Voice / client-promise discipline** | Vocabulary Audit (Phase 3.9); `ove_Audience_Prose_Register` | C13 | — | Deliverable-promise nouns + register violations. |
 | **Golden-session execution** | Golden Session (`_meta/GOLDEN-SESSION.md`); ship gate (Phase 3.11) | C17 | F15 | Executes the OV before ship, not just audits its form. Added v2.6.0 (CR-1). |
+| **Convention 15 — Pre-Registered Quality Governance** | `03-DESIGN-PROTOCOL.md § QC governance` (scope declarations carry DoD + QC plan + severity rubric; "look again" = declared verification; exploration budgeted, findings bank); Phase 3.11 additions (plan predates runs; stopping rules; banked-findings record); `_meta/GOLDEN-SESSION.md § Sampling, not proof`; template's pre-registered plan block | C17 (prose walk, extended) | F16 | Fixed-ruler QC on a stochastic substrate: pre-declared acceptance, verification/exploration split, anti-tampering stopping rules, probe ratchet, prose-register rule. Added v2.8.0; mechanical C20 banked. |
 
 ## Orphans
 

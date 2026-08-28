@@ -24,6 +24,17 @@ Needs_Processing: false
 - **Fresh instance:** new conversation, model that did not design/upgrade this OV (ideally a different model family for at least one run — P1).
 - **Evaluator:** `<operator, or a second agent that has NOT read the OV>`. Walk the script; record deviation from it, do not grade from memory.
 
+## Sampling plan & severity rubric (pre-registered — author BEFORE the first run; Convention 15)
+
+*A passing run is a sample from a stochastic substrate, not a proof — declare the acceptance plan ahead of the results, never backfill it around them (`_meta/GOLDEN-SESSION.md § Sampling, not proof`).*
+
+- **Planned runs:** `<N full runs; what triggers a re-run (e.g., any miss → fix → full re-run)>`
+- **Pass threshold:** `<e.g., one full run with all criteria passing>`
+- **Never-waived criteria:** `<the universal criteria; plus any per-OV safety-class rows>`
+- **Blocking classes:** `<which finding classes block ship — e.g., any universal-criterion fail, any safety-class fail>`
+- **Banked classes:** `<which finding classes record to the next release's hopper instead of blocking — e.g., evaluator non-blocking notes, style observations>`
+- **Stopping rule:** `<e.g., two consecutive same-probe misses = real failure; third distinct cause on one probe = stop patching, escalate to operator>`
+
 ## Opening user message (contains the F1 + F2 probes)
 
 Send verbatim as the first user message, after the OV's own quick-start line. It is deliberately multi-part (F1 probe) and names one planted nonexistent thing (F2 probe):

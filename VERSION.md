@@ -4,18 +4,22 @@ timestamp: "2026-07-16T00:00:00Z"
 Item_ID: ove-version
 title: "Operating-Volume-Engineering — Version"
 Date_Added: 2026-06-01
-Date_Modified: 2026-07-16
+Date_Modified: 2026-08-28
 Needs_Processing: false
-ove_Version: "2.7.1"
+ove_Version: "2.8.0"
 schema_version: "2.0"
 schema_status: "STABLE"
-release_date: 2026-07-16
-release_phase: "Minor release — Convention 14 (Grows-Through-Use Zone): a fifth content zone for OV content that ships seeded, grows as the operator uses the OV, is loaded every session, ships tracked (not gitignored), and updates merge-not-clobber so git pull never destroys operator-appended entries. Validator C19 enforces it (seed present + non-empty + not gitignored) when an OV declares a _portfolio/ zone; OVs without one pass trivially. Surfaced by dogfooding the Baseplate OV (founding-document stacks) inside upgraded OVE — the process-improvement loop v2.6 enabled. Additive over v2.6.0 — no breaking changes; OVs without the zone are unaffected."
+release_date: 2026-08-28
+release_phase: "Minor release — Convention 15 (Pre-Registered Quality Governance): every scoped release declares its Definition of Done, QC plan, and severity rubric before build; verification runs per release while exploration is budgeted and banks its findings; stopping rules bind triage (anti-tampering; third-distinct-cause escalation); every real failure ratchets into a permanent versioned probe; corpus hardenings are written as explanation, never escalation. New failure mode F16 (Unbounded QC / fractal gold-plating); C17 prose walk extended; template gains a pre-registered sampling-plan block. Surfaced by dogfooding the Spreadwright v1.4.0 gate. Additive over v2.7.1. Prior: Convention 14 (Grows-Through-Use Zone): a fifth content zone for OV content that ships seeded, grows as the operator uses the OV, is loaded every session, ships tracked (not gitignored), and updates merge-not-clobber so git pull never destroys operator-appended entries. Validator C19 enforces it (seed present + non-empty + not gitignored) when an OV declares a _portfolio/ zone; OVs without one pass trivially. Surfaced by dogfooding the Baseplate OV (founding-document stacks) inside upgraded OVE — the process-improvement loop v2.6 enabled. Additive over v2.6.0 — no breaking changes; OVs without the zone are unaffected."
 ---
 
 # Operating-Volume-Engineering — Version
 
-This is Operating-Volume-Engineering **v2.7.1** — a minor release adding **Convention 14 (the Grows-Through-Use Zone)**: a fifth content zone for OV content that ships seeded, grows as the operator uses the OV, is loaded every session, ships tracked (not gitignored), and updates **merge-not-clobber** so `git pull` never destroys the operator's accumulated entries. Validator **C19** enforces it. It was surfaced by dogfooding the **Baseplate** OV inside upgraded OVE — the process-improvement loop v2.6 was built to enable. Additive over v2.6.0 — OVs without the zone are unaffected. See `CHANGELOG.md` § 2.7.1.
+This is Operating-Volume-Engineering **v2.8.0** — a minor release adding **Convention 15 (Pre-Registered Quality Governance)** and failure mode **F16 (Unbounded QC / fractal gold-plating)**: quality control runs against standards declared before the work is built — Definition of Done, QC plan, and severity rubric pre-committed; verification per release, exploration budgeted with findings banked; anti-tampering stopping rules; the probe ratchet; and the prose-register rule (explanation outperforms command in corpus text, measured in the Spreadwright v1.4.0 gate). Enforced via `03-DESIGN-PROTOCOL.md § QC governance`, SHIP-PREP Phase 3.11 additions, `_meta/GOLDEN-SESSION.md § Sampling, not proof`, and the golden-session template's pre-registered plan block; the C17 prose walk is extended (mechanical C20 banked). This release executed its own discipline: plan and eval pre-committed in `_meta/release-v2.8.0-plan.md` / `-eval.md`. Additive over v2.7.1 — no existing convention, failure mode, phase, or check renamed, renumbered, or removed. See `CHANGELOG.md` § 2.8.0.
+
+### Prior: v2.7.1
+
+v2.7.1 — a minor release adding **Convention 14 (the Grows-Through-Use Zone)**: a fifth content zone for OV content that ships seeded, grows as the operator uses the OV, is loaded every session, ships tracked (not gitignored), and updates **merge-not-clobber** so `git pull` never destroys the operator's accumulated entries. Validator **C19** enforces it. It was surfaced by dogfooding the **Baseplate** OV inside upgraded OVE — the process-improvement loop v2.6 was built to enable. Additive over v2.6.0 — OVs without the zone are unaffected. See `CHANGELOG.md` § 2.7.1.
 
 ### Prior: v2.6.0
 
@@ -33,7 +37,7 @@ v2.3.0 was a minor release introducing **Convention 11 — Knowledge-Augmented O
 
 | Identifier              | Value         | Notes                                                                  |
 |-------------------------|---------------|------------------------------------------------------------------------|
-| **Software**            | v2.7.1        | Minor release — Convention 14 (Grows-Through-Use Zone) + validator C19; a fifth content zone for use-grown catalogs (merge-not-clobber). Surfaced by dogfooding the Baseplate OV. Additive over v2.6.0 |
+| **Software**            | v2.8.0        | Minor release — Convention 15 (Pre-Registered Quality Governance) + F16 (Unbounded QC); fixed-ruler QC, verification/exploration split, anti-tampering stopping rules, probe ratchet, prose-register rule. Surfaced by dogfooding the Spreadwright v1.4.0 gate. Additive over v2.7.1 |
 | **Design schema**       | v2.0          | Unchanged required set from v2.0.0. The v2.3 additive field `ove_Knowledge_Source` (`self_contained` default) + `Knowledge_Mounts` array (empty unless `knowledge_augmented`) remain — no breaking change |
 | **Design engine**       | v2.7          | v2.7: Convention 14 (Grows-Through-Use Zone) in `_meta/CONVENTIONS.md`; `CONTRIBUTING.md` fifth-zone note. v2.6 (golden-session gate, TRACEABILITY, Convention 13, tooling posture) retained |
 | **Templates**           | v2.6          | v2.6: `TEMPLATE-golden-session-script.md` added |

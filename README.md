@@ -139,7 +139,7 @@ The associated discipline is called **operating volume engineering**, parallel t
 
 Operating-Volume-Engineering is released under the **Creative Commons Attribution 4.0 International License (CC-BY 4.0)**. You are free to share, adapt, and build upon this material for any purpose — including commercially — provided you give appropriate attribution.
 
-See [`LICENSE.md`](LICENSE.md) for the full license text. Attribution format:
+See [`LICENSE.md`](Deep%20Thought%2042/Operating%20Volumes%20(in%20use)/Operating-Volume-Engineering-v2.7/LICENSE.md) for the full license text. Attribution format:
 
 > Built on **Operating-Volume-Engineering v2.7** by Jawn Lam — https://github.com/JawnLam/Operating-Volume-Engineering
 > Licensed under [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/).

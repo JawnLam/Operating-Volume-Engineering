@@ -424,6 +424,9 @@ Return to ARTIFACT-DRAFT to close the gap. **Phase 4 is locked until Phase 3.10 
 - [ ] All universal criteria (readiness-fact, Tier-1 compliance, F1 probe, F2 probe, state honesty; retrieval for KAOVs) **pass**, or each failure carries a logged triage: `fix` (changed + re-ran) or `operator-waived` (explicit reason)
 - [ ] Every failure was assessed as a candidate new F-code; any novel failure was added to `_meta/FAILURE-MODES.md`
 - [ ] The filled log ships inside the OV's `_meta/` folder as an Item of Type `<NAMESPACE>_Golden_Session`
+- [ ] **The sampling plan and severity rubric predate the first run** (Convention 15): the script's plan block — run count, pass threshold, never-waived criteria, blocking vs banked classes — was authored before any recorded run, not backfilled around the results
+- [ ] **Stopping rules were honored in triage**: no probe was prose-patched on a single stochastic miss without a common-cause/special-cause judgment; a probe that failed for a third distinct cause was escalated to the operator as an architecture question rather than patched again (F16 anti-tampering)
+- [ ] **Banked findings are recorded**: every non-blocking finding from the gate or from any exploration pass is written into the design record / next release's hopper — none silently fixed in-flight outside the declared scope, none silently dropped
 
 ### Run the gate
 
@@ -445,6 +448,29 @@ Markdown-only fallback: walk `_design-engine/_meta/VALIDATION-CHECKLIST.md` § C
 - [ ] C17 exits 0 (or the prose-fallback walkthrough is clean)
 
 **If any of these is no, return to ARTIFACT-DRAFT/REVIEW to fix the behavior (or the operator waives with a logged reason), then re-run the session. Phase 4 is locked until this gate is clean.**
+
+## Phase 3.12 — Central-registry registration (HARD STOP — conditional)
+
+**Applies when the OV ships into a vault or workspace that maintains a central Type/schema registry** — e.g. an Obsidian vault with a `Master_Schema.yaml` and a schema-validator that checks each note's `type:` against a central `types:` list. If the target has **no** central registry, this phase is `n-a` — log that and proceed. (This conditional keeps OVE substrate-agnostic: the gate fires only where a central registry exists to drift.)
+
+**Why this gate exists.** Phase 3.5 ensures the OV ships its *own* `_types/` folder — but that alone does NOT register the OV with the vault's central schema. Several OVs shipped with a clean Phase 3.5 yet were never registered centrally, so every one of their notes validated as an **UNKNOWN type** and the central registry silently drifted from reality. "Ship the local `_types/`" is necessary but not sufficient; central registration is the step that was missing.
+
+Registering an OV in the central registry touches **three** places (Phase 3.5 covered only the OV's own `_types/`):
+1. **The OV's own `_types/`** — done at Phase 3.5.
+2. **The vault-central `_types/` union** — copy each `<NAMESPACE>_<TypeName>.md` there (identical bytes; "convenience, not authority").
+3. **The central registry file** (`Master_Schema.yaml` in VGer) — the authoritative one. Add: the OV's `namespaces:` entry; its `types:` entries (`inherits: Universal_Core` + `specific_keys`); every new `properties:` (a `# DOMAIN: <ns>_` block — each with `type:` and `description:`, plus `options_ref:` for enum-valued props); every new `enums:` set; and **bump `meta.version`**.
+
+### Acceptance — all must be true (or the whole phase is `n-a` for a no-central-registry target)
+
+- [ ] The OV's namespace is in the registry's `namespaces:` block
+- [ ] Every `<NAMESPACE>_<TypeName>` the OV ships has a `types:` entry in the registry
+- [ ] Every namespaced property in those types' `specific_keys` has a `properties:` entry
+- [ ] Every enum-valued property references a defined `enums:` set (never a fabricated `options_ref`)
+- [ ] `meta.version` bumped; the addition noted
+- [ ] The vault-central `_types/` union carries the OV's Type files
+- [ ] The schema-validator recognizes the OV's `type:` values (no UNKNOWN-type findings)
+
+**If any is no (and the target has a central registry), the OV is NOT fully shipped — its notes will validate as unknown types and the registry drifts. Do not call the ship done until this gate is clean.** *(This gate was added after a v1.0.0 ship — Venture Cornerstone, 2026-07-27 — surfaced that Baseplate, Brand-Naming, and Venture Cornerstone had all skipped central registration.)*
 
 ## Phase 4 — License + attribution
 

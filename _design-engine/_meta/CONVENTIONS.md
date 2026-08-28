@@ -488,6 +488,32 @@ It fits none of Convention 8's four zones cleanly:
 
 The optional `validate.py` includes a check (C19): if an OV declares a Grows-Through-Use Zone (a `_portfolio/` folder, or a zone named in `CONTRIBUTING.md`), the seed file exists, is non-empty, and is **not** matched by a `.gitignore` pattern (it must ship). An OV that declares no such zone passes trivially. The prose-fallback equivalent is in `_meta/VALIDATION-CHECKLIST.md` § C19.
 
+## Convention 15 — Pre-Registered Quality Governance
+
+*Added v2.8.0.* Every scoped piece of work — a release, an upgrade, a hardening pass — declares its acceptance standard **before the work is built**, and quality-control verdicts are rendered against that pre-registered standard, never against the open question "can anything be improved?" This convention governs the design *process* (like Convention 13); its enforcement surfaces are `03-DESIGN-PROTOCOL.md § QC governance`, ship-gate Phase 3.11, and `_meta/GOLDEN-SESSION.md § Sampling, not proof`. Failure mode: F16.
+
+### Why: the coastline and the monsters
+
+Two facts make unbounded QC structurally non-terminating, and they call for opposite responses:
+
+- **The coastline.** Defect-count is not a property of an artifact; it is a joint property of the artifact *and the inspection resolution* — like a coastline, whose measured length grows every time the ruler shrinks, without the coast changing. An instruction to "look again" shortens the ruler, and new findings appear by construction. A review that cannot return "clean" returns no information when it returns "dirty." The cure is a **fixed ruler, declared in advance**: findings above it block; findings below it bank.
+- **The monsters.** Genuinely serious late failures are different: they are generated adversarially against whatever text currently exists (a fresh instance produces a case the rule's authors never imagined), so no amount of prior review can enumerate them in advance. Monsters are information, not noise. The cure is not more looking — it is the **ratchet**: each monster becomes a permanent probe, so its class can never recur silently.
+
+Conflating the two produces the twin failures F16 names: treating coastline noise as ship-blocking (fractal gold-plating, endless triage loops) and treating monsters as noise (shipping behavioral defects because "we already QC'd this").
+
+### The contract
+
+1. **Pre-declaration.** A scoped release declares, before build, all three: a **Definition of Done** (binary, testable checks), a **QC plan** (which reviews run, how many acceptance runs, what sampling plan), and a **severity rubric** (which finding classes block ship; which bank). Committing the declaration before the build makes the pre-registration provable from history.
+2. **Verification vs exploration.** *Verification* — executing the pre-registered script or eval — runs per release, is bounded, and is the default meaning of any mid-engagement "check it again." *Exploration* — open-ended crucibles, audit-mode sweeps, adversarial lens reviews — is unbounded and valuable, so it runs on a declared cadence or by explicit operator request **with a declared budget** (lenses, runs, or time), and its findings **bank to the next scoped release's hopper by default**. The in-flight release absorbs only finding classes its rubric pre-declared as blocking.
+3. **Report form.** QC reports lead with the verdict against the pre-registered standard — "DoD met; N blocking findings; M banked" — with banked findings listed separately. A clean report is possible, and therefore means something.
+4. **Stopping rules (anti-tampering).** On a stochastic substrate a single miss is not proof of a corpus defect. Before patching, distinguish **common-cause** variation (inherent randomness — addressed by the sampling plan or architecture, not by prose edits) from **special-cause** gaps (a real defect — patch it). Two consecutive same-probe misses establish a real failure. The same probe failing a **third time for a distinct cause** stops prose-patching entirely and escalates to the operator as an architecture question — at that point the fix is not a better patch but a different kind of mechanism. Patching in response to noise is tampering: it injects variance and manufactures the next failure.
+5. **The ratchet.** Every real failure becomes a permanent probe in the OV's acceptance script, and the script is versioned — so "more findings than last release" is always legible as either a rougher artifact or a finer ruler, never ambiguous, and quality can improve monotonically while the finding-stream never empties.
+6. **The prose-register rule.** Corpus text that must bind a model's behavior **explains what each rule does for the operator** rather than escalating compliance demands. Measured basis (Spreadwright v1.4.0 gate): escalated compliance language ("deviation is a defect regardless") failed 0-for-3 against boot-contract refusals while the same content written as calm functional explanation passed 5-for-5 across gates. Escalation provokes the refusal it targets; explanation outperforms command.
+
+### Validator coverage
+
+Process-side convention: no `validate.py` check ships in v2.8.0 (a mechanical C20 is banked). Enforcement is the Phase 3.11 walk plus the extended C17 prose checklist (`_meta/VALIDATION-CHECKLIST.md` § C17), which confirms a golden-session script's sampling plan and severity rubric exist and predate its recorded runs.
+
 ## How to apply during a new-OV design
 
 The AI walking `BOOTSTRAP-NEW-OV.md` asks the operator one question early:

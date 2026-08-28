@@ -107,6 +107,13 @@ SKIP_FOLDERS = {
     ".git",
     "node_modules",
     ".obsidian",
+    # Non-OVE design/engagement cartridges & transcript archives that live in this
+    # in-use copy but belong to other OVs (validated by their own OVs, not OVE).
+    # Kept in sync with NON_OVE_CARTRIDGES below; excluded from file-level scans too.
+    "Baseplate",
+    "Brand-Naming",
+    "CTO-in-a-Box",
+    "CTO-in-a-Box-Crucible-Files",
 }
 
 
@@ -150,6 +157,19 @@ def is_skip_path(path, root):
     return False
 
 
+# Operator design/engagement cartridges and raw archives that physically live in
+# this in-use copy but are NOT OVE cartridges to convention-validate: they carry
+# other OVs' shipped types (BASEPLATE_*, BRANDING_*, CTO_*) or are transcript
+# archives. They are validated by their own OVs, not by OVE. (Preserved here — only
+# working-tree copy — so excluded, not deleted.)
+NON_OVE_CARTRIDGES = {
+    "Baseplate",
+    "Brand-Naming",
+    "CTO-in-a-Box",
+    "CTO-in-a-Box-Crucible-Files",
+}
+
+
 def list_cartridges(root):
     """Cartridges = top-level subfolders that aren't engine, dot-prefixed, or underscore-prefixed."""
     cartridges = []
@@ -158,6 +178,8 @@ def list_cartridges(root):
             continue
         name = entry.name
         if name.startswith(".") or name.startswith("_"):
+            continue
+        if name in NON_OVE_CARTRIDGES:
             continue
         cartridges.append(entry)
     return cartridges

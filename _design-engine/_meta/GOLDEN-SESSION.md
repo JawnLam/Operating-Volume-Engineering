@@ -54,6 +54,16 @@ The universal criteria are necessary but not sufficient. During SHIP-PREP, add *
 
 Write these into the script during SHIP-PREP so the run tests what the OV actually promises, not just the universals.
 
+## Sampling, not proof (Convention 15)
+
+The substrate under test is stochastic: the same corpus, the same script, and the same model produce different sessions on different runs. **A passing golden session is therefore a sample drawn from a behavior distribution, not a proof** — testing shows the presence of behavioral defects, never their absence, and here even a re-run of a passed test is a fresh draw. Three disciplines follow:
+
+- **The disposition table is an acceptance-sampling plan.** Declare it — run count, pass threshold, which criteria are never waived, which finding classes block versus bank — **before the first run** (the template's plan block, positioned ahead of the log). Accepting a release under a declared plan means accepting the explicit statistical residual, chosen in advance; discovering-and-lamenting that residual later is not a gate failure.
+- **Stopping rules bind triage.** A single miss is not proof of a corpus defect: judge **common-cause** (inherent variation — address via the sampling plan or the architecture) versus **special-cause** (a real gap in the corpus — patch it) before editing anything. Two consecutive same-probe misses establish a real failure. The same probe failing a **third time for a distinct cause** ends prose-patching: escalate to the operator as an architecture question. Patching in response to noise is tampering — it injects variance and manufactures the next failure (F16).
+- **The ratchet.** Every real failure becomes a permanent probe in the script, and the script version is recorded in the log — so the ruler is fixed within a release and legible across releases, and the finding-count is never ambiguous between "rougher artifact" and "finer ruler."
+
+**Writing hardenings (the prose-register rule):** when a triage produces a corpus fix, write it as a calm functional explanation of what the rule does for the operator — never as an escalating compliance demand. Measured basis (Spreadwright v1.4.0 gate): escalated "deviation is a defect regardless" language failed 0-for-3 against boot-contract refusals; the same content as plain explanation passed 5-for-5 across gates. Escalation provokes the refusal it targets.
+
 ## Failure semantics
 
 - **Any universal-criterion fail = ship block.** The OV does not proceed past Phase 3.11 with an open universal failure.

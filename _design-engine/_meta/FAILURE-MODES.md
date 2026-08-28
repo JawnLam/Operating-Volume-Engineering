@@ -194,6 +194,21 @@ updated: 2026-06-01
 - Validator check C17 confirms the ritual happened — script present, log filled with no empty `observed` cells, every `fail` row triaged — without judging behavior (the human/agent evaluator's job).
 - The gate is manual-first: a human, two chat windows, and the script suffice (preserves P1/P3).
 
+## F16 — Unbounded QC (fractal gold-plating)
+
+**Trigger pattern:** Quality control runs without a pre-registered standard. The operator (or the AI itself) asks "go back and look for anything to improve," treats the inevitably non-empty answer as a ship-blocker, fixes it, and asks again — an unbounded loop, because defect-count is a joint property of the artifact and the inspection resolution, and every "look again" shortens the ruler. Late-stage form: **tampering** — a stochastic miss (a behavior the substrate produces some fraction of the time) is treated as a corpus defect and patched; the patch perturbs the system and manufactures the next failure, which is then patched harder. Escalating compliance language in the patch is the terminal symptom: it provokes the very refusals it targets.
+
+**Why it matters:** The loop consumes unbounded effort while carrying no information — a review that cannot return "clean" tells you nothing when it returns "dirty" — and it actively degrades the corpus: fix-induced defects, prose bloat, and behavioral regressions from over-adjustment. Documented historical basis: in the Spreadwright v1.4.0 gate, three of five boot-probe failures were downstream of the design AI's own escalating patches, and the release cleared only after the escalations were replaced with calm functional explanation (0-for-3 escalated vs 5-for-5 calm). Meanwhile the failures that genuinely matter — novel cases generated adversarially against the current text — are not found by looking harder at the same resolution; they are found by execution and banked by the ratchet.
+
+**Fix:** Adopt Convention 15 (Pre-Registered Quality Governance). Declare the Definition of Done, the QC plan, and the severity rubric before the build; render QC verdicts against that fixed ruler; give open-ended exploration an explicit budget and bank its findings to the next scoped release; honor the stopping rules (common-cause vs special-cause before patching; two consecutive same-probe misses = real; third distinct cause = stop patching, escalate as architecture); convert every real failure into a permanent versioned probe.
+
+**Prevention:**
+
+- `_meta/CONVENTIONS.md` Convention 15 — the contract: pre-declaration, verification/exploration split with default banking, report form, stopping rules, ratchet, prose-register rule.
+- `03-DESIGN-PROTOCOL.md § QC governance` — scope declarations carry the standard; mid-engagement "look again" defaults to declared verification.
+- `07-SHIPPING-CHECKLIST.md` Phase 3.11 — the gate confirms the sampling plan and severity rubric predate the first run and that banked findings are recorded, not silently absorbed.
+- `_meta/GOLDEN-SESSION.md § Sampling, not proof` — a passing run on a stochastic substrate is a sample; the disposition table is an acceptance-sampling plan, not a proof obligation.
+
 ## Adding new entries
 
 When a new failure mode surfaces in real use, add it here with:
