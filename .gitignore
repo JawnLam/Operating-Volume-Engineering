@@ -124,38 +124,13 @@ node_modules/
 .npm/
 
 # ----------------------------------------------------------------------
-# Personal design work — excluded by default so this folder can be shared
-# without leaking active design conversations.
-#
-# TRADE-OFF: the OV's core thesis is "state lives in files." Excluding
-# _design-state.md and Sessions/*.md by default means YOUR own design
-# history is NOT version-controlled unless you opt in. To track your own
-# cartridge, see INSTALL.md § "Tracking your own design history" — there
-# is a copy-paste `git add -f` recipe there. Edit this section to flip
-# the default if you'd rather track-by-default.
+# Personal design work — NOW TRACKED (operator opted in 2026-07-22).
+# Design-state files and session logs are version-controlled by choice
+# (honoring "state lives in files"). Only the operator identity profile
+# stays private.
 # ----------------------------------------------------------------------
-
-# Design-state files: live record of where each design engagement stands
-**/_design-state.md
 
 # Optional user profile (Convention 8 — Operator-Private Zone; never auto-inferred
 # per P7 / F3 identity rule — the populated _USER.md stays local; only the
 # _USER.md.template ships)
 _USER.md
-
-# Personal cartridges — exclude session content and decision logs by default.
-# To track your own cartridge, use `git add -f` on the specific paths.
-**/Sessions/*.md
-!**/Sessions/.gitkeep
-
-# ----------------------------------------------------------------------
-# Always tracked (overrides above for the shipped worked examples):
-# The five shipped cartridges demonstrate the system and their contents
-# are part of the release.
-# ----------------------------------------------------------------------
-!SOLVE-eX-Retrospective/**
-!LifeLong-Learning-Retrospective/**
-!Negotiation-Preparation/**
-!Long-Form-Writing/**
-!Relationship-Cultivation/**
-!Political-Landscape-Cartography-Retrospective/**

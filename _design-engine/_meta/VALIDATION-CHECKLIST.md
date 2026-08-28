@@ -378,6 +378,7 @@ Applies at SHIP-PREP Phase 3.11. For every filled golden-session log (an Item wh
 - [ ] The log has a criteria table with columns `Criterion | Expected | Observed | Pass/Fail | Triage`
 - [ ] Every `Observed` cell is filled (no blanks, no `<placeholder>` stubs) — `fail` on any empty cell
 - [ ] Every row marked `fail` carries a non-empty `Triage` note (fix or operator-waived reason) — `fail` otherwise
+- [ ] **The pre-registered plan block is present and precedes the results** (Convention 15, added v2.8.0): the script/log carries a "Sampling plan & severity rubric" section (planned runs, pass threshold, never-waived criteria, blocking vs banked classes, stopping rule) positioned before the criteria log, with no evidence it was backfilled around the results (e.g., the plan referencing run outcomes) — `fail` if absent in a log authored under v2.8.0+; `info` for logs predating v2.8.0
 
 Shell recipe:
 

@@ -181,6 +181,16 @@ After every session:
 **`_design-decisions.md`** (append-only):
 - Append a dated entry for each significant decision: what was decided, why, what alternative was rejected and why
 
+## QC governance (Convention 15)
+
+Quality control in this protocol runs against **pre-registered standards**, never against the open question "can anything be improved?" — the full rationale and contract are `_meta/CONVENTIONS.md` Convention 15; the failure this prevents is F16.
+
+1. **Scope declarations carry the standard.** When a release or upgrade is scoped (a design decision, a D-record, a build directive), the declaration includes: a **Definition of Done** (binary checks), a **QC plan** (which reviews run, how many golden-session runs, what sampling plan), and a **severity rubric** (which finding classes block ship; which bank to the hopper). Where practical, commit the declaration before building — history then proves the standard predates the work.
+2. **"Look again" means run the declared verification.** When the operator asks mid-engagement to "go back and check," "see if anything can be improved," or similar, the default interpretation is: **execute the declared verification and report the verdict** ("DoD met; N blocking; M banked"). Do not launch an unbounded findings hunt from that phrasing.
+3. **Exploration is explicit and budgeted.** An open-ended pass (adversarial crucible, multi-lens review, §4 audit) runs only on a declared cadence or when the operator explicitly asks for one — and it takes a budget (lenses, runs, or time). Its findings are triaged against the rubric: pre-declared blocking classes are fixed in-flight; **everything else banks to the next scoped release's hopper**, recorded in the design record, never silently fixed and never silently dropped.
+4. **Stopping rules bind triage.** Before patching a failed probe, judge common-cause vs special-cause (Convention 15 § contract, item 4). Two consecutive same-probe misses = real failure. A third distinct cause on the same probe = stop patching prose; escalate to the operator as an architecture question.
+5. **The ratchet closes the loop.** Every real failure becomes a permanent probe in the OV's golden-session script, and the script version is recorded — the ruler is fixed per release and legible across releases.
+
 ## Quality gates
 
 Before ending any session, confirm:

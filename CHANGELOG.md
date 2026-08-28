@@ -12,6 +12,26 @@ Needs_Processing: false
 
 All notable changes to Operating-Volume-Engineering are documented in this file. Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); versioning follows [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.8.0] — 2026-08-28
+
+Minor release adding **Convention 15 — Pre-Registered Quality Governance** and failure mode **F16 — Unbounded QC (fractal gold-plating)**. **Additive — no breaking changes**; no existing convention, failure mode, phase, or check is renamed, renumbered, or removed. Surfaced by dogfooding: the Spreadwright v1.4.0 engagement ran a six-run acceptance gate whose hardest lessons were about the QC process itself — that defect-count is a joint property of the artifact and the inspection resolution (so open-ended "look again" review is structurally non-terminating), that a passing run on a stochastic substrate is a sample rather than a proof, that patching in response to stochastic misses is tampering that manufactures the next failure, and that escalating compliance language in corpus prose provokes the refusals it targets (measured 0-for-3 escalated vs 5-for-5 calm). The gap generalized into a reusable convention — the same process-improvement loop that produced Convention 14.
+
+### Added — Convention 15 (Pre-Registered Quality Governance)
+
+`_meta/CONVENTIONS.md` gains Convention 15: every scoped release declares, **before build**, a Definition of Done (binary checks), a QC plan (reviews, run counts, sampling plan), and a severity rubric (blocking vs banked finding classes); verification (the pre-registered script/eval) runs per release while exploration (open-ended crucibles, audits) is budgeted, cadenced, and banks its findings to the next scoped release by default; QC reports lead with the verdict against the pre-registered standard; stopping rules bind triage (common-cause vs special-cause before patching; two consecutive same-probe misses = real; third distinct cause = escalate as architecture); every real failure ratchets into a permanent versioned probe; and corpus hardenings are written as calm functional explanation, never escalating compliance demands. Enforcement: `03-DESIGN-PROTOCOL.md § QC governance` (scope declarations carry the standard; mid-engagement "look again" defaults to the declared verification), SHIP-PREP Phase 3.11 additions (plan predates the first run; stopping rules honored; banked findings recorded), `_meta/GOLDEN-SESSION.md § Sampling, not proof`, and a pre-registered "Sampling plan & severity rubric" block in `TEMPLATE-golden-session-script.md`. `TRACEABILITY.md` traces Convention 15 → C17 (extended prose walk) → F16.
+
+### Added — Failure mode F16 (Unbounded QC / fractal gold-plating)
+
+`_meta/FAILURE-MODES.md` gains F16: QC without a pre-registered standard cannot terminate (every "look again" shortens the ruler and guarantees findings), and its late-stage form — tampering — injects the defects it then finds. Documented historical basis: three of five boot-probe failures in the Spreadwright v1.4.0 gate were downstream of the design AI's own escalating patches.
+
+### Changed — C17 prose walk (extended)
+
+`VALIDATION-CHECKLIST.md § C17` adds one row: the golden-session script's sampling plan and severity rubric exist and precede the recorded runs (`info` for logs predating v2.8.0). `validate.py` is unchanged — a mechanical C20 is **banked** to a future release, per the tooling-posture doctrine (the prose walk is the manual equivalent).
+
+### Release governance record (this release's own dogfood)
+
+This release executed the discipline it ships: `_meta/release-v2.8.0-plan.md` (scope + DoD + QC plan + severity rubric) and `_meta/release-v2.8.0-eval.md` (17 binary criteria, independent evaluator, pre-registered disposition) were committed **before** any engine edit; results in `_meta/release-v2.8.0-eval-results.md`. Banked from this release: validator C20; upstream-repo mirror of this change; shipped-OV retrofits (ride each OV's next scoped release); the vendored folder's `-v2.7` name (rename to `-v2.8` is an operator-side call — all in-vault references would move with it).
+
 ## [2.7.1] — 2026-07-16
 
 Patch — naming correction. The OV used as Convention 14's worked example (dogfooded to surface the Grows-Through-Use Zone) was renamed after the v2.7.0 release: **Keel → Baseplate** (a vocabulary-audit decision — "Keel" gave way to "Baseplate," the foundational mounting surface). Live references in `_meta/CONVENTIONS.md`, `_meta/TRACEABILITY.md`, `CONTRIBUTING.md`, and `VERSION.md` now say "Baseplate"; the historical [2.7.0] entry below is unchanged (it was accurate at release). No engine behavior changed. Its repo: github.com/JawnLam/Baseplate.
