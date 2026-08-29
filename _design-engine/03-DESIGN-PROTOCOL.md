@@ -4,7 +4,7 @@ timestamp: "2026-06-06T00:00:00Z"
 Item_ID: ove-engine-03-design-protocol
 title: "OVE Engine — 03 Design Protocol"
 Date_Added: 2026-06-01
-Date_Modified: 2026-06-06
+Date_Modified: 2026-08-28
 Needs_Processing: false
 doc_type: design-engine
 role: session-protocol
@@ -45,7 +45,7 @@ Seven universal activities, plus **KNOWLEDGE-MOUNT** which fires only for knowle
 | **KNOWLEDGE-MOUNT** *(KAOV only)* | Vendor and verify the OV's OKF data-plane bundle(s) per Convention 11 / `08-KNOWLEDGE-RETRIEVAL.md`: copy each bundle under `_knowledge/`, confirm OKF conformance, and record `okf_version` + `pin` in `Knowledge_Mounts` | `ove_Knowledge_Source: knowledge_augmented` AND ≥1 declared mount is unresolved, non-conformant, or unpinned |
 | **ARTIFACT-DRAFT** | Draft a specific shipping file (`AI-BOOTSTRAP`, `README`, an engine file, a template) inside `Artifacts/` | Schema + cartridge shape locked; missing artifacts |
 | **REVIEW** | Critique an existing draft against the design principles in `02-DESIGN-PRINCIPLES.md` | An artifact has a draft but no review pass |
-| **SHIP-PREP** | Walk the checklist in `07-SHIPPING-CHECKLIST.md` (scrubbing, license, README, GitHub, Phase 3.10 Standalone Sufficiency readiness) | All artifacts drafted |
+| **SHIP-PREP** | Walk the checklist in `07-SHIPPING-CHECKLIST.md` (scrubbing, license, README, GitHub, Phase 3.10 Standalone Sufficiency readiness) — ship completion includes the close-out protocol `09-CLOSE-OUT.md` (ship record, registry sync, records discipline; the upgrade choreography on any re-ship) | All artifacts drafted |
 
 > **KNOWLEDGE-MOUNT is new in v2.3.0** and fires only when the manifest declares `ove_Knowledge_Source: knowledge_augmented`. It gates ARTIFACT-DRAFT the way Step 4.5 (source inventory) does: a KAOV cannot draft artifacts that cite the data plane until the data plane is vendored, OKF-conformant, and pinned. Self-contained OVs (the default) never see this activity. See Convention 11 in `_design-engine/_meta/CONVENTIONS.md`.
 

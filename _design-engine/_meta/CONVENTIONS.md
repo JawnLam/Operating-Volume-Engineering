@@ -4,7 +4,7 @@ timestamp: "2026-06-06T00:00:00Z"
 Item_ID: ove-meta-conventions
 title: "OVE Meta — Universal Conventions for OV-Designed Output"
 Date_Added: 2026-06-06
-Date_Modified: 2026-06-06
+Date_Modified: 2026-08-28
 Needs_Processing: false
 doc_type: design-engine-meta
 role: conventions
@@ -447,11 +447,24 @@ The optional `validate.py` includes two checks:
 
 Convention 10 answers *"why this OV instead of a general LLM?"* Convention 11 answers the next question for knowledge-heavy domains: *"how does this OV hold a large, curated body of domain knowledge without drowning its context or fabricating?"* — by mounting it as a progressively-disclosed, vendored, re-verified OKF data plane that the control plane is disciplined about touching. Choosing OKF rather than a bespoke format is deliberate: it makes a KAOV's knowledge a portable asset that any OKF-speaking tool can produce, browse, diff, or consume, which widens the OV's integration surface instead of locking it in.
 
+## Convention 12 — Registry Sync
+
+*Added v2.9.0, filling the slot reserved since v2.6.0 for the Registry Sync design note.* An OV that ships into an ecosystem keeping **any index of OVs** updates **every such index in the same change as the ship — or the ship is not done.** Two kinds of index exist, and they are separate obligations:
+
+- **The schema registry** (e.g., a vault-central `Master_Schema.yaml`): owned by SHIP-PREP **Phase 3.12** at first ship; on an upgrade it re-fires only if the schema version moved, and stating that it did not move is itself part of the sync.
+- **The catalog** (e.g., an OV console with adapter files, a registry table, open-threads, a session ledger): owned by `09-CLOSE-OUT.md § Registry sync`, at first ship **and at every upgrade** — directory name, version, activity list, and description current; narrative surfaces reflecting the release; ledger entries appended. At graduation, the catalog's status for the OV becomes `graduated` with a pointer to the new home — the index must not go stale at the moment of departure.
+
+Like Phase 3.12, the convention is **conditional and substrate-agnostic**: a destination with no registry and no catalog makes it `n-a` — log that and proceed. The historical basis is the failure it ends: several OVs shipped with clean local `_types/` yet were never centrally registered (the Phase 3.12 origin story), and every catalog update between v1.1.0 and v1.4.0 of the first stewarded OV was executed from session-log precedent with nothing gating it (F17).
+
+### Validator coverage
+
+Manual-only in v2.9.0: the walks live in Phase 3.12's acceptance list (schema half) and `09-CLOSE-OUT.md`'s checklist (catalog half); a mechanical check is banked (the catalog's shape is ecosystem-specific, so a validator can at most confirm the ritual was logged).
+
 ## Convention 13 — Traceability maintenance
 
 *Added v2.6.0.* Update `_design-engine/_meta/TRACEABILITY.md` in the same change that adds or amends any `P`-code, `F`-code, `C`-check, or numbered Convention. The matrix is the one place where every principle, convention, check, and failure mode is traced through `principle → enforcement → check → failure`; it decays into fiction the moment a new ID ships without a row. Treating the update as a follow-up task is the failure — the arithmetic that produces an orphan (a check with no principle, a principle with no teeth) is invisible until someone re-derives the whole map, which is exactly the cost the matrix exists to remove.
 
-> **Numbering note.** Convention 12 is reserved for the "Registry Sync" design note and is deliberately skipped here; this maintenance convention takes 13. See `_design-engine/_meta/TRACEABILITY.md` § Orphans (O-3).
+> **Numbering note.** From v2.6.0 through v2.8.0, Convention 12 was reserved for the "Registry Sync" design note and deliberately skipped — which is why this maintenance convention, added earlier (v2.6.0), takes 13. The reserved slot was filled by Registry Sync itself in v2.9.0 (see Convention 12 above; formerly `TRACEABILITY.md` § Orphans O-3).
 
 ### What the convention requires
 

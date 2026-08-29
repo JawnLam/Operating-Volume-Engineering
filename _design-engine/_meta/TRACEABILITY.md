@@ -4,7 +4,7 @@ timestamp: "2026-07-16T00:00:00Z"
 Item_ID: ove-meta-traceability
 title: "OVE Meta — Traceability Matrix"
 Date_Added: 2026-07-16
-Date_Modified: 2026-07-16
+Date_Modified: 2026-08-28
 Needs_Processing: false
 doc_type: design-engine-meta
 role: traceability-matrix
@@ -75,6 +75,8 @@ Every ID defined in the engine's authority files (`02-DESIGN-PRINCIPLES.md`, `_m
 | **Voice / client-promise discipline** | Vocabulary Audit (Phase 3.9); `ove_Audience_Prose_Register` | C13 | — | Deliverable-promise nouns + register violations. |
 | **Golden-session execution** | Golden Session (`_meta/GOLDEN-SESSION.md`); ship gate (Phase 3.11) | C17 | F15 | Executes the OV before ship, not just audits its form. Added v2.6.0 (CR-1). |
 | **Convention 15 — Pre-Registered Quality Governance** | `03-DESIGN-PROTOCOL.md § QC governance` (scope declarations carry DoD + QC plan + severity rubric; "look again" = declared verification; exploration budgeted, findings bank); Phase 3.11 additions (plan predates runs; stopping rules; banked-findings record); `_meta/GOLDEN-SESSION.md § Sampling, not proof`; template's pre-registered plan block | C17 (prose walk, extended) | F16 | Fixed-ruler QC on a stochastic substrate: pre-declared acceptance, verification/exploration split, anti-tampering stopping rules, probe ratchet, prose-register rule. Added v2.8.0; mechanical C20 banked. |
+| **Convention 12 — Registry Sync** | Phase 3.12 (schema registry, first ship; re-fires only on schema motion) + `09-CLOSE-OUT.md § Registry sync` (ecosystem catalog, first ship and every upgrade; `graduated` status at departure) | manual-only (Phase 3.12 acceptance list; 09 checklist) | F17 | Every ecosystem index updates in the same change as the ship, or the ship is not done. Conditional/substrate-agnostic (`n-a` where no index exists). Added v2.9.0, filling the slot reserved since v2.6.0. |
+| **Close-out execution** | `09-CLOSE-OUT.md` (three-copies doctrine; upgrade choreography with preservation walk + post-overlay verification; independence sweep; graduation departure record; records discipline) + Phase 9 rewire | manual-only (09 checklist) | F17 | Codifies the post-gate release ritual that previously lived in session-log precedent. Added v2.9.0. |
 
 ## Orphans
 
@@ -82,10 +84,10 @@ Goal: empty. Each entry is a requirement that reaches this matrix without a comp
 
 - **O-1 · Cross-reference integrity has a check (C5) but no first-class principle.** Link-resolution is enforced by C5 and implied by F2/P8, but "every cross-reference must resolve" is not stated as its own `P`-code. Disposition: **gap — needs principle** (low priority; C5 already gates it mechanically).
 - **O-2 · P12 (write before you end) has no mechanical check.** The session-end quality gates are manual; nothing in `validate.py` proves a session actually wrote its log + state. Disposition: **gap — needs enforcement** (a `C`-check that a session directory grew a log file could close it; v-next backlog).
-- **O-3 · Convention 12 (Registry Sync) is reserved but not shipped.** The design note (`_proposals/Convention-12-Registry-Sync-Design-Note.md`) was trimmed from the distribution in HEAD; the slot is named only in front-door/historical docs, not in `CONVENTIONS.md`, so it is not swept by C18. Disposition: **intentional** — the v2.6.0 upgrade needed a new "update-the-matrix" convention (CR-2) and deliberately numbered it **13, not 12**, to avoid colliding with Registry Sync's reserved slot; 12 stays open for that design note if it's ever revived. See CHANGELOG `[2.6.0]` § "Unified traceability matrix + Convention 13."
+- **O-3 · ~~Convention 12 (Registry Sync) is reserved but not shipped.~~ RESOLVED (v2.9.0).** The reserved slot was filled: Convention 12 — Registry Sync now ships in `CONVENTIONS.md` (schema-registry half owned by Phase 3.12; catalog half by `09-CLOSE-OUT.md § Registry sync`), traced in the matrix above and swept by C18. Historical context retained: the v2.6.0 upgrade deliberately numbered its maintenance convention 13, not 12, to keep this slot open for Registry Sync — which is what it was ultimately used for.
 - **O-4 · Master tests + Traps are enforced without their own IDs.** The Displacement and Absorption tests and Traps 1–10 (`02-DESIGN-PRINCIPLES.md`) carry no `P`/`F` code; they are enforced through Convention 10 → C14. Disposition: **intentional (enforced via Convention 10; not ID-swept because they match no `P`/`F`/`C`/`Convention` pattern)**.
 
-**Gap count reported to operator: 2** (O-1, O-2). Both are low-priority v-next backlog, not ship blockers. O-3 and O-4 are intentional.
+**Gap count reported to operator: 2** (O-1, O-2). Both are low-priority v-next backlog, not ship blockers. O-3 is resolved (v2.9.0); O-4 is intentional.
 
 ## Maintenance (Convention 13)
 

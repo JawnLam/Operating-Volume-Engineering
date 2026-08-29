@@ -4,7 +4,7 @@ timestamp: "2026-06-06T00:00:00Z"
 Item_ID: ove-engine-00-start-here
 title: "OVE Engine — 00 START HERE"
 Date_Added: 2026-06-01
-Date_Modified: 2026-06-06
+Date_Modified: 2026-08-28
 Needs_Processing: false
 doc_type: design-engine
 role: assistant-entry-point
@@ -78,6 +78,7 @@ Do not read these up front. Load them when the activity that needs them is propo
 | `06-STATE-PERSISTENCE.md` | CARTRIDGE-SHAPE activity, or any session-end state work |
 | `07-SHIPPING-CHECKLIST.md` | SHIP-PREP activity |
 | `_meta/GOLDEN-SESSION.md` | SHIP-PREP active (authoring or running the Phase 3.11 golden-session gate) |
+| `09-CLOSE-OUT.md` | SHIP-PREP reaching Phase 9; any re-ship/upgrade of an installed OV; registry sync; graduation of an OV out of OVE stewardship |
 | `08-KNOWLEDGE-RETRIEVAL.md` | KNOWLEDGE-MOUNT activity, or any session of a `knowledge_augmented` OV (Convention 11 / OKF data plane) |
 | `_meta/SCHEMA-OF-SCHEMAS.md` | Audit mode, or non-trivial schema design |
 | `_meta/CONVENTIONS.md` | Any new-OV design path — SCHEMA-DESIGN, ARTIFACT-DRAFT, REVIEW — and any audit checking convention compliance |
