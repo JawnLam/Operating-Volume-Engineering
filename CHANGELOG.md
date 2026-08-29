@@ -4,13 +4,37 @@ timestamp: "2026-07-16T00:00:00Z"
 Item_ID: ove-changelog
 title: "Operating-Volume-Engineering — Changelog"
 Date_Added: 2026-06-01
-Date_Modified: 2026-07-16
+Date_Modified: 2026-08-28
 Needs_Processing: false
 ---
 
 # Changelog
 
 All notable changes to Operating-Volume-Engineering are documented in this file. Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); versioning follows [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+## [2.9.0] — 2026-08-28
+
+Minor release codifying the **release lifecycle** — everything after the golden gate that previously lived only in precedent. **Additive — no breaking changes**; no existing convention, failure mode, phase, check, or chapter is renamed, renumbered, or removed. Surfaced by dogfooding: five consecutive releases of the first stewarded OV (Spreadwright v1.1.0 → v1.4.0) ran their post-gate rituals — `_shipped/` snapshot, install `git mv` + overlay preserving operator state, console re-registration, records close — correctly only because the same design AI carried the choreography in session memory; the v2.8.0 release eval then banked two records-discipline drifts nothing had checked for. The gap generalized, as Conventions 14 and 15 did before it.
+
+### Added — Engine chapter `09-CLOSE-OUT.md`
+
+The release-lifecycle protocol: the **three-copies doctrine** (working tree / immutable `_shipped/` ship record, written once and never edited after / live install, whose operator state is the irreplaceable part); the **upgrade re-ship choreography** for version N → N+1 (snapshot first; a pre-overlay **preservation walk** — Operator-Private Zone, Grows-Through-Use Zones merge-not-clobber per Convention 14, documented local override blocks, pending one-time setup blocks carried forward with paths retargeted and instruction content unchanged; rename per Convention 7 + full overlay; **post-overlay verification**, with a lost preserved item meaning restore-and-re-run, never hand-patch); the **independence sweep** (a shipped OV may attribute OVE but may not functionally depend on it — "the operator never needs OVE," with a greppable recipe); **graduation** (maturity criteria; the three-part departure record — final decision entry, catalog status `graduated` with a pointer, design cartridge retained in place and closed; post-graduation stewardship change); and **records discipline** (`Date_Modified` synced in the same change as any edit; VERSION identifiers — sub-identifier rows included — and CHANGELOG regenerated together). SHIP-PREP **Phase 9** now routes into the chapter, and `00-START-HERE.md` / `03-DESIGN-PROTOCOL.md` wire it into the load table and the SHIP-PREP activity.
+
+### Added — Convention 12 (Registry Sync; the reserved slot filled)
+
+`_meta/CONVENTIONS.md` gains Convention 12, filling the slot deliberately reserved since v2.6.0 (traceability orphan O-3, now resolved): an OV shipping into an ecosystem that keeps **any index of OVs** updates **every such index in the same change as the ship — or the ship is not done**. The schema-registry half is owned by Phase 3.12 (re-firing on upgrades only when the schema moved); the catalog half (adapters, registry tables, open-threads, ledgers) by `09-CLOSE-OUT.md`, at first ship and every upgrade, with `graduated` status at departure. Conditional and substrate-agnostic — `n-a`, logged, where no index exists. The Convention-13 numbering note is updated (historical context retained); manual-only in this release, a mechanical check banked.
+
+### Added — Failure mode F17 (Shipped by precedent)
+
+`_meta/FAILURE-MODES.md` gains F17: the post-gate ritual executed from memory rather than from the engine — no snapshot, a clobbered operator file, a vanished one-time block, a stale catalog row, a stale timestamp. The steps at risk are the irreversible ones, and the failure is invisible at the moment it happens. Prevention: 09's terminal checklist, Convention 12, the Phase 9 rewire, and the records discipline.
+
+### Changed — Records corrections absorbed from the v2.8.0 banked hopper
+
+Per 09's records discipline, two v2.8.0 eval-banked drifts are corrected in-scope: `TRACEABILITY.md`'s frontmatter `Date_Modified` synced, and `VERSION.md`'s sub-identifier rows brought current (Design engine → v2.9; Templates → v2.8, reflecting the v2.8.0 template edit; Validator unchanged at v2.7).
+
+### Release governance record (this release's own dogfood)
+
+Executed under Convention 15: `_meta/release-v2.9.0-plan.md` and `_meta/release-v2.9.0-eval.md` (16 binary criteria, independent evaluator, pre-registered disposition) committed **before** any engine edit — including surviving a mid-flight rebase when the operator renamed the vendored folder (`-v2.7` → `-v2.8`) from another machine, itself a live instance of the choreography this release codifies. Results: `_meta/release-v2.9.0-eval-results.md`. Banked from this release: mechanical checks for close-out/independence (C20/C21-class); upstream-repo mirror; shipped-OV retrofits; whether the vendored folder moves to `-v2.9` (operator's call).
 
 ## [2.8.0] — 2026-08-28
 

@@ -4,7 +4,7 @@ timestamp: "2026-06-06T00:00:00Z"
 Item_ID: ove-meta-failure-modes
 title: "OVE Meta — Failure Modes"
 Date_Added: 2026-06-01
-Date_Modified: 2026-06-06
+Date_Modified: 2026-08-28
 Needs_Processing: false
 doc_type: design-engine
 role: failure-catalog
@@ -208,6 +208,21 @@ updated: 2026-06-01
 - `03-DESIGN-PROTOCOL.md § QC governance` — scope declarations carry the standard; mid-engagement "look again" defaults to declared verification.
 - `07-SHIPPING-CHECKLIST.md` Phase 3.11 — the gate confirms the sampling plan and severity rubric predate the first run and that banked findings are recorded, not silently absorbed.
 - `_meta/GOLDEN-SESSION.md § Sampling, not proof` — a passing run on a stochastic substrate is a sample; the disposition table is an acceptance-sampling plan, not a proof obligation.
+
+## F17 — Shipped by precedent (the uncodified close-out)
+
+**Trigger pattern:** The post-gate release ritual — snapshot the ship record, upgrade the install without destroying operator state, update the ecosystem's indexes, close the records — is executed from **memory of prior engagements** rather than from the engine, because the engine never codified it. Each release, the design AI reconstructs the choreography from old session logs; nothing gates a dropped step. The failure surfaces as: a release with no `_shipped/` snapshot; an overlay that clobbers a filled operator file or a grown Convention-14 catalog; a pending one-time setup block silently vanishing in an upgrade; a catalog row still naming the previous version; a `Date_Modified` that predates the edit it stamps; sub-identifier version rows that stopped tracking the surfaces they describe.
+
+**Why it matters:** The steps at risk are precisely the irreversible ones — operator state has no second copy, a stale index misroutes every future reader, and a missing ship record falsifies the history that golden logs and changelogs cite. And the failure is invisible at the moment it happens: the gate passed, the release "shipped," and the dropped step surfaces sessions later as someone else's mystery. Documented historical basis: five consecutive releases of the first stewarded OV (v1.1.0 → v1.4.0, 2026-08) ran the full ritual correctly only because the same design AI carried it in session memory — and even so, the v2.8.0 release eval banked two records-discipline drifts (a stale `Date_Modified` on an edited file; sub-identifier version rows left behind) that nothing had checked for.
+
+**Fix:** Codify the ritual and gate on it: `_design-engine/09-CLOSE-OUT.md` (the three-copies doctrine, the upgrade choreography with its preservation walk and post-overlay verification, registry sync, the independence sweep, graduation, records discipline) plus Convention 12 (every ecosystem index updates in the same change as the ship). SHIP-PREP Phase 9 routes into the chapter; an upgrade release runs the 09 choreography in addition to the Phase gauntlet.
+
+**Prevention:**
+
+- `09-CLOSE-OUT.md` — the codified ritual with a terminal checklist; "an upgrade that loses one preserved item is a failed upgrade — restore and re-run, never hand-patch forward."
+- `_meta/CONVENTIONS.md` Convention 12 — registry sync as a same-change obligation, conditional on the ecosystem actually keeping an index.
+- `07-SHIPPING-CHECKLIST.md` Phase 9 — the design-cartridge close now points into 09 rather than standing alone as the whole story.
+- Records discipline (09) — `Date_Modified` synced in the same change; VERSION identifiers and CHANGELOG regenerated together.
 
 ## Adding new entries
 

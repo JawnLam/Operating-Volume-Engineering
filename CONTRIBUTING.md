@@ -4,7 +4,7 @@ timestamp: "2026-06-06T00:00:00Z"
 Item_ID: ove-contributing
 title: "Operating-Volume-Engineering — Contributing"
 Date_Added: 2026-06-01
-Date_Modified: 2026-06-06
+Date_Modified: 2026-08-28
 Needs_Processing: false
 ---
 
@@ -25,7 +25,7 @@ The following contributions do **not** require a major version bump:
 | New worked-example cartridge for a different domain                         | `<Domain>/` at the root, paralleling the two shipped examples                |
 | New entry in the failure-modes catalog                                       | `_design-engine/_meta/FAILURE-MODES.md`                                       |
 | New template for an OV-ship file                                             | `_design-engine/_templates/TEMPLATE-<name>.md`                                |
-| Clarification, correction, or expansion in any engine file (00–07, BOOTSTRAP) | Edit in place; minor version bump                                            |
+| Clarification, correction, or expansion in any engine file (00–09, BOOTSTRAP) | Edit in place; minor version bump                                            |
 | Documentation fix (README, INSTALL, OPERATOR-GUIDE, this file)              | Edit in place                                                                  |
 | New optional field on a cartridge backbone file (additive only)             | Update `_meta/SCHEMA-OF-SCHEMAS.md` + the template + minor version bump        |
 

@@ -4,7 +4,7 @@ timestamp: "2026-06-06T00:00:00Z"
 Item_ID: ove-engine-07-shipping-checklist
 title: "OVE Engine — 07 Shipping Checklist"
 Date_Added: 2026-06-01
-Date_Modified: 2026-06-06
+Date_Modified: 2026-08-28
 Needs_Processing: false
 doc_type: design-engine
 role: shipping-checklist
@@ -562,7 +562,9 @@ gh repo create <user>/<OV-name> --public --description "<one-line>" --source=. -
 
 For CC-BY 4.0 OVs, public is the typical choice. Private is fine for personal-use OVs not intended for sharing.
 
-## Phase 9 — Post-ship close-out
+## Phase 9 — Close-out (records + the release lifecycle)
+
+**The canonical close-out protocol is `_design-engine/09-CLOSE-OUT.md`** — the design-cartridge records below are one part of it. Walk 09's checklist for the rest: the `_shipped/` ship record (snapshotted, never edited after), registry sync per Convention 12 (schema registry via Phase 3.12 where the schema moved; the ecosystem catalog always, where one exists), the independence sweep, and the records discipline (`Date_Modified` synced on every edited file; VERSION identifiers and CHANGELOG regenerated together). **A subsequent release of an already-installed OV (version N → N+1) additionally runs 09's upgrade choreography** — snapshot first, preservation walk before overlay, post-overlay verification — this first-ship checklist alone does not cover an upgrade (F17).
 
 In the OVE cartridge for this design engagement:
 
@@ -570,6 +572,7 @@ In the OVE cartridge for this design engagement:
 - [ ] Append final entry to `_design-decisions.md` noting ship date and version
 - [ ] Write the final session log capturing what shipped
 - [ ] Open Thread for next session: typically "audit after 30 days of use" or "v1.1 backlog"
+- [ ] `09-CLOSE-OUT.md` checklist walked to completion (ship record, registry sync or logged `n-a`, independence sweep, records discipline; upgrade choreography where this ship replaced an existing install)
 
 ## What "done" looks like
 
