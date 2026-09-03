@@ -79,6 +79,7 @@ Do not read these up front. Load them when the activity that needs them is propo
 | `07-SHIPPING-CHECKLIST.md` | SHIP-PREP activity |
 | `_meta/GOLDEN-SESSION.md` | SHIP-PREP active (authoring or running the Phase 3.11 golden-session gate) |
 | `09-CLOSE-OUT.md` | SHIP-PREP reaching Phase 9; any re-ship/upgrade of an installed OV; registry sync; graduation of an OV out of OVE stewardship |
+| `_meta/SPECIALISTS.md` | The specialist sweep: Q7 of SCHEMA-DESIGN, Step 4.7 of BOOTSTRAP-NEW-OV, Audit Mode §3b, or SHIP-PREP Phase 3.13 (Convention 16) |
 | `08-KNOWLEDGE-RETRIEVAL.md` | KNOWLEDGE-MOUNT activity, or any session of a `knowledge_augmented` OV (Convention 11 / OKF data plane) |
 | `_meta/SCHEMA-OF-SCHEMAS.md` | Audit mode, or non-trivial schema design |
 | `_meta/CONVENTIONS.md` | Any new-OV design path — SCHEMA-DESIGN, ARTIFACT-DRAFT, REVIEW — and any audit checking convention compliance |

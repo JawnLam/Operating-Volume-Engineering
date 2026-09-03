@@ -4,7 +4,7 @@ timestamp: "2026-06-06T00:00:00Z"
 Item_ID: ove-engine-01-what-is-an-ov
 title: "OVE Engine — 01 What Is an OV"
 Date_Added: 2026-06-01
-Date_Modified: 2026-06-06
+Date_Modified: 2026-08-28
 Needs_Processing: false
 doc_type: design-engine
 role: concept-definition
@@ -88,6 +88,10 @@ An OV holds two distinct things: the **control plane** (this engine, the lifecyc
 - **`knowledge_augmented`** (a KAOV) — the OV additionally mounts one or more **OKF v0.1** knowledge bundles as a read-only data plane and retrieves from them at session runtime, under the bridge protocol in `08-KNOWLEDGE-RETRIEVAL.md`. This is the right form when the domain knowledge is too large to bake flat into one corpus without drowning the context window.
 
 **Both dispositions remain self-contained.** Convention 11 requires mounts to be *vendored* — the OKF bundle's bytes are copied into the OV's `_knowledge/` zone and ship with it. The one-sentence definition above ("a self-contained markdown corpus") therefore holds for KAOVs too: the data plane is a curated, version-pinned part of the corpus, not a live external dependency. OVE adopts OKF rather than a bespoke format so a KAOV's knowledge is a portable asset any OKF-speaking tool can produce, browse, or consume. See Convention 11 in `_design-engine/_meta/CONVENTIONS.md`.
+
+## Composed OVs (Convention 16 framing)
+
+A host OV may contain **mounted sub-artifacts built by specialist OVs** — artifacts of a different form, with a different engineering discipline, living inside the host and invoked by its activities. The composition is asymmetric by design: the host is the *institution* — it owns the memory, the schema, the walls, and the judgment — while a mounted sub-artifact is one of its *instruments*, built by whichever specialist OV owns that instrument's craft (the first registered specialist builds staged-pipeline workspaces; see `_design-engine/_meta/SPECIALISTS.md`). The host's designing AI never builds a specialist's sub-artifact and never learns its internals; it holds exactly two things per specialist — the **detection trigger** (recognizing when the host needs that instrument) and the **requisition interface** (specifying the need as WHAT/WHY/constraints). Mounts are vendored, declared in the manifest's `Sub_Artifact_Mounts`, version-pinned, and updated only by specialist re-engagement — so a composed OV remains, like a KAOV, a self-contained corpus. Convention 16 in `_design-engine/_meta/CONVENTIONS.md` carries the contract; F18 names the boundary violation.
 
 ## What an OV is NOT
 

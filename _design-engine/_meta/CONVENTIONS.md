@@ -527,6 +527,34 @@ Conflating the two produces the twin failures F16 names: treating coastline nois
 
 Process-side convention: no `validate.py` check ships in v2.8.0 (a mechanical C20 is banked). Enforcement is the Phase 3.11 walk plus the extended C17 prose checklist (`_meta/VALIDATION-CHECKLIST.md` § C17), which confirms a golden-session script's sampling plan and severity rubric exist and predate its recorded runs.
 
+## Convention 16 — Specialist Delegation (cross-OV requisition)
+
+*Added v2.10.0.* Some parts of a host OV's work belong to a different artifact form with its own engineering discipline. OVE does not build those parts — it **detects** them and **requisitions** a specialist. The convention is general and subject-agnostic; its first registered instance is ICME (Interpretable Context Methodology Engineering), which builds staged-pipeline sub-artifacts (ICMs) inside host OVs. The registry of specialists and their detection triggers is `_design-engine/_meta/SPECIALISTS.md`. Failure mode: F18.
+
+### The five concepts
+
+- **Specialist OV** — an OV whose product is a class of *sub-artifact* mounted inside other OVs (not a standalone OV of its own).
+- **Detection trigger** — the complete criterion a designing or auditing AI applies to recognize that the specialist's class of need is present in the host's work. Domain-blind: it tests the shape of the work, never its subject.
+- **Requisition** — the formal handoff artifact (from `_templates/TEMPLATE-specialist-requisition.md`) specifying the need: purpose, invoking activity, interface contract (host-supplied inputs; host-received outputs and their filing), host-imposed constraints, cadence.
+- **Mount** — the declared location where the fulfilled sub-artifact lives in the host OV, listed in the host manifest's `Sub_Artifact_Mounts`.
+- **Fulfillment** — a design engagement of the specialist OV that consumes a requisition and produces the mount, at a recorded version.
+
+### The boundary rule (load-bearing)
+
+**The generalist holds exactly two pieces of specialist knowledge: the detection trigger and the requisition interface — nothing else.** A requisition specifies WHAT the host needs, WHY, and the constraints its deliverables must satisfy; it never contains internal design — for ICM requisitions: no stages, no folder layout, no context budgets, no stage contracts. Specialist-internal content appearing in a requisition, or in the design conversation as OVE's own output, is **F18 (specialist-boundary violation)**. The restriction is the point: it is what lets each form be engineered by the discipline that is actually good at it.
+
+### The mount contract (Convention 11 precedent)
+
+Fulfilled sub-artifacts are **vendored** into the host (self-containment preserved — the host never phones out to the specialist at runtime), at the mount path the specialist's registry entry names, **declared** in the host manifest's `Sub_Artifact_Mounts` (name, class, specialist, status, mount path, fulfillment version), **pinned** to the fulfillment version, and **updated only by specialist re-engagement** — the host's operator and AI never hand-edit a mount's internals. Zone assignment: mounts are engine-zone content from the host's perspective (replaced by releases, not operator-writable).
+
+### Pre-fulfillment state (requisition-and-bank)
+
+A specialist whose registry status is `planned` cannot fulfill. Detection still runs, and a hit still produces the full requisition — plus a **declared placeholder mount**: the manifest entry with status `banked`, and an honest note at the mount path stating what capability is deferred and what the host does meanwhile. **The host OV ships functional without the mount.** Banked requisitions are recorded in the host engagement's design record and fulfilled when the specialist exists; fulfillment is an upgrade release of the host, run under `09-CLOSE-OUT.md`.
+
+### Enforcement
+
+The sweep runs at Q7 (`04-SCHEMA-DESIGN.md`), in BOOTSTRAP-NEW-OV's execution plan, and advisorily in Audit Mode (`03-DESIGN-PROTOCOL.md` §4); SHIP-PREP **Phase 3.13** gates ship on requisition completeness and HOW-freedom. Manual-first: no mechanical check ships in v2.10.0 (banked with the C20/C21 class).
+
 ## How to apply during a new-OV design
 
 The AI walking `BOOTSTRAP-NEW-OV.md` asks the operator one question early:

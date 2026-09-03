@@ -224,6 +224,21 @@ updated: 2026-06-01
 - `07-SHIPPING-CHECKLIST.md` Phase 9 — the design-cartridge close now points into 09 rather than standing alone as the whole story.
 - Records discipline (09) — `Date_Modified` synced in the same change; VERSION identifiers and CHANGELOG regenerated together.
 
+## F18 — Specialist-boundary violation
+
+**Trigger pattern:** During a design engagement, the AI crosses Convention 16's knowledge boundary. **Primary form — generalist overreach:** a detection hit for a specialist's sub-artifact class (e.g., an ICM-shaped pipeline) prompts the AI to start *designing the sub-artifact itself* — drafting stage structures, folder layouts, context budgets, or stage contracts, either directly into the host OV's artifacts or into the requisition document, which is meant to carry WHAT/WHY/constraints only. The overreach feels helpful in the moment ("I'll just sketch the stages so ICME has a head start") and is precisely the failure: the sketch anchors the specialist, encodes the generalist's weaker craft, and dissolves the division of expertise the convention exists to create. **Sibling form — missed detection:** the sweep is skipped or shrugged past, and factory-shaped work is force-fitted through institution categories — a fixed production process implemented as a stateful OV activity with session logs, dispatch, and boot overhead it never needed (the fine-grained version of F9's form-fit failure, applied to a *part* rather than the whole).
+
+**Why it matters:** The entire value of Convention 16 is that each form is engineered by the discipline that is good at it — the institution side by OVE, the pipeline side by ICME. Overreach ships pipelines built with the wrong craft and half-binds the specialist's later work to an amateur sketch; missed detection ships institution-priced machinery for factory jobs, and its costs recur every session the host runs. Both failures are silent at ship time and surface as friction in the host OV's daily use — which is the most expensive place to discover them.
+
+**Fix:** On overreach: strip the specialist-internal content from the requisition and the host artifacts; restate the need as interface + constraints; re-log the classification. On missed detection: run the sweep now (`_meta/SPECIALISTS.md` § detection trigger), classify honestly, and if the answer is `requisition`, bank one and mark the existing implementation as interim.
+
+**Prevention:**
+
+- `_meta/CONVENTIONS.md` Convention 16 — the boundary rule: detection trigger + requisition interface are the generalist's *entire* specialist knowledge.
+- `_meta/SPECIALISTS.md` — the sweep discipline: every candidate classified `ov-native | requisition | hybrid-split`, every classification logged, negatives included.
+- `_templates/TEMPLATE-specialist-requisition.md` — carries its own out-of-scope declaration naming internal design as an F18 defect.
+- `07-SHIPPING-CHECKLIST.md` Phase 3.13 — gates ship on requisitions being complete-per-template and HOW-free.
+
 ## Adding new entries
 
 When a new failure mode surfaces in real use, add it here with:

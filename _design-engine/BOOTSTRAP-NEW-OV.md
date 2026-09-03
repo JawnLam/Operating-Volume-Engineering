@@ -4,7 +4,7 @@ timestamp: "2026-06-06T00:00:00Z"
 Item_ID: ove-engine-bootstrap-new-ov
 title: "OVE Engine — Bootstrap New OV"
 Date_Added: 2026-06-01
-Date_Modified: 2026-06-06
+Date_Modified: 2026-08-28
 Needs_Processing: false
 doc_type: design-engine
 role: cartridge-bootstrapping-prompt
@@ -201,6 +201,10 @@ Based on the schema, decide:
 
 Lock these in `_design-decisions.md`.
 
+### Step 4.7 — Specialist sweep (Convention 16)
+
+With schema and cartridge shape locked, run the specialist sweep if it has not already run at Q7: test every candidate activity and recurring deliverable against the detection triggers in `_design-engine/_meta/SPECIALISTS.md`; classify each `ov-native | requisition | hybrid-split`; log every classification (negatives included) in `_design-decisions.md`. For each `requisition` or `hybrid-split` hit, produce a requisition from `_templates/TEMPLATE-specialist-requisition.md` and declare the mount in the manifest's `Sub_Artifact_Mounts` — WHAT/WHY/constraints only, never the sub-artifact's internal design (F18). If the specialist's registry status is `planned`, the requisition banks and the mount ships as a declared placeholder; the new OV must be designed to function without it.
+
 ### Step 5 — Draft artifacts (ARTIFACT-DRAFT sessions)
 
 Order:
@@ -219,6 +223,7 @@ Order:
 12. `LICENSE.md` (three template paths — `_templates/TEMPLATE-LICENSE-CCBY40.md` for open default, [choosealicense.com](https://choosealicense.com) for MIT/Apache, or `_templates/TEMPLATE-LICENSE-restrictive.md` for proprietary OVs; the restrictive template triggers a CONTRIBUTING.md flag requiring IP-attorney review before public release per `07-SHIPPING-CHECKLIST.md` Phase 4 Path C), `VERSION.md`, `CHANGELOG.md`
 13. **`.gitignore`** — must contain the Operator-Private Zone patterns documented in CONTRIBUTING § "Content zones"; each pattern has an inline comment explaining what it excludes and why (Convention 8)
 14. At least one worked-example cartridge for the new OV
+15. **Specialist requisitions and placeholder mounts** (Convention 16) — one requisition document per `requisition`/`hybrid-split` classification from Step 4.7, plus the declared mount entries and placeholder notes
 
 Each draft lives in `Artifacts/` inside the design cartridge.
 
@@ -248,6 +253,7 @@ Before considering bootstrapping (CQ phase) complete:
 - [ ] Design cartridge folder exists
 - [ ] `_ov-manifest.md` populated
 - [ ] Multi-session evidence confirmed (CQ6) — if not, propose the user step down to a smaller artifact (Custom GPT, skill, prompt pack) instead of an OV
+- [ ] Specialist sweep run (Step 4.7 / Q7): every pipeline-shaped candidate carries a logged classification, and every `requisition`/`hybrid-split` classification has a requisition document and a declared mount — with zero specialist-internal design anywhere in the host's artifacts (F18)
 
 Before considering the OV ready to ship:
 
