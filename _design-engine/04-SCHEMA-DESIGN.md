@@ -4,7 +4,7 @@ timestamp: "2026-06-06T00:00:00Z"
 Item_ID: ove-engine-04-schema-design
 title: "OVE Engine — 04 Schema Design"
 Date_Added: 2026-06-01
-Date_Modified: 2026-06-06
+Date_Modified: 2026-08-28
 Needs_Processing: false
 doc_type: design-engine
 role: schema-design-protocol
@@ -156,6 +156,8 @@ Examples from existing OVs:
 - A relational OV might have: TOUCH-LOG, CONTEXT-REFRESH, ANNUAL-AUDIT
 
 Define each custom activity with its trigger conditions.
+
+**Then run the specialist sweep (Convention 16).** With the candidate activities on the table, load `_meta/SPECIALISTS.md` and test each activity — plus each recurring deliverable from CQ10 — against every registered detection trigger. Classify each candidate `ov-native | requisition | hybrid-split` and log every classification, negatives included, with a one-line reason in `_design-decisions.md`. A `requisition` or `hybrid-split` hit produces a requisition document (`_templates/TEMPLATE-specialist-requisition.md`) and a declared mount — **never** any of the sub-artifact's internal design; that is the specialist's craft, and drafting it here is F18. On a `hybrid-split`, the retained judgment half stays in this Q7 activity list; the production half leaves it.
 
 ### Q8 — What's the right mastery / progress scale?
 

@@ -105,6 +105,14 @@ Most OVs are `self_contained` — all knowledge is baked into the corpus at desi
 
 ```yaml
 Knowledge_Mounts: []   # self-contained default; leave empty unless knowledge_augmented
+Sub_Artifact_Mounts: []   # Convention 16 default; one entry per specialist-built sub-artifact
+# Sub_Artifact_Mounts:
+#   - name: "<pipeline-or-sub-artifact name>"
+#     class: "<sub-artifact class, e.g., ICM workspace>"
+#     specialist: "<specialist OV, e.g., ICME>"
+#     status: banked | fulfilled
+#     mount_path: "_pipelines/<name>/"
+#     fulfillment_version: null   # set when fulfilled
 # Knowledge_Mounts:
 #   - bundle_root: _knowledge/<bundle-slug>   # vendored OKF bundle under the OV root
 #     okf_version: "0.1"                       # OKF spec version the bundle targets

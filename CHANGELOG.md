@@ -4,13 +4,39 @@ timestamp: "2026-07-16T00:00:00Z"
 Item_ID: ove-changelog
 title: "Operating-Volume-Engineering — Changelog"
 Date_Added: 2026-06-01
-Date_Modified: 2026-08-28
+Date_Modified: 2026-09-03
 Needs_Processing: false
 ---
 
 # Changelog
 
 All notable changes to Operating-Volume-Engineering are documented in this file. Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); versioning follows [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+## [3.0.0] — 2026-08-28 (stamped 3.0.0 on 2026-09-03)
+
+**Version note — recorded one-time bypass.** This release shipped and cleared its eval as 2.10.0 on 2026-08-28; on 2026-09-03 the operator directed it be stamped **3.0.0 as a paradigm marker** for the 2.8→2.10 arc (pre-registered QC governance · codified release lifecycle · specialist delegation). The bypass is explicit and bounded: **semantically additive, no migration exists, nothing breaks** — a consumer needs no action beyond reading this entry. The pre-registered governance records keep their execution-time names (`_meta/release-v2.10.0-plan.md` / `-eval.md` / `-eval-results.md`) per the records discipline: history is not re-labeled. Canonical SemVer resumes from 3.0.0 — next additive release 3.1.0; the previously banked "consolidation release" remains the first candidate for a true 4.0.0.
+
+Release teaching OVE **focus-by-delegation**. Design basis, recorded from this engagement's comparative analysis of OVs against Van Clief & McDermott's Interpretable Context Methodology (arXiv 2603.16021): OV ⊇ ICM in expressive power, but ICM is epistemically superior on its home ground — guarantees-by-construction versus discipline-by-governance. A superset that knows where its subsets excel should stop building them. **Additive — no breaking changes**; nothing renamed, renumbered, or removed.
+
+### Added — Convention 16 (Specialist Delegation)
+
+`_meta/CONVENTIONS.md` gains Convention 16, a general cross-OV requisition mechanism: a **specialist OV** builds a class of sub-artifact mounted inside **host** OVs; the designing/auditing AI applies the specialist's **detection trigger** and, on a hit, produces a **requisition** (WHAT/WHY/constraints — never internal design) and a declared, vendored, version-pinned **mount** (`Sub_Artifact_Mounts` in the host manifest; Convention 11 precedent). The load-bearing **boundary rule**: the generalist holds only the detection trigger and the requisition interface. Pre-fulfillment, requisitions **bank** — the host ships functional with an honest placeholder. `01-WHAT-IS-AN-OV.md` gains the Composed-OVs framing: the host is the institution; mounts are its instruments.
+
+### Added — `_meta/SPECIALISTS.md` (registry + the canonical ICM detection criterion)
+
+The registry of specialists and their triggers. First entry: **ICME** (Interpretable Context Methodology Engineering), status **`planned`** — to be designed as its own OV later. Its detection criterion is the release's paramount deliverable, domain-blind and comprehensive: the **five-mark factory signature** (terminating; spec-completable in advance; linear/near-linear; consistency-preferred; run-scoped state), the **counter-indicators** (answer-dependent elicitation; cross-run state inside the process; state-driven dispatch; mid-process cross-session resume; in-process normative walls — walls relocate to the host as requisition output constraints), the **hybrid-split rule** (judgment half stays host-side and parameterizes the requisitioned pipeline half), the **acid test** (*would run-fresh amnesia be malpractice?*), design-time markers (Q1 weights, CQ10 template-deliverables, Q7 noun-pipelines), and the classification discipline (`ov-native | requisition | hybrid-split`, every classification logged, negatives included).
+
+### Added — requisition template, sweep hooks, ship gate, F18
+
+`_templates/TEMPLATE-specialist-requisition.md` (interface contract, host-imposed constraints, status ledger, embedded out-of-scope declaration, filled fictional example). Sweep hooks: Q7 (`04-SCHEMA-DESIGN.md`), Step 4.7 (`BOOTSTRAP-NEW-OV.md`, plus artifact-list item 15 and a quality gate), Audit Mode §3b (advisory candidate-requisition findings), and **Phase 3.13 — Specialist-mount readiness (HARD STOP — conditional)** in `07-SHIPPING-CHECKLIST.md` (requisitions complete and HOW-free; mounts declared; placeholders honest; classifications logged). `_meta/FAILURE-MODES.md` gains **F18 (Specialist-boundary violation)** — primary form generalist overreach ("I'll just sketch the stages" is the canonical instance), sibling form missed detection (the fine-grained F9). `00-START-HERE.md` load table and `TRACEABILITY.md` wired (two rows → F18).
+
+### Changed — records
+
+`VERSION.md` identifiers table: release-date row corrected to the actual release date (the v2.9.0 eval's banked drift, absorbed here as an in-scope records item per the plan); sub-identifier rows brought current.
+
+### Release governance record (this release's own dogfood)
+
+Executed under Convention 15: `_meta/release-v2.10.0-plan.md` and `_meta/release-v2.10.0-eval.md` (16 binary criteria incl. a behavioral classification probe on a mixed five-activity slate; independent evaluator; pre-registered disposition) committed before any engine edit; operator's four scoping answers recorded in the plan (domain-blind detection; general convention; requisition-and-bank; single-purpose release). Results: `_meta/release-v2.10.0-eval-results.md`. Banked: building ICME (a future design engagement); mechanical checks for Convention 16; the efficiency trio (still banked); folder rename `-v2.9` → `-v2.10` (operator's call, 09 doctrine applies).
 
 ## [2.9.0] — 2026-08-28
 

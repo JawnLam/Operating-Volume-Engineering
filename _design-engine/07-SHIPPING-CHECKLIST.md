@@ -472,6 +472,18 @@ Registering an OV in the central registry touches **three** places (Phase 3.5 co
 
 **If any is no (and the target has a central registry), the OV is NOT fully shipped — its notes will validate as unknown types and the registry drifts. Do not call the ship done until this gate is clean.** *(This gate was added after a v1.0.0 ship — Venture Cornerstone, 2026-07-27 — surfaced that Baseplate, Brand-Naming, and Venture Cornerstone had all skipped central registration.)*
 
+## Phase 3.13 — Specialist-mount readiness (HARD STOP — conditional)
+
+**Applies when the engagement's design record contains any specialist classification** (Convention 16; the Step 4.7 / Q7 sweep). If the sweep ran and every candidate classified `ov-native`, this phase is `n-a` — log that and proceed. If the sweep never ran, that is the failure: return to Step 4.7 before shipping.
+
+- [ ] Every `requisition` / `hybrid-split` classification has a requisition document conforming to `_templates/TEMPLATE-specialist-requisition.md` — identity, need, interface contract, host-imposed constraints, and status ledger all filled
+- [ ] Every requisition is **HOW-free**: no stages, folder layouts, context budgets, stage contracts, or any specialist-internal design anywhere in the requisition or the host's shipped artifacts (F18) — verified by reading each requisition against its out-of-scope declaration
+- [ ] Every mount is declared in the host manifest's `Sub_Artifact_Mounts` (name, class, specialist, status, mount path; fulfillment version where fulfilled)
+- [ ] Every `banked` mount carries an honest placeholder at the mount path: what capability is deferred, and what the host does meanwhile — and the host functions without it
+- [ ] Every classification, including negatives, is logged in `_design-decisions.md` with a one-line reason
+
+**If any is no, the OV is NOT ready to ship — an undecided pipeline-shaped activity, an over-specified requisition, or a silent placeholder each ships a Convention 16 violation.** Manual-first: no mechanical check in v2.10.0; this walk is the gate.
+
 ## Phase 4 — License + attribution
 
 The default for the OV ecosystem is CC-BY 4.0 (matching SOLVE-eX, LifeLong-Learning, OVE itself). Reasonable open alternatives: MIT, Apache-2.0. For OVs where the Methodology Author wants restrictive licensing (proprietary methodology, sensitive substrate per Convention 9, monetized release), use the v2.0 restrictive template. Confirm the choice with the user.

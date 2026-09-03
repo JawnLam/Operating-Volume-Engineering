@@ -149,6 +149,8 @@ When a user asks you to audit an existing OV (not design a new one):
    - [ ] **P12 Write before end.** Are state-persistence contracts explicit?
    - [ ] **P13 Schema-freeze.** Is the version/schema policy explicit?
 
+3b. **Run the specialist sweep (advisory).** Test the OV's declared activities and recurring deliverables against the detection triggers in `_design-engine/_meta/SPECIALISTS.md`. An activity matching a specialist's trigger is reported as a **candidate requisition** finding — advisory only: the audit records it (with the classification reasoning) for the OV's next scoped engagement and never refactors the OV in place.
+
 4. **Surface findings** in three buckets:
    - **Critical:** violations that break the OV's substrate-agnostic / stateful / shippable nature
    - **Significant:** weaknesses that will produce drift or user frustration over time
