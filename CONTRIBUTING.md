@@ -4,7 +4,7 @@ timestamp: "2026-06-06T00:00:00Z"
 Item_ID: ove-contributing
 title: "Operating-Volume-Engineering — Contributing"
 Date_Added: 2026-06-01
-Date_Modified: 2026-08-28
+Date_Modified: 2026-09-04
 Needs_Processing: false
 ---
 
@@ -88,6 +88,7 @@ Every file in this repo belongs to one of four zones. Knowing which zone a file 
 | `_types/**` | Convention 6 — OVE's own Type definitions |
 | `_USER.md.template` | Template only; the populated `_USER.md` is operator-private |
 | `.gitignore` | This file defines the Operator-Private patterns below |
+| `_meta/` (top-level, distinct from `_design-engine/_meta/`) | Convention 15 release-governance records — each release's pre-registered plan, eval, and eval-results files |
 
 **Engine Zone files do not get hand-edited by operators.** Customizations belong in the Operator-Extension Zone.
 
