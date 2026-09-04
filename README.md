@@ -11,7 +11,7 @@ Needs_Processing: false
 # Operating-Volume-Engineering
 
 [![License: CC BY 4.0](https://img.shields.io/badge/License-CC%20BY%204.0-lightgrey.svg)](https://creativecommons.org/licenses/by/4.0/)
-[![Version](https://img.shields.io/badge/version-v2.9.0-blue.svg)](VERSION.md)
+[![Version](https://img.shields.io/badge/version-v3.0.0-blue.svg)](VERSION.md)
 
 A discipline-and-toolkit for designing **operating volumes** — self-contained markdown corpora that an AI assistant loads to orchestrate a specific kind of work. Point any capable AI at this folder, tell it to read `AI-BOOTSTRAP.md`, and it will walk you through designing your own.
 
@@ -139,11 +139,11 @@ The associated discipline is called **operating volume engineering**, parallel t
 
 Operating-Volume-Engineering is released under the **Creative Commons Attribution 4.0 International License (CC-BY 4.0)**. You are free to share, adapt, and build upon this material for any purpose — including commercially — provided you give appropriate attribution.
 
-See [`LICENSE.md`](Deep%20Thought%2042/Operating%20Volumes%20(in%20use)/Operating-Volume-Engineering-v2.9/LICENSE.md) for the full license text. Attribution format:
+See [`LICENSE.md`](LICENSE.md) for the full license text. Attribution format:
 
-> Built on **Operating-Volume-Engineering v2.9** by Jawn Lam — https://github.com/JawnLam/Operating-Volume-Engineering
+> Built on **Operating-Volume-Engineering v3.0** by Jawn Lam — https://github.com/JawnLam/Operating-Volume-Engineering
 > Licensed under [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/).
 
 ## Version
 
-See [`VERSION.md`](VERSION.md). This is **v2.9.0**; `CHANGELOG.md` is the authoritative release history — `VERSION.md` and this README derive their version from it.
+See [`VERSION.md`](VERSION.md). This is **v3.0.0**; `CHANGELOG.md` is the authoritative release history — `VERSION.md` and this README derive their version from it.
